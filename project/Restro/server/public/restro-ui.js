@@ -154,17 +154,28 @@
   window.updateCartUI = function () {
     var total = window.cart.reduce(function (s, c) { return s + c.price * c.qty; }, 0);
     var count = window.cart.reduce(function (s, c) { return s + c.qty; }, 0);
-    var bar = document.getElementById('restro-cart-bar');
-    if (bar) {
+    var cartBtn = document.getElementById('bar-cart');
+    if (cartBtn) {
+      var badge = cartBtn.querySelector('.cart-badge');
       if (count > 0) {
-        bar.classList.add('visible');
-        var countEl = bar.querySelector('.rcb-count');
-        var totalEl = bar.querySelector('.rcb-total');
-        if (countEl) countEl.textContent = count + (count === 1 ? ' item' : ' items');
-        if (totalEl) totalEl.textContent = '\u20B9' + total;
+        cartBtn.classList.add('has-items');
+        if (badge) { badge.textContent = count; badge.style.display = 'block'; }
       } else {
-        bar.classList.remove('visible');
+        cartBtn.classList.remove('has-items');
+        if (badge) badge.style.display = 'none';
       }
+      var totalEl = cartBtn.querySelector('.cart-total');
+      if (totalEl) totalEl.textContent = count > 0 ? ('\u20B9' + total) : '';
+    }
+    /* ── sticky checkout bar ── */
+    var chkBar = document.getElementById('restro-checkout-bar');
+    if (chkBar) {
+      var countEl = document.getElementById('chk-count');
+      var totalEl2 = document.getElementById('chk-total');
+      if (countEl) countEl.textContent = count + ' item' + (count !== 1 ? 's' : '');
+      if (totalEl2) totalEl2.textContent = '\u20B9' + total.toLocaleString('en-IN');
+      if (count > 0) chkBar.classList.add('visible');
+      else chkBar.classList.remove('visible');
     }
   };
 
@@ -408,30 +419,73 @@
      Replaces template <main> with a consistent live-data menu
      ══════════════════════════════════════════════════════════ */
   var CAT_DISPLAY = {
-    'starters': 'Starters', 'starter': 'Starters',
-    'main-course': 'Main Course', 'main course': 'Main Course', 'mains': 'Mains',
-    'desserts': 'Desserts', 'dessert': 'Desserts',
-    'beverages': 'Beverages', 'drinks': 'Drinks',
-    'breads': 'Breads', 'bread': 'Breads',
-    'soups': 'Soups', 'soup': 'Soups',
-    'salads': 'Salads', 'salad': 'Salads',
-    'snacks': 'Snacks', 'snack': 'Snacks',
-    'non-veg': 'Non-Veg', 'nonveg': 'Non-Veg',
-    'veg': 'Veg Specials',
-    'biryani': 'Biryani', 'pizza': 'Pizza', 'burgers': 'Burgers',
-    'pasta': 'Pasta', 'noodles': 'Noodles', 'rice': 'Rice',
-    'dal': 'Dal & Curries', 'curries': 'Curries', 'curry': 'Curry',
-    'breakfast': 'Breakfast', 'lunch': 'Lunch', 'dinner': 'Dinner',
-    'specials': 'Chef\u2019s Specials', 'special': 'Chef\u2019s Specials',
+    /* ── Starters & Snacks ── */
+    'starters':'🥗 Starters','starter':'🥗 Starters','appetizers':'🥗 Appetizers','appetizer':'🥗 Appetizers',
+    'snacks':'🍟 Snacks','snack':'🍟 Snacks','finger-food':'🍟 Finger Food','chaat':'🌶 Chaat',
+    /* ── Soups & Salads ── */
+    'soups':'🍲 Soups','soup':'🍲 Soups','salads':'🥙 Salads','salad':'🥙 Salads',
+    /* ── Breads ── */
+    'breads':'🫓 Breads','bread':'🫓 Breads','roti':'🫓 Roti & Breads','naan':'🫓 Naan & Breads',
+    /* ── Rice & Biryani ── */
+    'biryani':'🍛 Biryani','rice':'🍚 Rice','rice-dishes':'🍚 Rice Dishes','fried-rice':'🍚 Fried Rice',
+    'pulao':'🍛 Pulao',
+    /* ── Main Course ── */
+    'main-course':'🍽 Main Course','main course':'🍽 Main Course','mains':'🍽 Mains',
+    'entrees':'🍽 Entrées','entree':'🍽 Entrées',
+    /* ── Dal & Curries ── */
+    'dal':'🫕 Dal & Lentils','curries':'🫕 Curries','curry':'🫕 Curry','gravies':'🫕 Gravies',
+    'paneer':'🧀 Paneer Dishes','dal-curries':'🫕 Dal & Curries',
+    /* ── Non-Veg Specials ── */
+    'non-veg':'🍗 Non-Veg','nonveg':'🍗 Non-Veg','chicken':'🍗 Chicken','mutton':'🥩 Mutton',
+    'seafood':'🦐 Seafood','fish':'🐟 Fish','prawn':'🦐 Prawns','egg':'🥚 Egg Dishes',
+    /* ── Veg Specials ── */
+    'veg':'🥦 Veg Specials','vegetarian':'🥦 Vegetarian','veg-specials':'🥦 Veg Specials',
+    /* ── Fast Food ── */
+    'burgers':'🍔 Burgers','burger':'🍔 Burgers','sandwiches':'🥪 Sandwiches','sandwich':'🥪 Sandwiches',
+    'wraps':'🌯 Wraps','wrap':'🌯 Wraps','rolls':'🌯 Rolls','roll':'🌯 Rolls',
+    'pizza':'🍕 Pizza','pasta':'🍝 Pasta','noodles':'🍜 Noodles','momos':'🥟 Momos',
+    'tacos':'🌮 Tacos','sushi':'🍱 Sushi',
+    /* ── Desserts & Sweets ── */
+    'desserts':'🍮 Desserts','dessert':'🍮 Desserts','sweets':'🍬 Sweets','sweet':'🍬 Sweets',
+    'ice-cream':'🍦 Ice Cream','cakes':'🎂 Cakes','cake':'🎂 Cakes',
+    'mithai':'🍯 Mithai','halwa':'🍯 Halwa',
+    /* ── Beverages ── */
+    'beverages':'🥤 Beverages','drinks':'🥤 Drinks','juices':'🍹 Juices','juice':'🍹 Juice',
+    'shakes':'🥛 Shakes','milkshakes':'🥛 Milkshakes','lassi':'🥛 Lassi',
+    'coffee':'☕ Coffee','tea':'🍵 Tea','mocktails':'🍸 Mocktails','cocktails':'🍹 Cocktails',
+    'soft-drinks':'🥤 Soft Drinks','water':'💧 Water',
+    /* ── Meal Times ── */
+    'breakfast':'🍳 Breakfast','brunch':'🥞 Brunch','lunch':'🍱 Lunch','dinner':'🌙 Dinner',
+    /* ── Specials ── */
+    'specials':'⭐ Chef\'s Specials','special':'⭐ Chef\'s Specials','chefs-special':'⭐ Chef\'s Specials',
+    'seasonal':'🌿 Seasonal','thali':'🍱 Thali','combo':'🎁 Combos','combos':'🎁 Combos',
+    'street-food':'🛺 Street Food','healthy':'💚 Healthy','vegan':'🌱 Vegan',
+    'kids':'👶 Kids Menu','sharing':'🤝 For Sharing',
+    /* ── Sides ── */
+    'sides':'🥗 Sides','side':'🥗 Sides','accompaniments':'🥗 Accompaniments','raita':'🥗 Raita',
+    'papad':'🥗 Papad & Sides','pickles':'🥒 Pickles',
+    /* ── Add-ons ── */
+    'extras':'➕ Extras','add-ons':'➕ Add-ons','toppings':'➕ Toppings',
   };
 
   function catLabel(cat) {
-    return CAT_DISPLAY[cat.toLowerCase()] || (cat.charAt(0).toUpperCase() + cat.slice(1));
+    return CAT_DISPLAY[cat.toLowerCase()] || ('🍴 ' + cat.charAt(0).toUpperCase() + cat.slice(1));
   }
 
   function renderUniversalMenu() {
     var grouped = d.grouped || {};
-    var cats = Object.keys(grouped).filter(function (c) { return grouped[c] && grouped[c].length > 0; });
+    /* Re-group all DB categories into the 8 canonical buckets */
+    var canonical = {};
+    Object.keys(grouped).forEach(function (dbCat) {
+      var items = grouped[dbCat];
+      if (!items || !items.length) return;
+      var key = toCanonical(dbCat);
+      if (!canonical[key]) canonical[key] = [];
+      canonical[key] = canonical[key].concat(items);
+    });
+    /* Show only buckets that actually have items, in defined order */
+    var cats = CANONICAL_ORDER.filter(function (k) { return canonical[k] && canonical[k].length > 0; });
+    var grouped2 = canonical; /* alias for rest of code */
 
     /* ── Menu CSS ── */
     var mStyle = document.createElement('style');
@@ -492,13 +546,7 @@
       '#ri-empty .ri-empty-icon{font-size:52px;margin-bottom:12px;line-height:1}',
       '#ri-empty h3{font-size:17px;font-weight:700;color:#374151;margin:0 0 8px}',
       '#ri-empty p{font-size:13px;margin:0;line-height:1.5}',
-      /* Cart bar */
-      '#restro-cart-bar{position:fixed;bottom:72px;left:calc(12px + max(0px,(100vw - 600px)/2));right:calc(12px + max(0px,(100vw - 600px)/2));max-width:576px;margin:0 auto;z-index:99985;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border-radius:16px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 24px rgba(22,163,74,.4);transform:translateY(130%);transition:transform .35s cubic-bezier(.32,.72,0,1);cursor:pointer;font-family:system-ui,sans-serif}',
-      '#restro-cart-bar.visible{transform:translateY(0)}',
-      '.rcb-left{display:flex;flex-direction:column;gap:2px}',
-      '.rcb-count{font-size:11px;font-weight:600;opacity:.8}',
-      '.rcb-label{font-size:15px;font-weight:800}',
-      '.rcb-total{font-size:20px;font-weight:800}',
+
     ].join('');
     document.head.appendChild(mStyle);
 
@@ -526,12 +574,13 @@
     } else {
       /* Build full menu */
       var tabsHtml = '<div id="ri-tabs-wrap"><div id="ri-tabs">' +
+        '<button class="ri-tab active" data-cat="__all__" onclick="scrollToSection(\'__all\')">🍽 All</button>' +
         cats.map(function (cat, i) {
-          return '<button class="ri-tab' + (i === 0 ? ' active' : '') + '" data-cat="' + cat + '" onclick="scrollToSection(\'' + cat + '\')">' + catLabel(cat) + '</button>';
+          return '<button class="ri-tab" data-cat="' + cat + '" onclick="scrollToSection(\'' + cat + '\')">' + catLabel(cat) + '</button>';
         }).join('') + '</div></div>';
 
       var sectionsHtml = cats.map(function (cat) {
-        var items = grouped[cat];
+        var items = grouped2[cat];
         var cardsHtml = items.map(function (item) {
           var safeName = (item.name || '').replace(/'/g, '\\\'').replace(/"/g, '&quot;');
           var imgSrc = item.image ||
@@ -597,22 +646,35 @@
       }
     }
 
-    /* ── Cart bar ── */
-    var cartBar = document.createElement('div');
-    cartBar.id = 'restro-cart-bar';
-    cartBar.setAttribute('role', 'button');
-    cartBar.onclick = function () { window.placeOrder(); };
-    cartBar.innerHTML = '<div class="rcb-left"><span class="rcb-count">0 items</span><span class="rcb-label">View Cart &amp; Order</span></div><span class="rcb-total">\u20B90</span>';
-    document.body.appendChild(cartBar);
   }
 
   window.scrollToSection = function (cat) {
+    if (cat === '__all') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.querySelectorAll('.ri-tab').forEach(function (t) { t.classList.toggle('active', t.dataset.cat === '__all__'); });
+      return;
+    }
     var sec = document.getElementById('ri-sec-' + cat);
     if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
     document.querySelectorAll('.ri-tab').forEach(function (tab) {
       tab.classList.toggle('active', tab.dataset.cat === cat);
     });
   };
+
+  /* Hide any template-specific floating cart button/drawer — we use our own bottom nav */
+  onReady(function () {
+    var fc = document.getElementById('floatingCart');
+    if (fc) fc.style.display = 'none';
+    var cd = document.getElementById('cartDrawer');
+    if (cd) cd.style.display = 'none';
+    var co = document.getElementById('cartOverlay');
+    if (co) co.style.display = 'none';
+    /* Hide template's own category nav — restro-ui renders its own */
+    var cn = document.getElementById('categoryNav');
+    if (cn) cn.style.display = 'none';
+  });
+  /* Redirect any template toggleCart calls to our cart panel */
+  window.toggleCart = function () { if (tableNum) window.showPanel('cart'); };
 
   /* ══════════════════════════════════════════════════════════
      BOTTOM BAR + PANELS (dine-in only: tableNum > 0)
@@ -744,6 +806,18 @@
       '#restro-bar .bar-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;color:#a1a1aa;font-family:inherit;font-size:10px;font-weight:600;padding:8px 4px;border-radius:14px;cursor:pointer;transition:all .18s;-webkit-tap-highlight-color:transparent}' +
       '#restro-bar .bar-btn.active,#restro-bar .bar-btn:active{color:#fff;background:rgba(255,255,255,.1)}' +
       '#restro-bar .bar-btn svg{display:block;margin:0 auto 2px}' +
+      '#bar-cart.has-items{color:#4ade80}' +
+      '.cart-badge{position:absolute;top:2px;right:6px;background:#ef4444;color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:8px;display:none}' +
+      '.cart-total{font-size:9px;font-weight:700;color:#4ade80;min-height:11px;display:block;line-height:1}' +
+      '#restro-checkout-bar{position:fixed;bottom:72px;left:0;right:0;z-index:9998;padding:0 12px 6px;pointer-events:none;transform:translateY(30px);opacity:0;transition:transform .28s cubic-bezier(.34,1.56,.64,1),opacity .22s}' +
+      '#restro-checkout-bar.visible{transform:translateY(0);opacity:1;pointer-events:auto}' +
+      '#restro-checkout-bar-inner{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border-radius:18px;padding:12px 16px;box-shadow:0 6px 28px rgba(22,163,74,.45);cursor:pointer;gap:12px;-webkit-tap-highlight-color:transparent}' +
+      '#restro-checkout-bar-inner:active{transform:scale(.97)}' +
+      '.chk-left{display:flex;align-items:center;gap:8px}' +
+      '.chk-count{background:rgba(255,255,255,.2);border-radius:10px;font-size:12px;font-weight:800;padding:3px 9px;line-height:1}' +
+      '.chk-label{font-size:14px;font-weight:700;letter-spacing:.1px}' +
+      '.chk-right{display:flex;align-items:center;gap:6px;font-size:15px;font-weight:800}' +
+      '.chk-arrow{font-size:18px;font-weight:900}' +
       '.tracker-order.st-pending{border-left:4px solid #f59e0b}' +
       '.tracker-order.st-approved{border-left:4px solid #3b82f6}' +
       '.tracker-order.st-cooking{border-left:4px solid #f97316}' +
@@ -782,14 +856,30 @@
       '.rom-items-count{font-size:13px;color:#6b7280}' +
       '.rom-grand{font-size:22px;font-weight:800;color:#1a1a1a}' +
       '.rom-gst-note{font-size:10px;color:#9ca3af;text-align:right}' +
-      '#rom-field-error{font-size:12px;color:#ef4444;margin:2px 0 4px;font-weight:600;min-height:16px}';
+      '#rom-field-error{font-size:12px;color:#ef4444;margin:2px 0 4px;font-weight:600;min-height:16px}' +
+      /* Cart panel */
+      '.cp-list{display:flex;flex-direction:column;gap:0;margin-bottom:12px}' +
+      '.cp-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f3f4f6;gap:12px}' +
+      '.cp-row:last-child{border-bottom:none}' +
+      '.cp-item-name{flex:1;font-size:14px;font-weight:600;color:#111;line-height:1.35}' +
+      '.cp-item-right{display:flex;align-items:center;gap:12px;flex-shrink:0}' +
+      '.cp-qty-row{display:inline-flex;align-items:center;border:1.5px solid #16a34a;border-radius:6px;overflow:hidden}' +
+      '.cp-qty-btn{width:30px;height:28px;background:#16a34a;color:#fff;border:none;font-size:17px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;flex-shrink:0;line-height:1}' +
+      '.cp-qty-btn:active{opacity:.75}' +
+      '.cp-qty-val{font-size:13px;font-weight:700;color:#16a34a;min-width:24px;text-align:center;background:#fff;padding:0 2px}' +
+      '.cp-price{font-size:14px;font-weight:700;color:#111;min-width:44px;text-align:right}' +
+      '.cp-summary{background:#f9fafb;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;flex-direction:column;gap:6px}' +
+      '.cp-summary-row{display:flex;justify-content:space-between;font-size:13px;color:#6b7280}' +
+      '.cp-grand{font-size:15px;font-weight:800;color:#111;padding-top:6px;border-top:1px solid #e5e7eb;margin-top:2px}' +
+      '.cp-order-btn{width:100%;padding:15px;background:#16a34a;color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit}' +
+      '.cp-order-btn:active{background:#15803d;transform:scale(.98)}';
     document.head.appendChild(style2);
 
     /* ── Bottom bar HTML ── */
     var bar = document.createElement('div');
     bar.id = 'restro-bar';
     bar.innerHTML = '<div id="restro-bar-inner">' + [
-      '<button class="bar-btn" onclick="showPanel(\'tracker\')" id="bar-tracker">',
+      '<button class="bar-btn" onclick="showPanel(\'tracker\')" id="bar-tracker" style="position:relative">',
       '  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>',
       '  Orders',
       '  <span class="bar-badge" id="order-badge" style="display:none;position:absolute;top:2px;right:6px;background:#ef4444;color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:8px">0</span>',
@@ -797,6 +887,12 @@
       '<button class="bar-btn" onclick="showPanel(\'waiter\')" id="bar-waiter">',
       '  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>',
       '  Waiter',
+      '</button>',
+      '<button class="bar-btn" onclick="showPanel(\'cart\')" id="bar-cart" style="position:relative">',
+      '  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>',
+      '  <span class="cart-total"></span>',
+      '  Cart',
+      '  <span class="cart-badge">0</span>',
       '</button>',
       '<button class="bar-btn" onclick="showPanel(\'pay\')" id="bar-pay">',
       '  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>',
@@ -808,6 +904,12 @@
       '</button>',
     ].join('') + '</div>';
     document.body.appendChild(bar);
+
+    /* ── Checkout sticky bar ── */
+    var chkBar = document.createElement('div');
+    chkBar.id = 'restro-checkout-bar';
+    chkBar.innerHTML = '<div id="restro-checkout-bar-inner" onclick="showPanel(\'cart\')"><div class="chk-left"><span class="chk-count" id="chk-count">0</span><span class="chk-label">Proceed to Checkout</span></div><div class="chk-right"><span id="chk-total">₹0</span><span class="chk-arrow">→</span></div></div>';
+    document.body.appendChild(chkBar);
 
     /* ── Overlay ── */
     var overlay = document.createElement('div');
@@ -859,12 +961,15 @@
     if (!panel) return;
     panel.style.transform = '';
 
-    ['tracker', 'waiter', 'pay', 'feedback'].forEach(function (n) {
+    ['tracker', 'waiter', 'cart', 'pay', 'feedback'].forEach(function (n) {
       var btn = document.getElementById('bar-' + n);
       if (btn) btn.classList.toggle('active', n === name);
     });
 
-    if (name === 'tracker') {
+    if (name === 'cart') {
+      title.textContent = 'Your Cart';
+      renderCartPanel(body);
+    } else if (name === 'tracker') {
       title.textContent = 'Your Orders';
       updateTrackerUI();
     } else if (name === 'waiter') {
@@ -887,7 +992,7 @@
     var overlay = document.getElementById('restro-overlay');
     if (panel) { panel.classList.remove('open'); panel.style.transform = ''; }
     if (overlay) overlay.classList.remove('open');
-    ['tracker', 'waiter', 'pay', 'feedback'].forEach(function (n) {
+    ['tracker', 'waiter', 'cart', 'pay', 'feedback'].forEach(function (n) {
       var btn = document.getElementById('bar-' + n);
       if (btn) btn.classList.remove('active');
     });
@@ -1078,6 +1183,60 @@
           if (sb) { sb.disabled = false; sb.textContent = 'Save Changes'; }
         });
     };
+  };
+
+  /* ══════════════════════════════════════════════════════════
+     CART PANEL
+     ══════════════════════════════════════════════════════════ */
+  function renderCartPanel(body) {
+    var items = window.cart || [];
+    if (items.length === 0) {
+      body.innerHTML =
+        '<div style="text-align:center;padding:40px 16px;color:#9ca3af">' +
+        '<div style="font-size:52px;margin-bottom:12px">\uD83D\uDED2</div>' +
+        '<div style="font-size:17px;font-weight:700;color:#374151;margin-bottom:8px">Your cart is empty</div>' +
+        '<div style="font-size:13px;line-height:1.5">Add items from the menu to get started</div>' +
+        '</div>';
+      return;
+    }
+    var subtotal = items.reduce(function (s, c) { return s + c.price * c.qty; }, 0);
+    var gst = Math.round(subtotal * 0.05);
+    var grand = subtotal + gst;
+
+    var rowsHtml = items.map(function (item) {
+      return '<div class="cp-row" id="cp-row-' + item.id + '">' +
+        '<div class="cp-item-name">' + item.name + '</div>' +
+        '<div class="cp-item-right">' +
+        '<div class="cp-qty-row">' +
+        '<button class="cp-qty-btn" onclick="window._cpRemove(\'' + item.id + '\')">\u2212</button>' +
+        '<span class="cp-qty-val">' + item.qty + '</span>' +
+        '<button class="cp-qty-btn" onclick="window._cpAdd(\'' + item.id + '\',\'' + item.name.replace(/'/g, "\\'") + '\',' + item.price + ')">\+</button>' +
+        '</div>' +
+        '<span class="cp-price">\u20B9' + (item.price * item.qty) + '</span>' +
+        '</div>' +
+        '</div>';
+    }).join('');
+
+    body.innerHTML =
+      '<div class="cp-list">' + rowsHtml + '</div>' +
+      '<div class="cp-summary">' +
+      '<div class="cp-summary-row"><span>Subtotal</span><span>\u20B9' + subtotal + '</span></div>' +
+      '<div class="cp-summary-row"><span>GST (5%)</span><span>\u20B9' + gst + '</span></div>' +
+      '<div class="cp-summary-row cp-grand"><span>Total</span><span>\u20B9' + grand + '</span></div>' +
+      '</div>' +
+      '<button class="cp-order-btn" onclick="closePanel();setTimeout(function(){window.placeOrder();},200)">Proceed to Order \u2192</button>';
+  }
+
+  window._cpRemove = function (itemId) {
+    window.removeFromCart(itemId);
+    var body = document.getElementById('panel-body');
+    if (body && activePanelName === 'cart') renderCartPanel(body);
+  };
+
+  window._cpAdd = function (itemId, name, price) {
+    window.addToCart(itemId, name, price);
+    var body = document.getElementById('panel-body');
+    if (body && activePanelName === 'cart') renderCartPanel(body);
   };
 
   /* ══════════════════════════════════════════════════════════

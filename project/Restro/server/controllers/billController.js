@@ -4,6 +4,7 @@ const Customer = require('../models/Customer');
 const Restaurant = require('../models/Restaurant');
 const Session = require('../models/Session');
 const mongoose = require('mongoose');
+const generateInvoicePDF = require('../utils/generateInvoicePDF');
 
 const generateBillNumber = async (restaurantId) => {
   const today = new Date();
@@ -671,3 +672,21 @@ async function updateCustomerLoyalty(restaurantId, phone, name, spent, earned, r
   await customer.save();
   return customer;
 }
+
+// ── PDF INVOICE DOWNLOAD ─────────────────────────────────────────────────────
+exports.downloadInvoicePDF = async (req, res) => {
+  try {
+    const bill = await Bill.findOne({ _id: req.params.billId, restaurantId: req.restaurantId }).lean();
+    if (!bill) return res.status(404).json({ message: 'Bill not found' });
+
+    const restaurant = await Restaurant.findById(req.restaurantId).lean();
+    const pdfBuffer = await generateInvoicePDF(bill, restaurant || {});
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="Invoice-${bill.billNumber}.pdf"`);
+    res.setHeader('Content-Length', pdfBuffer.length);
+    res.end(pdfBuffer);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to generate invoice PDF', error: error.message });
+  }
+};

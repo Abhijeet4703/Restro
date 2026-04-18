@@ -182,6 +182,27 @@ function ReceiptModal({ open, cart, totals, paymentMethod, payments, tableNum, o
     w.onload = () => w.print();
   };
 
+  const handleDownloadPDF = async () => {
+    if (!billId) return;
+    try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
+      const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+      const resp = await fetch(`${API_BASE}/bills/${billId}/pdf`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!resp.ok) throw new Error('PDF generation failed');
+      const blob = await resp.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Invoice-${orderNum}.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      alert('Failed to download PDF. Please try again.');
+    }
+  };
+
   const buildBillText = () => {
     const lines = [
       `${restaurantName.toUpperCase()} — TAX INVOICE`,
@@ -365,6 +386,12 @@ function ReceiptModal({ open, cart, totals, paymentMethod, payments, tableNum, o
               {b.icon} {b.label}
             </button>
           ))}
+          {billId && (
+            <button onClick={handleDownloadPDF}
+              className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-blue-50 border border-blue-200 rounded-lg text-xs font-medium text-blue-700 hover:bg-blue-100 cursor-pointer shadow-sm">
+              📄 PDF
+            </button>
+          )}
           <button onClick={onNewOrder}
             className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-emerald-600 rounded-lg text-xs font-semibold text-white hover:bg-emerald-700 cursor-pointer shadow-sm">
             + New
@@ -448,6 +475,13 @@ export default function BillingPage() {
   const [activeCat, setActiveCat] = useState('all');
   const [search, setSearch] = useState('');
   const [orderSearch, setOrderSearch] = useState('');
+  const menuSearchRef = useRef<HTMLInputElement>(null);
+  // F: inline qty editing
+  const [editingQtyId, setEditingQtyId] = useState<string | null>(null);
+  const [editingQtyVal, setEditingQtyVal] = useState('');
+  // E: inline notes editing
+  const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
+  const [editingNoteVal, setEditingNoteVal] = useState('');
 
   const [cart, setCart] = useState<CartEntry[]>([]);
   const [tableNum, setTableNum] = useState(1);
@@ -698,6 +732,43 @@ export default function BillingPage() {
   const changeQty = useCallback((id: string, delta: number) => {
     setCart(prev => prev.map(e => e.id === id ? { ...e, qty: Math.max(0, e.qty + delta) } : e).filter(e => e.qty > 0));
   }, []);
+
+  // F: set qty directly
+  const setQtyDirect = useCallback((id: string, val: number) => {
+    const q = Math.max(0, Math.round(val));
+    if (q === 0) setCart(prev => prev.filter(e => e.id !== id));
+    else setCart(prev => prev.map(e => e.id === id ? { ...e, qty: q } : e));
+  }, []);
+
+  // E: set note on cart item
+  const setItemNote = useCallback((id: string, note: string) => {
+    setCart(prev => prev.map(e => e.id === id ? { ...e, notes: note } : e));
+  }, []);
+
+  // I: / key shortcut focuses menu search
+  useEffect(() => {
+    const handler = (ev: KeyboardEvent) => {
+      const tag = (ev.target as HTMLElement).tagName;
+      if (ev.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA') {
+        ev.preventDefault();
+        setLeftTab('menu');
+        setTimeout(() => menuSearchRef.current?.focus(), 50);
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, []);
+
+  // G: compute top 5 items from recent orders
+  const topItems = useMemo(() => {
+    const counts: Record<string, { name: string; price: number; count: number }> = {};
+    customerOrders.forEach(o => o.items.forEach(i => {
+      const key = i.name;
+      if (!counts[key]) counts[key] = { name: i.name, price: i.price, count: 0 };
+      counts[key].count += i.quantity;
+    }));
+    return Object.values(counts).sort((a, b) => b.count - a.count).slice(0, 5);
+  }, [customerOrders]);
 
   const removeItem = useCallback((id: string) => setCart(prev => prev.filter(e => e.id !== id)), []);
 
@@ -1187,7 +1258,7 @@ export default function BillingPage() {
                 <span className="text-xs text-gray-500">Add items manually to the invoice</span>
                 <div className="relative">
                   <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs">🔍</span>
-                  <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search dishes..."
+                  <input ref={menuSearchRef} value={search} onChange={e => setSearch(e.target.value)} placeholder="Search dishes... (/ to focus)"
                     className="pl-7 pr-3 py-1.5 text-xs border border-gray-200 rounded-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-300 w-44" />
                 </div>
               </div>
@@ -1200,6 +1271,29 @@ export default function BillingPage() {
                   </button>
                 ))}
               </div>
+              {/* G: top items shortlist */}
+              {topItems.length > 0 && search.trim() === '' && activeCat === 'all' && (
+                <div className="px-3 pt-3 pb-1 border-b border-gray-100 shrink-0">
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">⚡ Quick Add (top items)</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {topItems.map(item => (
+                      <button key={item.name}
+                        onClick={() => {
+                          const mi = menuItems.find(m => m.name === item.name);
+                          if (mi) addItem(mi);
+                        }}
+                        className="flex items-center gap-1 px-2.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-full text-xs font-medium cursor-pointer hover:bg-emerald-100 transition-colors">
+                        + {item.name}
+                        {cart.find(c => c.name === item.name) && (
+                          <span className="bg-emerald-600 text-white rounded-full px-1.5 text-[9px] font-bold">
+                            {cart.find(c => c.name === item.name)!.qty}
+                          </span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
               <div className="flex-1 overflow-y-auto p-3 flex flex-col gap-2" style={{ scrollbarWidth: 'thin', scrollbarColor: '#d1d5db transparent' }}>
                 {filtered.length === 0 && <div className="text-center text-gray-400 py-12 text-sm">No dishes found 🍽️</div>}
                 {filtered.map(item => {
@@ -1452,27 +1546,53 @@ export default function BillingPage() {
               </div>
             ) : (
               cart.map(e => (
-                <div key={e.id} className={`flex items-center gap-1.5 p-2.5 border rounded-xl group ${e.isComp ? 'bg-yellow-50 border-yellow-200' : 'bg-gray-50 border-gray-200'}`}>
-                  <div className="flex-1 min-w-0">
-                    <span className={`text-xs font-medium truncate block ${e.isComp ? 'text-gray-400 line-through' : 'text-gray-800'}`}>{e.name}</span>
-                    {e.isComp && <span className="text-[9px] text-yellow-600 font-semibold">COMP: {e.compReason}</span>}
+                <div key={e.id} className={`flex flex-col p-2.5 border rounded-xl group ${e.isComp ? 'bg-yellow-50 border-yellow-200' : 'bg-gray-50 border-gray-200'}`}>
+                  <div className="flex items-center gap-1.5">
+                    <div className="flex-1 min-w-0">
+                      <span className={`text-xs font-medium truncate block ${e.isComp ? 'text-gray-400 line-through' : 'text-gray-800'}`}>{e.name}</span>
+                      {e.isComp && <span className="text-[9px] text-yellow-600 font-semibold">COMP: {e.compReason}</span>}
+                    </div>
+                    <div className="flex items-center gap-0.5 shrink-0">
+                      <button onClick={() => changeQty(e.id, -1)} className="w-5 h-5 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-100 flex items-center justify-center text-xs font-bold cursor-pointer">−</button>
+                      {/* F: tap qty to edit inline */}
+                      {editingQtyId === e.id ? (
+                        <input autoFocus type="number" value={editingQtyVal}
+                          onChange={ev => setEditingQtyVal(ev.target.value)}
+                          onBlur={() => { setQtyDirect(e.id, Number(editingQtyVal)); setEditingQtyId(null); }}
+                          onKeyDown={ev => { if (ev.key === 'Enter' || ev.key === 'Escape') { setQtyDirect(e.id, Number(editingQtyVal)); setEditingQtyId(null); } }}
+                          className="w-10 text-xs font-bold text-center border border-emerald-400 rounded-lg bg-white outline-none focus:ring-1 focus:ring-emerald-400 py-0.5" />
+                      ) : (
+                        <span onClick={() => { setEditingQtyId(e.id); setEditingQtyVal(String(e.qty)); }}
+                          className="text-xs font-bold text-gray-800 min-w-[18px] text-center cursor-pointer hover:bg-emerald-100 rounded px-1 transition-colors" title="Tap to edit">{e.qty}</span>
+                      )}
+                      <button onClick={() => changeQty(e.id, 1)} className="w-5 h-5 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-100 flex items-center justify-center text-xs font-bold cursor-pointer">+</button>
+                    </div>
+                    <span className={`text-xs font-bold min-w-[48px] text-right shrink-0 ${e.isComp ? 'text-gray-300' : 'text-emerald-600'}`}>
+                      {e.isComp ? 'COMP' : `₹${e.price * e.qty}`}
+                    </span>
+                    <div className="flex items-center gap-0.5 shrink-0">
+                      {e.isComp ? (
+                        <button onClick={() => unComp(e.id)} className="px-1.5 py-0.5 rounded-lg bg-green-50 text-green-600 hover:bg-green-100 text-[9px] font-semibold cursor-pointer border border-green-200">Undo</button>
+                      ) : (
+                        <button onClick={() => markComp(e.id)} className="px-1.5 py-0.5 rounded-lg bg-yellow-50 text-yellow-600 hover:bg-yellow-100 text-[9px] font-semibold cursor-pointer border border-yellow-200">Comp</button>
+                      )}
+                      <button onClick={() => removeItem(e.id)} className="px-1.5 py-0.5 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 text-[9px] font-semibold cursor-pointer border border-red-200">✕</button>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-0.5 shrink-0">
-                    <button onClick={() => changeQty(e.id, -1)} className="w-5 h-5 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-100 flex items-center justify-center text-xs font-bold cursor-pointer">-</button>
-                    <span className="text-xs font-bold text-gray-800 min-w-[18px] text-center">{e.qty}</span>
-                    <button onClick={() => changeQty(e.id, 1)} className="w-5 h-5 rounded-full border border-gray-300 bg-white text-gray-600 hover:bg-gray-100 flex items-center justify-center text-xs font-bold cursor-pointer">+</button>
-                  </div>
-                  <span className={`text-xs font-bold min-w-[48px] text-right shrink-0 ${e.isComp ? 'text-gray-300' : 'text-emerald-600'}`}>
-                    {e.isComp ? 'COMP' : `₹${e.price * e.qty}`}
-                  </span>
-                  <div className="flex items-center gap-0.5 shrink-0">
-                    {e.isComp ? (
-                      <button onClick={() => unComp(e.id)} className="px-1.5 py-0.5 rounded-lg bg-green-50 text-green-600 hover:bg-green-100 text-[9px] font-semibold cursor-pointer border border-green-200">Undo</button>
-                    ) : (
-                      <button onClick={() => markComp(e.id)} className="px-1.5 py-0.5 rounded-lg bg-yellow-50 text-yellow-600 hover:bg-yellow-100 text-[9px] font-semibold cursor-pointer border border-yellow-200">Comp</button>
-                    )}
-                    <button onClick={() => removeItem(e.id)} className="px-1.5 py-0.5 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 text-[9px] font-semibold cursor-pointer border border-red-200">✕</button>
-                  </div>
+                  {/* E: inline notes row */}
+                  {editingNoteId === e.id ? (
+                    <input autoFocus value={editingNoteVal}
+                      onChange={ev => setEditingNoteVal(ev.target.value)}
+                      onBlur={() => { setItemNote(e.id, editingNoteVal); setEditingNoteId(null); }}
+                      onKeyDown={ev => { if (ev.key === 'Enter' || ev.key === 'Escape') { setItemNote(e.id, editingNoteVal); setEditingNoteId(null); } }}
+                      placeholder="Add note (e.g. extra spicy, no onion)..."
+                      className="mt-1.5 w-full text-[10px] px-2 py-1 border border-blue-300 rounded-lg bg-white outline-none focus:ring-1 focus:ring-blue-400 text-gray-700" />
+                  ) : (
+                    <button onClick={() => { setEditingNoteId(e.id); setEditingNoteVal(e.notes || ''); }}
+                      className="mt-1 text-left text-[9px] text-slate-400 hover:text-blue-500 cursor-pointer bg-transparent border-0 p-0 leading-tight truncate max-w-full">
+                      {e.notes ? `📝 ${e.notes}` : '+ add note'}
+                    </button>
+                  )}
                 </div>
               ))
             )}
@@ -1775,19 +1895,28 @@ export default function BillingPage() {
         currentTable={tableNum}
         onClose={() => setTableModalOpen(false)}
         onSelectTable={n => {
+          const hasItems = cart.length > 0;
           setTableNum(n);
           setTableModalOpen(false);
-          setCart([]);
-          setDiscountValue(0);
-          setDiscountInput('');
-          setDiscountReason('');
-          setSelectedOrderId(null);
-          setCurrentBillId(null);
-          setCustomerPhone('');
-          setCustomerName('');
-          setCustomerInfo(null);
-          setOrderNum(`BL-${String(Math.floor(1000 + Math.random() * 9000))}`);
-          toast.success(`Switched to Table ${n} — invoice cleared`);
+          if (!hasItems) {
+            // no active cart — full reset
+            setCart([]);
+            setDiscountValue(0);
+            setDiscountInput('');
+            setDiscountReason('');
+            setSelectedOrderId(null);
+            setCurrentBillId(null);
+            setCustomerPhone('');
+            setCustomerName('');
+            setCustomerInfo(null);
+            setOrderNum(`BL-${String(Math.floor(1000 + Math.random() * 9000))}`);
+            toast.success(`Switched to Table ${n} — invoice cleared`);
+          } else {
+            // H: table transfer — keep cart, just change table number
+            setSelectedOrderId(null);
+            setCurrentBillId(null);
+            toast.success(`Transferred to Table ${n} — cart items kept`);
+          }
         }}
       />
     </div>

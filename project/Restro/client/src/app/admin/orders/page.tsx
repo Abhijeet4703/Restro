@@ -81,6 +81,27 @@ export default function AdminOrdersPage() {
   const [rejectReason, setRejectReason] = useState('');
   const [showRejectDialog, setShowRejectDialog] = useState(false);
   const [rejectingOrderId, setRejectingOrderId] = useState<string | null>(null);
+  const [now, setNow] = useState(Date.now());
+
+  // Live clock for overdue timers
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 30_000);
+    return () => clearInterval(t);
+  }, []);
+
+  // D: play a soft ding when a new order arrives
+  const playAlert = useCallback(() => {
+    try {
+      const ctx = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = 880;
+      gain.gain.setValueAtTime(0.4, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+      osc.start(); osc.stop(ctx.currentTime + 0.6);
+    } catch { /* AudioContext not available */ }
+  }, []);
 
   const fetchOrders = useCallback(async () => {
     try {
@@ -102,7 +123,7 @@ export default function AdminOrdersPage() {
     const socket = connectSocket();
     joinRestaurant(restaurant._id);
 
-    socket.on('order:new', () => fetchOrders());
+    socket.on('order:new', () => { fetchOrders(); playAlert(); });
     socket.on('order:status-update', () => fetchOrders());
 
     return () => {
@@ -131,6 +152,21 @@ export default function AdminOrdersPage() {
     } catch (err: unknown) {
       const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message || 'Failed to update status';
       toast.error(msg);
+    }
+  };
+
+  const handlePrintKOT = async (orderId: string) => {
+    try {
+      const resp = await api.get(`/kot/order/${orderId}`);
+      const text: string = resp.data?.text || resp.data || '';
+      const w = window.open('', '_blank')!;
+      w.document.write(`<!DOCTYPE html><html><head><title>KOT</title>
+        <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:monospace;font-size:13px;padding:16px;white-space:pre-wrap;max-width:320px}</style>
+      </head><body>${text.replace(/\n/g, '<br/>')}</body></html>`);
+      w.document.close();
+      w.onload = () => { w.focus(); w.print(); };
+    } catch {
+      toast.error('Failed to generate KOT');
     }
   };
 
@@ -168,10 +204,26 @@ export default function AdminOrdersPage() {
   const activeCount = orders.filter((o) => ['approved', 'cooking', 'preparation', 'plating'].includes(o.orderStatus)).length;
 
   const timeSince = (date: string) => {
-    const mins = Math.floor((Date.now() - new Date(date).getTime()) / 60000);
+    const mins = Math.floor((now - new Date(date).getTime()) / 60000);
     if (mins < 1) return 'just now';
     if (mins < 60) return `${mins}m ago`;
     return `${Math.floor(mins / 60)}h ${mins % 60}m ago`;
+  };
+
+  // A: cooking minutes elapsed (from cookingStartedAt or approvedAt)
+  const cookingMins = (order: Order) => {
+    const ref = order.cookingStartedAt || order.approvedAt;
+    if (!ref) return null;
+    return Math.floor((now - new Date(ref).getTime()) / 60000);
+  };
+
+  // C: bulk approve all pending
+  const handleApproveAll = async () => {
+    const pending = orders.filter(o => o.orderStatus === 'pending');
+    if (pending.length === 0) return;
+    await Promise.allSettled(pending.map(o => api.post(`/orders/${o._id}/approve`)));
+    toast.success(`Approved ${pending.length} order${pending.length > 1 ? 's' : ''}`);
+    fetchOrders();
   };
 
   return (
@@ -181,9 +233,16 @@ export default function AdminOrdersPage() {
           <h1 className="text-2xl font-black text-slate-900 tracking-tight">Orders</h1>
           <p className="text-sm text-slate-500 mt-1">Manage and approve incoming orders</p>
         </div>
-        <Button onClick={fetchOrders} variant="outline" size="sm" className="border-slate-200 text-slate-600 hover:bg-slate-50 h-9 gap-1.5">
-          <RefreshCw className="w-3.5 h-3.5" /> Refresh
-        </Button>
+        <div className="flex items-center gap-2">
+          {pendingCount > 1 && (
+            <Button onClick={handleApproveAll} size="sm" className="bg-emerald-600 hover:bg-emerald-700 text-white h-9 gap-1.5">
+              <CheckCircle className="w-3.5 h-3.5" /> Approve All ({pendingCount})
+            </Button>
+          )}
+          <Button onClick={fetchOrders} variant="outline" size="sm" className="border-slate-200 text-slate-600 hover:bg-slate-50 h-9 gap-1.5">
+            <RefreshCw className="w-3.5 h-3.5" /> Refresh
+          </Button>
+        </div>
       </div>
 
       {/* Tabs + Search */}
@@ -281,10 +340,20 @@ export default function AdminOrdersPage() {
                     </div>
                   </div>
 
-                  {/* Amount */}
+                  {/* Amount + overdue timer */}
                   <div className="text-right shrink-0">
                     <p className="text-xl font-black text-slate-900 stat-number">₹{order.totalAmount.toLocaleString()}</p>
                     <p className="text-[11px] text-slate-400">{order.items.length} item{order.items.length !== 1 ? 's' : ''}</p>
+                    {['cooking','preparation','plating'].includes(order.orderStatus) && (() => {
+                      const mins = cookingMins(order);
+                      if (mins === null) return null;
+                      const overdue = mins >= 20;
+                      return (
+                        <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full border ${
+                          overdue ? 'bg-red-50 text-red-600 border-red-200 animate-pulse' : 'bg-orange-50 text-orange-500 border-orange-200'
+                        }`}>🍳 {mins}m{overdue ? ' ⚠' : ''}</span>
+                      );
+                    })()}
                   </div>
 
                   {/* Actions */}
@@ -346,6 +415,15 @@ export default function AdminOrdersPage() {
                     >
                       <Eye className="w-4 h-4" />
                     </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handlePrintKOT(order._id)}
+                      title="Print KOT"
+                      className="border-orange-200 text-orange-500 hover:bg-orange-50 h-9 px-2.5 text-xs font-semibold"
+                    >
+                      🖨 KOT
+                    </Button>
                   </div>
                 </div>
               </CardContent>
@@ -363,12 +441,25 @@ export default function AdminOrdersPage() {
               Provide a reason for rejection. The customer will be notified.
             </DialogDescription>
           </DialogHeader>
+          {/* B: quick reason presets */}
+          <div className="flex flex-wrap gap-2 mt-2">
+            {['Item unavailable', 'Kitchen closed', 'Duplicate order', 'Customer request', 'Please pay first'].map(preset => (
+              <button key={preset} onClick={() => setRejectReason(preset)}
+                className={`text-xs px-2.5 py-1 rounded-full border cursor-pointer transition-colors ${
+                  rejectReason === preset
+                    ? 'bg-red-50 border-red-300 text-red-700 font-semibold'
+                    : 'bg-slate-50 border-slate-200 text-slate-500 hover:border-slate-300'
+                }`}>
+                {preset}
+              </button>
+            ))}
+          </div>
           <Textarea
-            placeholder="e.g., Item unavailable, Please pay first..."
+            placeholder="Or type a custom reason..."
             value={rejectReason}
             onChange={(e) => setRejectReason(e.target.value)}
             className="bg-slate-50 border-slate-200 text-slate-900 placeholder:text-slate-400 mt-2"
-            rows={3}
+            rows={2}
           />
           <div className="flex gap-3 mt-4 justify-end">
             <Button variant="ghost" onClick={() => setShowRejectDialog(false)} className="text-slate-500">
@@ -490,6 +581,16 @@ export default function AdminOrdersPage() {
                     <CheckCircle className="w-4 h-4 mr-1" /> Mark Served
                   </Button>
                 </div>
+              )}
+              {/* KOT Print — available on any active/approved/cooking order */}
+              {['pending','approved','cooking','preparation','plating','ready'].includes(selectedOrder.orderStatus) && (
+                <Button
+                  variant="outline"
+                  className="w-full border-orange-200 text-orange-600 hover:bg-orange-50 mt-1"
+                  onClick={() => { handlePrintKOT(selectedOrder._id); }}
+                >
+                  🖨 Print KOT (Kitchen Ticket)
+                </Button>
               )}
             </div>
           )}

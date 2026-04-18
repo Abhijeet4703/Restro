@@ -13,6 +13,7 @@ router.get('/z-report', ctrl.getZReport);
 router.get('/analytics', ctrl.getAnalytics);
 router.get('/customer', ctrl.lookupCustomer);
 router.get('/:billId', ctrl.getBillById);
+router.get('/:billId/pdf', ctrl.downloadInvoicePDF);
 router.put('/:billId', ctrl.editBill);
 router.post('/:billId/hold', ctrl.holdBill);
 router.post('/:billId/resume', ctrl.resumeBill);
