@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latte Laven - Brewed to Perfection</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Caveat:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ======== HEADER / NAV ======== -->
+  <header class="header">
+    <a href="#" class="logo">Latte<br>Laven</a>
+    <nav class="nav">
+      <a href="#menu-section">Menu</a>
+      <a href="#">News</a>
+    </nav>
+  </header>
+
+  <!-- ======== HERO SECTION ======== -->
+  <section class="hero">
+    <div class="hero-rating">
+      <span class="rating-label">Google:</span>
+      <span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+      <span class="rating-num">(4.9)</span>
+    </div>
+    <h1 class="hero-title">Brewed to perfection</h1>
+    <p class="hero-sub">Your perfect spot for coffee, pastries, and more.</p>
+    <a href="#menu-section" class="btn-explore">Explore menu</a>
+
+    <!-- Hero Image Carousel -->
+    <div class="hero-carousel">
+      <button class="hero-arrow hero-arrow-left" aria-label="Previous">&#8249;</button>
+      <div class="hero-carousel-track">
+        <div class="hero-card">
+          <img src="https://images.unsplash.com/photo-1517578239113-b03992dcdd25?w=400&h=500&fit=crop" alt="Hot Chocolate">
+        </div>
+        <div class="hero-card hero-card-center">
+          <img src="https://images.unsplash.com/photo-1541167760496-9af0ab096558?w=400&h=500&fit=crop" alt="Latte Art">
+        </div>
+        <div class="hero-card">
+          <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=400&h=500&fit=crop" alt="Cafe Interior">
+        </div>
+      </div>
+      <button class="hero-arrow hero-arrow-right" aria-label="Next">&#8250;</button>
+    </div>
+  </section>
+
+  <!-- ======== MENU SECTION (Interactive Carousel) ======== -->
+  <section class="menu-section" id="menu-section">
+    <h2 class="menu-heading">Our Menu</h2>
+
+    <div class="menu-layout">
+      <!-- Left: Menu List -->
+      <div class="menu-list-wrap">
+
+        <!-- Coffee Category -->
+        <div class="menu-category">
+          <h3 class="category-title">Coffee</h3>
+          <div class="menu-item active" data-index="0">
+            <div class="item-info">
+              <span class="item-name">Espresso</span>
+              <span class="item-price">$2.50</span>
+            </div>
+            <p class="item-desc">Rich and bold single shot of espresso.</p>
+          </div>
+          <div class="menu-item" data-index="1">
+            <div class="item-info">
+              <span class="item-name">Americano</span>
+              <span class="item-price">$3.00</span>
+            </div>
+            <p class="item-desc">Espresso with hot water for a smooth, robust flavor.</p>
+          </div>
+          <div class="menu-item" data-index="2">
+            <div class="item-info">
+              <span class="item-name">Latte</span>
+              <span class="item-price">$4.00</span>
+            </div>
+            <p class="item-desc">Espresso with steamed milk and a light layer of foam. Flavors: Vanilla, Caramel, Hazelnut, Mocha.</p>
+          </div>
+          <div class="menu-item" data-index="3">
+            <div class="item-info">
+              <span class="item-name">Cappuccino</span>
+              <span class="item-price">$4.00</span>
+            </div>
+            <p class="item-desc">Equal parts espresso, steamed milk, and foam.</p>
+          </div>
+          <div class="menu-item" data-index="4">
+            <div class="item-info">
+              <span class="item-name">Flat White</span>
+              <span class="item-price">$4.00</span>
+            </div>
+            <p class="item-desc">Silky microfoam over a double shot of espresso.</p>
+          </div>
+          <div class="menu-item" data-index="5">
+            <div class="item-info">
+              <span class="item-name">Macchiato</span>
+              <span class="item-price">$4.00</span>
+            </div>
+            <p class="item-desc">Espresso marked with a dollop of frothy steamed milk.</p>
+          </div>
+        </div>
+
+        <!-- Tea Category -->
+        <div class="menu-category">
+          <h3 class="category-title">Tea &amp; Other Beverages</h3>
+          <div class="menu-item" data-index="6">
+            <div class="item-info">
+              <span class="item-name">Tea</span>
+              <span class="item-price">$3.00</span>
+            </div>
+            <p class="item-desc">Selection of black, green, and herbal teas.</p>
+          </div>
+          <div class="menu-item" data-index="7">
+            <div class="item-info">
+              <span class="item-name">Hot Chocolate</span>
+              <span class="item-price">$4.50</span>
+            </div>
+            <p class="item-desc">Rich and creamy hot chocolate, topped with whipped cream.</p>
+          </div>
+        </div>
+
+        <!-- Specialty Lattes -->
+        <div class="menu-category">
+          <h3 class="category-title">Specialty Lattes</h3>
+          <div class="menu-item" data-index="8">
+            <div class="item-info">
+              <span class="item-name">Matcha Latte</span>
+              <span class="item-price">$4.50</span>
+            </div>
+            <p class="item-desc">Ceremonial grade matcha blended with steamed milk.</p>
+          </div>
+          <div class="menu-item" data-index="9">
+            <div class="item-info">
+              <span class="item-name">Chai Latte</span>
+              <span class="item-price">$4.50</span>
+            </div>
+            <p class="item-desc">Spiced tea blend with steamed milk and a touch of sweetness.</p>
+          </div>
+        </div>
+
+        <!-- Pastries -->
+        <div class="menu-category">
+          <h3 class="category-title">Pastries</h3>
+          <div class="menu-item" data-index="10">
+            <div class="item-info">
+              <span class="item-name">Croissant</span>
+              <span class="item-price">$3.50</span>
+            </div>
+            <p class="item-desc">Buttery, flaky layers baked to golden perfection.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Featured Image Card -->
+      <div class="menu-feature-card">
+        <span class="feature-label" id="featureLabel">Espresso</span>
+        <img class="feature-img" id="featureImg"
+             src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=500&h=650&fit=crop"
+             alt="Espresso">
+      </div>
+    </div>
+
+    <!-- ======== THUMBNAIL CAROUSEL ======== -->
+    <div class="thumb-carousel-wrap">
+      <button class="thumb-arrow thumb-arrow-left" aria-label="Scroll left">&#10094;</button>
+      <div class="thumb-carousel" id="thumbCarousel">
+        <div class="thumb-item active" data-index="0">
+          <div class="thumb-img-wrap">
+            <img src="https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=120&h=120&fit=crop" alt="Espresso">
+          </div>
+          <p class="thumb-name">Espresso</p>
+          <p class="thumb-price">$2.50</p>
+        </div>
+        <div class="thumb-item" data-index="1">
+          <div class="thumb-img-wrap">
+            <img src="https://images.unsplash.com/photo-1551030173-122aabc4489c?w=120&h=120&fit=crop" alt="Americano">
+          </div>
+          <p class="thumb-name">Americano</p>
+          <p class="thumb-price">$3.00</p>
+        </div>
+        <div class="thumb-item" data-index="2">
+          <div class="thumb-img-wrap">
+            <img src="https://images.unsplash.com/photo-1541167760496-9af0ab096558?w=120&h=120&fit=crop" alt="Latte">
+          </div>
+          <p class="thumb-name">Latte</p>
+          <p class="thumb-price">$4.00</p>
+        </div>
+        <div class="thumb-item" data-index="3">
+          <div class="thumb-img-wrap">
+            <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=120&h=120&fit=crop" alt="Cappuccino">
+          </div>
+          <p class="thumb-name">Cappuccino</p>
+          <p class="thumb-price">$4.00</p>
+        </div>
+        <div class="thumb-item" data-index="4">
+          <div class="thumb-img-wrap">
+            <img src="https://images.unsplash.com/photo-1577968897966-3d4325b36b61?w=120&h=120&fit=crop" alt="Flat White">
+          </div>
+          <p class="thumb-name">Flat White</p>
+          <p class="thumb-price">$4.00</p>
+        </div>
+        <div class="thumb-item" data-index="5">
+          <div class="thumb-img-wrap">
+            <img src="https://images.unsplash.com/photo-1485808191679-5f86510681a2?w=120&h=120&fit=crop" alt="Macchiato">
+          </div>
+          <p class="thumb-name">Macchiato</p>
+          <p class="thumb-price">$4.00</p>
+        </div>
+        <div class="thumb-item" data-index="6">
+          <div class="thumb-img-wrap">
+            <img src="https://images.unsplash.com/photo-1597318181409-cf64d0b5d8a2?w=120&h=120&fit=crop" alt="Tea">
+          </div>
+          <p class="thumb-name">Tea</p>
+          <p class="thumb-price">$3.00</p>
+        </div>
+        <div class="thumb-item" data-index="7">
+          <div class="thumb-img-wrap">
+            <img src="https://images.unsplash.com/photo-1517578239113-b03992dcdd25?w=120&h=120&fit=crop" alt="Hot Chocolate">
+          </div>
+          <p class="thumb-name">Hot Choc</p>
+          <p class="thumb-price">$4.50</p>
+        </div>
+        <div class="thumb-item" data-index="8">
+          <div class="thumb-img-wrap">
+            <img src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=120&h=120&fit=crop" alt="Matcha Latte">
+          </div>
+          <p class="thumb-name">Matcha</p>
+          <p class="thumb-price">$4.50</p>
+        </div>
+        <div class="thumb-item" data-index="9">
+          <div class="thumb-img-wrap">
+            <img src="https://images.unsplash.com/photo-1557006021-b85faa2bc5e2?w=120&h=120&fit=crop" alt="Chai Latte">
+          </div>
+          <p class="thumb-name">Chai Latte</p>
+          <p class="thumb-price">$4.50</p>
+        </div>
+        <div class="thumb-item" data-index="10">
+          <div class="thumb-img-wrap">
+            <img src="https://images.unsplash.com/photo-1555507036-ab1f4038024a?w=120&h=120&fit=crop" alt="Croissant">
+          </div>
+          <p class="thumb-name">Croissant</p>
+          <p class="thumb-price">$3.50</p>
+        </div>
+      </div>
+      <button class="thumb-arrow thumb-arrow-right" aria-label="Scroll right">&#10095;</button>
+    </div>
+  </section>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="footer">
+    <p>&copy; 2026 Latte Laven. All rights reserved.</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

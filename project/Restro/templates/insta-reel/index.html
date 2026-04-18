@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>The Royal Plate — Reel Menu</title>
+<meta name="description" content="Swipe through our immersive reel-style digital menu" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════ 3D CARD INTRO ═══════ -->
+<div class="intro" id="intro">
+  <div class="intro-bg-gradient"></div>
+  <div class="card-3d" id="card3d">
+    <div class="card-3d-face front">
+      <div class="card-3d-shimmer"></div>
+      <canvas id="introParticles"></canvas>
+      <div class="card-3d-content">
+        <div class="card-3d-icon">🍽️</div>
+        <h1>THE ROYAL<br/>PLATE</h1>
+        <p class="card-3d-sub">Interactive Menu</p>
+        <div class="card-3d-swipe">
+          <div class="swipe-line"></div>
+          <span>SWIPE UP TO EXPLORE</span>
+          <div class="swipe-chevron">
+            <span>‹</span><span>‹</span><span>‹</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ REEL-STYLE MENU ═══════ -->
+<div class="reel-container" id="reelContainer">
+
+  <!-- Story Bar -->
+  <div class="story-bar" id="storyBar">
+    <div class="story-bubble active" data-cat="all">
+      <div class="bubble-ring"><div class="bubble-inner">🍽️</div></div>
+      <span>All</span>
+    </div>
+    <div class="story-bubble" data-cat="starters">
+      <div class="bubble-ring"><div class="bubble-inner">🥗</div></div>
+      <span>Starters</span>
+    </div>
+    <div class="story-bubble" data-cat="mains">
+      <div class="bubble-ring"><div class="bubble-inner">🍛</div></div>
+      <span>Mains</span>
+    </div>
+    <div class="story-bubble" data-cat="desserts">
+      <div class="bubble-ring"><div class="bubble-inner">🍰</div></div>
+      <span>Desserts</span>
+    </div>
+    <div class="story-bubble" data-cat="drinks">
+      <div class="bubble-ring"><div class="bubble-inner">🥤</div></div>
+      <span>Drinks</span>
+    </div>
+  </div>
+
+  <!-- Reel Cards -->
+  <div class="reels" id="reels">
+
+    <div class="reel" data-cat="starters">
+      <div class="reel-bg" style="background-image:url('https://images.unsplash.com/photo-1601050690597-df0568f70950?w=600&h=900&fit=crop')"></div>
+      <div class="reel-depth-layer"></div>
+      <div class="reel-gradient"></div>
+      <div class="reel-content">
+        <div class="reel-badge veg">● VEG</div>
+        <h2 class="reel-title">Paneer Tikka</h2>
+        <p class="reel-desc">Smoky tandoor-grilled cottage cheese with bell peppers, served with mint chutney</p>
+        <div class="reel-meta">
+          <span class="reel-spice">🌶️🌶️</span>
+          <span class="reel-time">⏱ 15 min</span>
+        </div>
+        <div class="reel-price-row">
+          <span class="reel-price">₹299</span>
+          <button class="reel-add" onclick="addToCart('Paneer Tikka', 299)">+ ADD TO ORDER</button>
+        </div>
+      </div>
+      <div class="reel-side">
+        <div class="side-btn" onclick="addToCart('Paneer Tikka', 299)">
+          <span class="side-icon">🛒</span><span class="side-label">Add</span>
+        </div>
+        <div class="side-btn like" onclick="toggleLike(this)">
+          <span class="side-icon">🤍</span><span class="side-label">Like</span>
+        </div>
+        <div class="side-btn">
+          <span class="side-icon">📤</span><span class="side-label">Share</span>
+        </div>
+      </div>
+      <div class="reel-progress"></div>
+    </div>
+
+    <div class="reel" data-cat="starters">
+      <div class="reel-bg" style="background-image:url('https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&h=900&fit=crop')"></div>
+      <div class="reel-depth-layer"></div>
+      <div class="reel-gradient"></div>
+      <div class="reel-content">
+        <div class="reel-badge nonveg">● NON-VEG</div>
+        <h2 class="reel-title">Seekh Kebab</h2>
+        <p class="reel-desc">Minced chicken blended with 24 aromatic spices, grilled on iron skewers to smoky perfection</p>
+        <div class="reel-meta">
+          <span class="reel-spice">🌶️🌶️🌶️</span>
+          <span class="reel-time">⏱ 20 min</span>
+        </div>
+        <div class="reel-price-row">
+          <span class="reel-price">₹349</span>
+          <button class="reel-add" onclick="addToCart('Seekh Kebab', 349)">+ ADD TO ORDER</button>
+        </div>
+      </div>
+      <div class="reel-side">
+        <div class="side-btn" onclick="addToCart('Seekh Kebab', 349)">
+          <span class="side-icon">🛒</span><span class="side-label">Add</span>
+        </div>
+        <div class="side-btn like" onclick="toggleLike(this)">
+          <span class="side-icon">🤍</span><span class="side-label">Like</span>
+        </div>
+      </div>
+      <div class="reel-progress"></div>
+    </div>
+
+    <div class="reel" data-cat="mains">
+      <div class="reel-bg" style="background-image:url('https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&h=900&fit=crop')"></div>
+      <div class="reel-depth-layer"></div>
+      <div class="reel-gradient"></div>
+      <div class="reel-content">
+        <div class="reel-badge nonveg">● NON-VEG</div>
+        <h2 class="reel-title">Butter Chicken</h2>
+        <p class="reel-desc">Tandoori chicken in rich, velvety tomato-butter gravy finished with cream and kasuri methi</p>
+        <div class="reel-meta">
+          <span class="reel-spice">🌶️🌶️</span>
+          <span class="reel-time">⏱ 18 min</span>
+        </div>
+        <div class="reel-price-row">
+          <span class="reel-price">₹449</span>
+          <button class="reel-add" onclick="addToCart('Butter Chicken', 449)">+ ADD TO ORDER</button>
+        </div>
+      </div>
+      <div class="reel-side">
+        <div class="side-btn" onclick="addToCart('Butter Chicken', 449)">
+          <span class="side-icon">🛒</span><span class="side-label">Add</span>
+        </div>
+        <div class="side-btn like" onclick="toggleLike(this)">
+          <span class="side-icon">🤍</span><span class="side-label">Like</span>
+        </div>
+      </div>
+      <div class="reel-progress"></div>
+    </div>
+
+    <div class="reel" data-cat="mains">
+      <div class="reel-bg" style="background-image:url('https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&h=900&fit=crop')"></div>
+      <div class="reel-depth-layer"></div>
+      <div class="reel-gradient"></div>
+      <div class="reel-content">
+        <div class="reel-badge veg">● VEG</div>
+        <h2 class="reel-title">Dal Makhani</h2>
+        <p class="reel-desc">Black lentils slow-cooked overnight with butter, cream, and gentle spices. Pure comfort.</p>
+        <div class="reel-meta">
+          <span class="reel-spice">🌶️</span>
+          <span class="reel-time">⏱ 20 min</span>
+        </div>
+        <div class="reel-price-row">
+          <span class="reel-price">₹349</span>
+          <button class="reel-add" onclick="addToCart('Dal Makhani', 349)">+ ADD TO ORDER</button>
+        </div>
+      </div>
+      <div class="reel-side">
+        <div class="side-btn" onclick="addToCart('Dal Makhani', 349)">
+          <span class="side-icon">🛒</span><span class="side-label">Add</span>
+        </div>
+        <div class="side-btn like" onclick="toggleLike(this)">
+          <span class="side-icon">🤍</span><span class="side-label">Like</span>
+        </div>
+      </div>
+      <div class="reel-progress"></div>
+    </div>
+
+    <div class="reel" data-cat="desserts">
+      <div class="reel-bg" style="background-image:url('https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?w=600&h=900&fit=crop')"></div>
+      <div class="reel-depth-layer"></div>
+      <div class="reel-gradient"></div>
+      <div class="reel-content">
+        <div class="reel-badge veg">● VEG</div>
+        <h2 class="reel-title">Gulab Jamun</h2>
+        <p class="reel-desc">Soft, melt-in-mouth milk dumplings soaked in warm rose-cardamom sugar syrup</p>
+        <div class="reel-meta">
+          <span class="reel-time">⏱ 5 min</span>
+        </div>
+        <div class="reel-price-row">
+          <span class="reel-price">₹199</span>
+          <button class="reel-add" onclick="addToCart('Gulab Jamun', 199)">+ ADD TO ORDER</button>
+        </div>
+      </div>
+      <div class="reel-side">
+        <div class="side-btn" onclick="addToCart('Gulab Jamun', 199)">
+          <span class="side-icon">🛒</span><span class="side-label">Add</span>
+        </div>
+        <div class="side-btn like" onclick="toggleLike(this)">
+          <span class="side-icon">🤍</span><span class="side-label">Like</span>
+        </div>
+      </div>
+      <div class="reel-progress"></div>
+    </div>
+
+    <div class="reel" data-cat="drinks">
+      <div class="reel-bg" style="background-image:url('https://images.unsplash.com/photo-1544145945-f90425340c7e?w=600&h=900&fit=crop')"></div>
+      <div class="reel-depth-layer"></div>
+      <div class="reel-gradient"></div>
+      <div class="reel-content">
+        <div class="reel-badge veg">● VEG</div>
+        <h2 class="reel-title">Mango Lassi</h2>
+        <p class="reel-desc">Chilled Alphonso mango blended with fresh creamy yogurt. Summer in a glass.</p>
+        <div class="reel-meta">
+          <span class="reel-time">⏱ 3 min</span>
+        </div>
+        <div class="reel-price-row">
+          <span class="reel-price">₹179</span>
+          <button class="reel-add" onclick="addToCart('Mango Lassi', 179)">+ ADD TO ORDER</button>
+        </div>
+      </div>
+      <div class="reel-side">
+        <div class="side-btn" onclick="addToCart('Mango Lassi', 179)">
+          <span class="side-icon">🛒</span><span class="side-label">Add</span>
+        </div>
+        <div class="side-btn like" onclick="toggleLike(this)">
+          <span class="side-icon">🤍</span><span class="side-label">Like</span>
+        </div>
+      </div>
+      <div class="reel-progress"></div>
+    </div>
+
+  </div>
+
+  <!-- Floating Cart -->
+  <div class="fab-cart" id="fabCart" onclick="toggleCart()">
+    <span class="fab-pulse"></span>
+    <span class="fab-badge" id="fabCount">0</span>
+    🛒
+  </div>
+
+  <!-- Cart Sheet -->
+  <div class="cart-bg" id="cartBg" onclick="toggleCart()"></div>
+  <div class="cart-sheet" id="cartSheet">
+    <div class="sheet-handle"></div>
+    <h2 class="sheet-title">Your Order 🛒</h2>
+    <div class="sheet-items" id="sheetItems"></div>
+    <div class="sheet-totals">
+      <div class="st-row"><span>Subtotal</span><span id="sSub">₹0</span></div>
+      <div class="st-row dim"><span>GST (5%)</span><span id="sGst">₹0</span></div>
+      <div class="st-row grand"><span>Total</span><span id="sTotal">₹0</span></div>
+    </div>
+    <button class="sheet-order-btn" onclick="placeOrder()">Place Order 🚀</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flavours of North India</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="notebook-wrapper">
+
+    <!-- Left Arrow -->
+    <button class="nav-arrow arrow-left" id="prevBtn" aria-label="Previous page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+
+    <!-- Main Book -->
+    <div class="book">
+
+      <!-- Page indicator dots -->
+      <div class="page-dots" id="pageDots"></div>
+
+      <!-- COVER PAGE -->
+      <div class="page active" data-index="0">
+        <div class="cover-page">
+          <div class="cover-ornament tl">❧</div>
+          <div class="cover-ornament tr">❧</div>
+          <div class="cover-ornament bl">❧</div>
+          <div class="cover-ornament br">❧</div>
+          <div class="cover-border"></div>
+          <div class="cover-content">
+            <p class="cover-script">Flavours</p>
+            <h1 class="cover-title">OF<br>NORTH<br>INDIA</h1>
+            <p class="cover-tagline">Rich, Royal &amp; Truly Desi</p>
+            <div class="cover-divider"><span>✦</span><span>✦</span><span>✦</span></div>
+            <p class="cover-sub">Est. Since 1987 · New Delhi</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- STARTERS PAGE -->
+      <div class="page" data-index="1">
+        <div class="menu-page">
+          <div class="menu-border"></div>
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="page-content">
+            <h2 class="section-title">Starters</h2>
+            <div class="title-divider">— ✦ —</div>
+
+            <div class="food-image-row">
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=200&h=200&fit=crop" alt="Paneer Tikka">
+                <p>Paneer Tikka</p>
+              </div>
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=200&h=200&fit=crop" alt="Seekh Kebab">
+                <p>Seekh Kebab</p>
+              </div>
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950?w=200&h=200&fit=crop" alt="Samosa">
+                <p>Samosa</p>
+              </div>
+            </div>
+
+            <div class="menu-items">
+              <div class="menu-item">
+                <span class="item-name">Paneer Tikka</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹320</span>
+                <p class="item-desc">Marinated cottage cheese cubes grilled to perfection in tandoor</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Aloo Tikki Chaat</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹180</span>
+                <p class="item-desc">Crispy potato patties topped with tangy chutneys &amp; yoghurt</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Vegetable Pakora</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹160</span>
+                <p class="item-desc">Assorted veggies in gram flour batter, deep-fried &amp; served hot</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Seekh Kebab</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹380</span>
+                <p class="item-desc">Minced lamb &amp; spice blend skewered &amp; grilled over charcoal</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Dahi Ke Sholay</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹260</span>
+                <p class="item-desc">Crispy bread rolls stuffed with spiced hung curd &amp; herbs</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Chicken Malai Tikka</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹420</span>
+                <p class="item-desc">Tender chicken in cream, cheese &amp; mild spices, grilled soft</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN COURSE PAGE -->
+      <div class="page" data-index="2">
+        <div class="menu-page">
+          <div class="menu-border"></div>
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="page-content">
+            <h2 class="section-title">Main Course</h2>
+            <div class="title-divider">— ✦ —</div>
+
+            <div class="food-image-row">
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=200&h=200&fit=crop" alt="Butter Chicken">
+                <p>Butter Chicken</p>
+              </div>
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=200&h=200&fit=crop" alt="Dal Makhani">
+                <p>Dal Makhani</p>
+              </div>
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=200&h=200&fit=crop" alt="Shahi Paneer">
+                <p>Shahi Paneer</p>
+              </div>
+            </div>
+
+            <div class="menu-items">
+              <div class="menu-item">
+                <span class="item-name">Butter Chicken</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹480</span>
+                <p class="item-desc">Creamy tomato-based gravy with succulent tandoor chicken pieces</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Dal Makhani</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹320</span>
+                <p class="item-desc">Slow-cooked black lentils simmered overnight with butter &amp; cream</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Shahi Paneer</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹380</span>
+                <p class="item-desc">Royal cottage cheese curry in cashew-rich gravy &amp; saffron</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Rogan Josh</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹560</span>
+                <p class="item-desc">Aromatic lamb curry with Kashmiri spices &amp; whole dried chillies</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Palak Kofta</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹340</span>
+                <p class="item-desc">Cottage cheese dumplings in rich &amp; velvety spinach gravy</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Murgh Saag</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹500</span>
+                <p class="item-desc">Chicken cooked in fresh mustard &amp; spinach with desi ghee</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BREADS & RICE PAGE -->
+      <div class="page" data-index="3">
+        <div class="menu-page">
+          <div class="menu-border"></div>
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="page-content">
+            <h2 class="section-title">Breads &amp; Rice</h2>
+            <div class="title-divider">— ✦ —</div>
+
+            <div class="food-image-row">
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200&h=200&fit=crop" alt="Naan">
+                <p>Garlic Naan</p>
+              </div>
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=200&h=200&fit=crop" alt="Biryani">
+                <p>Biryani</p>
+              </div>
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=200&h=200&fit=crop" alt="Paratha">
+                <p>Lachha Paratha</p>
+              </div>
+            </div>
+
+            <div class="menu-items">
+              <div class="menu-item">
+                <span class="item-name">Garlic Naan</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹80</span>
+                <p class="item-desc">Soft tandoor flatbread topped with roasted garlic &amp; butter</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Jeera Rice</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹160</span>
+                <p class="item-desc">Fragrant basmati rice tempered with cumin &amp; fresh coriander</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Lachha Paratha</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹90</span>
+                <p class="item-desc">Flaky, layered whole-wheat bread cooked with desi ghee</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Lucknowi Biryani</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹520</span>
+                <p class="item-desc">Dum-cooked basmati with saffron, whole spices &amp; slow-cooked meat</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Stuffed Kulcha</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹120</span>
+                <p class="item-desc">Amritsari bread stuffed with spiced potato &amp; onion filling</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Peshwari Naan</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹110</span>
+                <p class="item-desc">Sweet naan filled with coconut, almond &amp; sultana mixture</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESSERTS PAGE -->
+      <div class="page" data-index="4">
+        <div class="menu-page">
+          <div class="menu-border"></div>
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="page-content">
+            <h2 class="section-title">Desserts</h2>
+            <div class="title-divider">— ✦ —</div>
+
+            <div class="food-image-row">
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1666190077776-16f798e1a750?w=200&h=200&fit=crop" alt="Gulab Jamun">
+                <p>Gulab Jamun</p>
+              </div>
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1571006682828-0cd30e6e8076?w=200&h=200&fit=crop" alt="Kulfi">
+                <p>Kulfi Falooda</p>
+              </div>
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1645177628172-a94c1f96e6db?w=200&h=200&fit=crop" alt="Kheer">
+                <p>Kheer</p>
+              </div>
+            </div>
+
+            <div class="menu-items">
+              <div class="menu-item">
+                <span class="item-name">Gulab Jamun</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹140</span>
+                <p class="item-desc">Soft milk-solid dumplings soaked in rose-flavoured sugar syrup</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Kulfi Falooda</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹200</span>
+                <p class="item-desc">Traditional saffron ice cream with vermicelli &amp; rose syrup</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Kheer</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹160</span>
+                <p class="item-desc">Slow-cooked rice pudding with cardamom, saffron &amp; pistachios</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Shahi Tukda</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹220</span>
+                <p class="item-desc">Fried bread soaked in rabri, garnished with saffron &amp; nuts</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Gajar Ka Halwa</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹180</span>
+                <p class="item-desc">Grated carrot slow-cooked in milk, ghee, sugar &amp; cardamom</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Rasmalai</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹190</span>
+                <p class="item-desc">Soft spongy cheese discs in chilled saffron-infused cream milk</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DRINKS PAGE -->
+      <div class="page" data-index="5">
+        <div class="menu-page">
+          <div class="menu-border"></div>
+          <div class="corner tl"></div><div class="corner tr"></div>
+          <div class="corner bl"></div><div class="corner br"></div>
+          <div class="page-content">
+            <h2 class="section-title">Drinks</h2>
+            <div class="title-divider">— ✦ —</div>
+
+            <div class="food-image-row">
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1527585743534-7113e3211270?w=200&h=200&fit=crop" alt="Mango Lassi">
+                <p>Mango Lassi</p>
+              </div>
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=200&h=200&fit=crop" alt="Masala Chai">
+                <p>Masala Chai</p>
+              </div>
+              <div class="food-image-card">
+                <img src="https://images.unsplash.com/photo-1544252890-c3e95e867198?w=200&h=200&fit=crop" alt="Rose Sharbat">
+                <p>Rose Sharbat</p>
+              </div>
+            </div>
+
+            <div class="menu-items">
+              <div class="menu-item">
+                <span class="item-name">Mango Lassi</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹160</span>
+                <p class="item-desc">Thick blended yoghurt drink with Alphonso mango &amp; cardamom</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Masala Chai</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹80</span>
+                <p class="item-desc">Spiced Indian tea brewed with ginger, cardamom &amp; cinnamon</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Rose Sharbat</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹120</span>
+                <p class="item-desc">Chilled rose syrup drink with basil seeds &amp; fresh lime</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Thandai</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹180</span>
+                <p class="item-desc">Cold spiced milk with almonds, pepper, saffron &amp; rose petals</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Nimbu Pani</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹90</span>
+                <p class="item-desc">Classic Indian lemonade with black salt, cumin &amp; fresh mint</p>
+              </div>
+              <div class="menu-item">
+                <span class="item-name">Jaljeera</span>
+                <span class="item-dots"></span>
+                <span class="item-price">₹100</span>
+                <p class="item-desc">Tangy cumin &amp; tamarind cooler with fresh mint &amp; chilli</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end book -->
+
+    <!-- Right Arrow -->
+    <button class="nav-arrow arrow-right" id="nextBtn" aria-label="Next page">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
+
+  </div><!-- end notebook-wrapper -->
+
+  <script src="js/script.js"></script>
+</body>
+</html>

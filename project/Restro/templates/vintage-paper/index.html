@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Daily Plate — Vintage Menu</title>
+<meta name="description" content="A vintage newspaper-styled digital menu with typewriter effects and 3D paper-fold animations." />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Special+Elite&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════ PAPER GRAIN OVERLAY ═══════ -->
+<div class="paper-grain"></div>
+
+<!-- ═══════ NEWSPAPER ═══════ -->
+<div class="newspaper">
+
+  <!-- Masthead -->
+  <header class="masthead">
+    <div class="mast-rule thick"></div>
+    <div class="mast-date">
+      <span>EST. 2024</span>
+      <span class="mast-sep">·</span>
+      <span>VOLUME I</span>
+      <span class="mast-sep">·</span>
+      <span>SPECIAL EDITION</span>
+    </div>
+    <h1 class="mast-title" id="mastTitle">The Daily Plate</h1>
+    <p class="mast-sub">— "All the Food That's Fit to Eat" —</p>
+    <div class="mast-rule thick"></div>
+    <div class="mast-info">
+      <span>OPEN DAILY</span>
+      <span class="mast-sep">·</span>
+      <span>11 AM – 11 PM</span>
+      <span class="mast-sep">·</span>
+      <span>DINE-IN & TAKEAWAY</span>
+    </div>
+    <div class="mast-rule thin"></div>
+  </header>
+
+  <!-- Section Tabs -->
+  <nav class="sections-nav" id="sectionsNav">
+    <button class="sec-btn active" data-cat="headlines">Headlines</button>
+    <button class="sec-btn" data-cat="features">Features</button>
+    <button class="sec-btn" data-cat="editorial">Editorial</button>
+    <button class="sec-btn" data-cat="classifieds">Classifieds</button>
+  </nav>
+
+  <!-- Content -->
+  <main class="content">
+
+    <!-- HEADLINES (Starters) -->
+    <section class="sec active" id="headlines">
+      <h2 class="sec-heading">
+        <span class="heading-line"></span>
+        HEADLINES — Starters & Appetizers
+        <span class="heading-line"></span>
+      </h2>
+
+      <article class="story" data-reveal>
+        <div class="story-img" style="background-image:url('https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&h=300&fit=crop')">
+          <div class="img-fold-corner"></div>
+        </div>
+        <div class="story-body">
+          <span class="story-badge veg">VEG</span>
+          <h3 class="story-headline typewriter" data-text="PANEER TIKKA STUNS DINERS WITH SMOKY PERFECTION">PANEER TIKKA STUNS DINERS WITH SMOKY PERFECTION</h3>
+          <p class="story-lead">Marinated cottage cheese, grilled to golden in tandoor, paired with mint chutney. "Best starter in town" says our food critic.</p>
+          <div class="story-foot">
+            <span class="story-price">₹299</span>
+            <span class="story-spice">Heat: ★★☆☆</span>
+            <button class="order-clip" onclick="addToCart('Paneer Tikka', 299)">
+              <span class="clip-icon">✂</span> CLIP & ORDER
+              <span class="stamp-effect"></span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="story" data-reveal>
+        <div class="story-img" style="background-image:url('https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&h=300&fit=crop')">
+          <div class="img-fold-corner"></div>
+        </div>
+        <div class="story-body">
+          <span class="story-badge nonveg">NON-VEG</span>
+          <h3 class="story-headline">SEEKH KEBAB: THE SKEWERED SENSATION EVERYONE IS TALKING ABOUT</h3>
+          <p class="story-lead">Minced chicken with 24 spices, char-grilled on iron skewers. Sources confirm: absolutely irresistible.</p>
+          <div class="story-foot">
+            <span class="story-price">₹349</span>
+            <span class="story-spice">Heat: ★★★☆</span>
+            <button class="order-clip" onclick="addToCart('Seekh Kebab', 349)">
+              <span class="clip-icon">✂</span> CLIP & ORDER
+              <span class="stamp-effect"></span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="story mini" data-reveal>
+        <div class="story-body">
+          <span class="story-badge veg">VEG</span>
+          <h3 class="story-headline">CRISPY CORN — THE GOLDEN BITES</h3>
+          <p class="story-lead">Fried corn tossed with curry leaves & secret spices.</p>
+          <div class="story-foot">
+            <span class="story-price">₹249</span>
+            <button class="order-clip" onclick="addToCart('Crispy Corn', 249)">
+              <span class="clip-icon">✂</span> CLIP
+              <span class="stamp-effect"></span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="story mini" data-reveal>
+        <div class="story-body">
+          <span class="story-badge nonveg">NON-VEG</span>
+          <h3 class="story-headline">MUTTON GALOUTI — LUCKNOWI ROYALTY</h3>
+          <p class="story-lead">Melt-in-mouth kebabs with 40+ spices, served on mini roomali roti.</p>
+          <div class="story-foot">
+            <span class="story-price">₹449</span>
+            <button class="order-clip" onclick="addToCart('Mutton Galouti', 449)">
+              <span class="clip-icon">✂</span> CLIP
+              <span class="stamp-effect"></span>
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- FEATURES (Mains) -->
+    <section class="sec" id="features">
+      <h2 class="sec-heading">
+        <span class="heading-line"></span>
+        FEATURES — Main Course
+        <span class="heading-line"></span>
+      </h2>
+
+      <article class="story" data-reveal>
+        <div class="story-img" style="background-image:url('https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&h=300&fit=crop')">
+          <div class="img-fold-corner"></div>
+        </div>
+        <div class="story-body">
+          <span class="story-badge nonveg">NON-VEG</span>
+          <h3 class="story-headline">BUTTER CHICKEN: A CREAMY REVOLUTION ON YOUR PLATE</h3>
+          <p class="story-lead">Tandoori chicken swimming in tomato-butter gravy, finished with kasuri methi and a swirl of cream.</p>
+          <div class="story-foot">
+            <span class="story-price">₹449</span>
+            <span class="story-spice">Heat: ★★☆☆</span>
+            <button class="order-clip" onclick="addToCart('Butter Chicken', 449)">
+              <span class="clip-icon">✂</span> CLIP & ORDER
+              <span class="stamp-effect"></span>
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="story" data-reveal>
+        <div class="story-img" style="background-image:url('https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&h=300&fit=crop')">
+          <div class="img-fold-corner"></div>
+        </div>
+        <div class="story-body">
+          <span class="story-badge veg">VEG</span>
+          <h3 class="story-headline">DAL MAKHANI: OVERNIGHT MAGIC IN A BOWL</h3>
+          <p class="story-lead">Black lentils slow-cooked for 12 hours. Rich, creamy, soul-warming.</p>
+          <div class="story-foot">
+            <span class="story-price">₹349</span>
+            <span class="story-spice">Heat: ★☆☆☆</span>
+            <button class="order-clip" onclick="addToCart('Dal Makhani', 349)">
+              <span class="clip-icon">✂</span> CLIP & ORDER
+              <span class="stamp-effect"></span>
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- EDITORIAL (Desserts) -->
+    <section class="sec" id="editorial">
+      <h2 class="sec-heading">
+        <span class="heading-line"></span>
+        EDITORIAL — Desserts & Sweets
+        <span class="heading-line"></span>
+      </h2>
+
+      <article class="story" data-reveal>
+        <div class="story-img" style="background-image:url('https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?w=400&h=300&fit=crop')">
+          <div class="img-fold-corner"></div>
+        </div>
+        <div class="story-body">
+          <span class="story-badge veg">VEG</span>
+          <h3 class="story-headline">GULAB JAMUN: THE SWEET THAT ENDS ALL DEBATES</h3>
+          <p class="story-lead">Warm milk dumplings drenched in rose-cardamom syrup. Our sweetest story yet.</p>
+          <div class="story-foot">
+            <span class="story-price">₹199</span>
+            <button class="order-clip" onclick="addToCart('Gulab Jamun', 199)">
+              <span class="clip-icon">✂</span> CLIP & ORDER
+              <span class="stamp-effect"></span>
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- CLASSIFIEDS (Beverages) -->
+    <section class="sec" id="classifieds">
+      <h2 class="sec-heading">
+        <span class="heading-line"></span>
+        CLASSIFIEDS — Beverages
+        <span class="heading-line"></span>
+      </h2>
+
+      <div class="classifieds-grid">
+        <article class="classified" data-reveal>
+          <div class="classified-stamp">HOT</div>
+          <h4>MANGO LASSI</h4>
+          <p>Chilled Alphonso mango + creamy yogurt</p>
+          <div class="classified-foot">
+            <span>₹179</span>
+            <button onclick="addToCart('Mango Lassi', 179)">ORDER</button>
+          </div>
+        </article>
+        <article class="classified" data-reveal>
+          <h4>MASALA CHAI</h4>
+          <p>Strong CTC tea with ginger, cardamom, cloves</p>
+          <div class="classified-foot">
+            <span>₹99</span>
+            <button onclick="addToCart('Masala Chai', 99)">ORDER</button>
+          </div>
+        </article>
+        <article class="classified" data-reveal>
+          <h4>FRESH LIME SODA</h4>
+          <p>Sweet or salted, always refreshing</p>
+          <div class="classified-foot">
+            <span>₹129</span>
+            <button onclick="addToCart('Fresh Lime Soda', 129)">ORDER</button>
+          </div>
+        </article>
+        <article class="classified" data-reveal>
+          <h4>FILTER COFFEE</h4>
+          <p>South Indian decoction, frothy & bold</p>
+          <div class="classified-foot">
+            <span>₹149</span>
+            <button onclick="addToCart('Filter Coffee', 149)">ORDER</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Cart -->
+  <div class="floating-cart" id="floatingCart" onclick="toggleCart()">
+    📰 Your Clippings: <strong id="cartCount">0</strong> items — <strong id="cartTotal">₹0</strong>
+  </div>
+
+  <div class="cart-bg" id="cartBg" onclick="toggleCart()"></div>
+  <div class="cart-panel" id="cartPanel">
+    <h2 class="cart-head">YOUR CLIPPINGS</h2>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-totals">
+      <div class="ct-row"><span>Subtotal</span><span id="cSub">₹0</span></div>
+      <div class="ct-row dim"><span>Tax (5%)</span><span id="cGst">₹0</span></div>
+      <div class="ct-row grand"><span>TOTAL</span><span id="cTotal">₹0</span></div>
+    </div>
+    <button class="place-btn" onclick="placeOrder()">📮 SUBMIT ORDER</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

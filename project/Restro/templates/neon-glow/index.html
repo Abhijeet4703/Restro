@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CYBERBITES — Digital Dining Experience</title>
+<meta name="description" content="A cyberpunk-themed digital menu with neon glow effects, holographic cards, and immersive ordering." />
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════ MATRIX RAIN CANVAS ═══════ -->
+<canvas id="matrixCanvas"></canvas>
+
+<!-- ═══════ SCAN LINE OVERLAY ═══════ -->
+<div class="scanlines"></div>
+
+<!-- ═══════ LOADING INTRO ═══════ -->
+<div class="loader" id="loader">
+  <div class="loader-container">
+    <div class="loader-hex">
+      <div class="hex-ring"></div>
+      <div class="hex-ring r2"></div>
+      <div class="hex-ring r3"></div>
+      <div class="hex-core">
+        <span class="hex-icon">⚡</span>
+      </div>
+    </div>
+    <div class="loader-text">
+      <span class="typed-text" id="typedText"></span>
+      <span class="cursor">_</span>
+    </div>
+    <div class="loader-bar">
+      <div class="loader-progress" id="loaderProgress"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ MAIN MENU ═══════ -->
+<div class="menu-wrapper" id="menuWrapper">
+
+  <!-- Neon Header -->
+  <header class="menu-header">
+    <div class="header-circuit left"></div>
+    <div class="header-circuit right"></div>
+    <div class="neon-line cyan"></div>
+    <h1 class="restaurant-name">
+      <span class="glitch" data-text="CYBER">CYBER</span><span class="neon-accent">BITES</span>
+    </h1>
+    <p class="tagline">
+      <span class="tag-slash">//</span> DIGITAL DINING EXPERIENCE <span class="tag-ver">v2.0</span>
+    </p>
+    <div class="neon-line magenta"></div>
+  </header>
+
+  <!-- Category Pills -->
+  <nav class="cat-nav" id="catNav">
+    <button class="cat-pill active" data-cat="starters">
+      <span class="pill-glow"></span>
+      <span class="pill-icon">⚡</span> Starters
+    </button>
+    <button class="cat-pill" data-cat="mains">
+      <span class="pill-glow"></span>
+      <span class="pill-icon">🔥</span> Mains
+    </button>
+    <button class="cat-pill" data-cat="drinks">
+      <span class="pill-glow"></span>
+      <span class="pill-icon">🧊</span> Drinks
+    </button>
+    <button class="cat-pill" data-cat="desserts">
+      <span class="pill-glow"></span>
+      <span class="pill-icon">🍭</span> Desserts
+    </button>
+  </nav>
+
+  <!-- Sections -->
+  <main class="sections">
+
+    <!-- STARTERS -->
+    <section class="menu-section active" id="starters">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <h2>STARTERS</h2>
+        <span class="section-line"></span>
+      </div>
+
+      <div class="cards-grid">
+        <div class="holo-card" style="--accent: var(--cyan); --delay: 0.1s">
+          <div class="card-holo-layer"></div>
+          <div class="card-border-anim"></div>
+          <div class="card-content">
+            <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&h=250&fit=crop')">
+              <div class="img-glitch-overlay"></div>
+            </div>
+            <div class="card-body">
+              <div class="card-top">
+                <h3>Paneer Tikka</h3>
+                <span class="badge veg">VEG</span>
+              </div>
+              <p class="card-desc">Smoky tandoor-grilled cottage cheese with bell peppers</p>
+              <div class="card-bottom">
+                <span class="price">₹299</span>
+                <span class="spice">🌶️🌶️</span>
+                <button class="neon-btn" onclick="addToCart('Paneer Tikka', 299)">
+                  <span class="btn-border"></span>
+                  ADD +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="holo-card" style="--accent: var(--magenta); --delay: 0.2s">
+          <div class="card-holo-layer"></div>
+          <div class="card-border-anim"></div>
+          <div class="card-content">
+            <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&h=250&fit=crop')">
+              <div class="img-glitch-overlay"></div>
+            </div>
+            <div class="card-body">
+              <div class="card-top">
+                <h3>Seekh Kebab</h3>
+                <span class="badge nonveg">NON-VEG</span>
+              </div>
+              <p class="card-desc">Minced chicken skewers with aromatic 24-spice blend</p>
+              <div class="card-bottom">
+                <span class="price">₹349</span>
+                <span class="spice">🌶️🌶️🌶️</span>
+                <button class="neon-btn" onclick="addToCart('Seekh Kebab', 349)">
+                  <span class="btn-border"></span>
+                  ADD +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="holo-card" style="--accent: var(--yellow); --delay: 0.3s">
+          <div class="card-holo-layer"></div>
+          <div class="card-border-anim"></div>
+          <div class="card-content">
+            <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1606491956689-2ea866880049?w=400&h=250&fit=crop')">
+              <div class="img-glitch-overlay"></div>
+            </div>
+            <div class="card-body">
+              <div class="card-top">
+                <h3>Crispy Corn</h3>
+                <span class="badge veg">VEG</span>
+              </div>
+              <p class="card-desc">Golden fried corn with curry leaves & secret spices</p>
+              <div class="card-bottom">
+                <span class="price">₹249</span>
+                <span class="spice">🌶️</span>
+                <button class="neon-btn" onclick="addToCart('Crispy Corn', 249)">
+                  <span class="btn-border"></span>
+                  ADD +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="holo-card" style="--accent: var(--cyan); --delay: 0.4s">
+          <div class="card-holo-layer"></div>
+          <div class="card-border-anim"></div>
+          <div class="card-content">
+            <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&h=250&fit=crop')">
+              <div class="img-glitch-overlay"></div>
+            </div>
+            <div class="card-body">
+              <div class="card-top">
+                <h3>Mutton Galouti</h3>
+                <span class="badge nonveg">NON-VEG</span>
+              </div>
+              <p class="card-desc">Melt-in-mouth Lucknowi kebabs with 40+ spices</p>
+              <div class="card-bottom">
+                <span class="price">₹449</span>
+                <span class="spice">🌶️🌶️</span>
+                <button class="neon-btn" onclick="addToCart('Mutton Galouti', 449)">
+                  <span class="btn-border"></span>
+                  ADD +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAINS -->
+    <section class="menu-section" id="mains">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <h2>MAIN COURSE</h2>
+        <span class="section-line"></span>
+      </div>
+
+      <div class="cards-grid">
+        <div class="holo-card" style="--accent: var(--magenta); --delay: 0.1s">
+          <div class="card-holo-layer"></div>
+          <div class="card-border-anim"></div>
+          <div class="card-content">
+            <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&h=250&fit=crop')">
+              <div class="img-glitch-overlay"></div>
+            </div>
+            <div class="card-body">
+              <div class="card-top">
+                <h3>Butter Chicken</h3>
+                <span class="badge nonveg">NON-VEG</span>
+              </div>
+              <p class="card-desc">Tandoori chicken in creamy tomato-butter gravy</p>
+              <div class="card-bottom">
+                <span class="price">₹449</span>
+                <span class="spice">🌶️🌶️</span>
+                <button class="neon-btn" onclick="addToCart('Butter Chicken', 449)">
+                  <span class="btn-border"></span>
+                  ADD +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="holo-card" style="--accent: var(--cyan); --delay: 0.2s">
+          <div class="card-holo-layer"></div>
+          <div class="card-border-anim"></div>
+          <div class="card-content">
+            <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&h=250&fit=crop')">
+              <div class="img-glitch-overlay"></div>
+            </div>
+            <div class="card-body">
+              <div class="card-top">
+                <h3>Dal Makhani</h3>
+                <span class="badge veg">VEG</span>
+              </div>
+              <p class="card-desc">Overnight slow-cooked black lentils with cream & butter</p>
+              <div class="card-bottom">
+                <span class="price">₹349</span>
+                <span class="spice">🌶️</span>
+                <button class="neon-btn" onclick="addToCart('Dal Makhani', 349)">
+                  <span class="btn-border"></span>
+                  ADD +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="holo-card" style="--accent: var(--yellow); --delay: 0.3s">
+          <div class="card-holo-layer"></div>
+          <div class="card-border-anim"></div>
+          <div class="card-content">
+            <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop')">
+              <div class="img-glitch-overlay"></div>
+            </div>
+            <div class="card-body">
+              <div class="card-top">
+                <h3>Paneer Tikka Masala</h3>
+                <span class="badge veg">VEG</span>
+              </div>
+              <p class="card-desc">Grilled paneer cubes in smoky tomato masala gravy</p>
+              <div class="card-bottom">
+                <span class="price">₹379</span>
+                <span class="spice">🌶️🌶️</span>
+                <button class="neon-btn" onclick="addToCart('Paneer Tikka Masala', 379)">
+                  <span class="btn-border"></span>
+                  ADD +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DRINKS -->
+    <section class="menu-section" id="drinks">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <h2>DRINKS</h2>
+        <span class="section-line"></span>
+      </div>
+
+      <div class="cards-grid">
+        <div class="holo-card" style="--accent: var(--cyan); --delay: 0.1s">
+          <div class="card-holo-layer"></div>
+          <div class="card-border-anim"></div>
+          <div class="card-content">
+            <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&h=250&fit=crop')">
+              <div class="img-glitch-overlay"></div>
+            </div>
+            <div class="card-body">
+              <div class="card-top">
+                <h3>Mango Lassi</h3>
+                <span class="badge veg">VEG</span>
+              </div>
+              <p class="card-desc">Chilled Alphonso mango blended with creamy yogurt</p>
+              <div class="card-bottom">
+                <span class="price">₹179</span>
+                <button class="neon-btn" onclick="addToCart('Mango Lassi', 179)">
+                  <span class="btn-border"></span>
+                  ADD +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="holo-card" style="--accent: var(--magenta); --delay: 0.2s">
+          <div class="card-holo-layer"></div>
+          <div class="card-border-anim"></div>
+          <div class="card-content">
+            <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=250&fit=crop')">
+              <div class="img-glitch-overlay"></div>
+            </div>
+            <div class="card-body">
+              <div class="card-top">
+                <h3>Masala Chai</h3>
+                <span class="badge veg">VEG</span>
+              </div>
+              <p class="card-desc">Spiced tea with ginger, cardamom & cloves</p>
+              <div class="card-bottom">
+                <span class="price">₹99</span>
+                <button class="neon-btn" onclick="addToCart('Masala Chai', 99)">
+                  <span class="btn-border"></span>
+                  ADD +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESSERTS -->
+    <section class="menu-section" id="desserts">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <h2>DESSERTS</h2>
+        <span class="section-line"></span>
+      </div>
+
+      <div class="cards-grid">
+        <div class="holo-card" style="--accent: var(--yellow); --delay: 0.1s">
+          <div class="card-holo-layer"></div>
+          <div class="card-border-anim"></div>
+          <div class="card-content">
+            <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?w=400&h=250&fit=crop')">
+              <div class="img-glitch-overlay"></div>
+            </div>
+            <div class="card-body">
+              <div class="card-top">
+                <h3>Gulab Jamun</h3>
+                <span class="badge veg">VEG</span>
+              </div>
+              <p class="card-desc">Warm milk dumplings in rose-cardamom syrup</p>
+              <div class="card-bottom">
+                <span class="price">₹199</span>
+                <button class="neon-btn" onclick="addToCart('Gulab Jamun', 199)">
+                  <span class="btn-border"></span>
+                  ADD +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="holo-card" style="--accent: var(--cyan); --delay: 0.2s">
+          <div class="card-holo-layer"></div>
+          <div class="card-border-anim"></div>
+          <div class="card-content">
+            <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&h=250&fit=crop')">
+              <div class="img-glitch-overlay"></div>
+            </div>
+            <div class="card-body">
+              <div class="card-top">
+                <h3>Rasmalai</h3>
+                <span class="badge veg">VEG</span>
+              </div>
+              <p class="card-desc">Cottage cheese dumplings in saffron milk</p>
+              <div class="card-bottom">
+                <span class="price">₹249</span>
+                <button class="neon-btn" onclick="addToCart('Rasmalai', 249)">
+                  <span class="btn-border"></span>
+                  ADD +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Floating Cart -->
+  <div class="floating-cart" id="floatingCart" onclick="toggleCart()">
+    <span class="cart-neon-pulse"></span>
+    <span>🛒 <strong id="cartCount">0</strong> items — <strong id="cartTotal">₹0</strong></span>
+    <span class="cart-arrow">↑</span>
+  </div>
+
+  <!-- Cart Drawer -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-handle"></div>
+    <h2 class="cart-title">
+      <span class="glitch" data-text="YOUR ORDER">YOUR ORDER</span>
+    </h2>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-totals">
+      <div class="total-row"><span>Subtotal</span><span id="cartSub">₹0</span></div>
+      <div class="total-row dim"><span>GST (5%)</span><span id="cartGst">₹0</span></div>
+      <div class="total-row grand"><span>TOTAL</span><span id="cartGrand">₹0</span></div>
+    </div>
+    <button class="order-btn" onclick="placeOrder()">
+      <span class="btn-border"></span>
+      ⚡ PLACE ORDER
+    </button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <span class="toast-icon">⚡</span>
+  <span id="toastText">Added to cart</span>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

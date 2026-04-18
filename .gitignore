@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+.nuxt/
+
+# Vite cache
+.vite/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+env/
+
+# Misc
+*.tsbuildinfo

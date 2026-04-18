@@ -1,0 +1,444 @@
+/* ================================================
+   FLAVOURS OF NORTH INDIA — Notebook Menu v2
+   Arrow navigation + real images
+   ================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --purple-deep: #3b0a45;
+  --purple-mid: #5c1068;
+  --gold: #c9942a;
+  --gold-light: #e8b84b;
+  --gold-pale: #f5d98a;
+  --cream: #fdf6e3;
+  --cream-dark: #f0e6c8;
+  --text-dark: #2a1a00;
+  --text-mid: #5a3e00;
+  --text-light: #8a6a00;
+}
+
+body {
+  min-height: 100vh;
+  background: #1a0a2e;
+  background-image:
+    radial-gradient(ellipse at 20% 30%, #3b0a45 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 70%, #2a0630 0%, transparent 60%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  padding: 30px 20px;
+}
+
+/* ================================================
+   WRAPPER — arrows + book
+   ================================================ */
+.notebook-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  max-width: 720px;
+}
+
+/* ================================================
+   NAV ARROWS
+   ================================================ */
+.nav-arrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  background: rgba(59, 10, 69, 0.7);
+  backdrop-filter: blur(4px);
+  color: var(--gold-light);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+.nav-arrow svg {
+  width: 22px;
+  height: 22px;
+}
+
+.nav-arrow:hover {
+  background: var(--gold);
+  color: var(--purple-deep);
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(201,148,42,0.5);
+}
+
+.nav-arrow:active {
+  transform: scale(0.95);
+}
+
+.nav-arrow.disabled {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* ================================================
+   BOOK
+   ================================================ */
+.book {
+  flex: 1;
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  min-height: 640px;
+  filter: drop-shadow(0 30px 60px rgba(0,0,0,0.7));
+}
+
+/* ================================================
+   PAGE DOTS (bottom indicator)
+   ================================================ */
+.page-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.page-dots .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(201, 148, 42, 0.3);
+  border: 1px solid var(--gold);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.page-dots .dot.active {
+  background: var(--gold-light);
+  box-shadow: 0 0 8px rgba(201,148,42,0.6);
+  transform: scale(1.2);
+}
+
+.page-dots .dot:hover {
+  background: var(--gold);
+}
+
+/* ================================================
+   INDIVIDUAL PAGES
+   ================================================ */
+.page {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  transform: scale(0.97);
+}
+
+.page.active {
+  opacity: 1;
+  pointer-events: all;
+  position: relative;
+  transform: scale(1);
+}
+
+/* ================================================
+   COVER PAGE
+   ================================================ */
+.cover-page {
+  background: linear-gradient(160deg, #4a0f5a 0%, var(--purple-deep) 50%, #260636 100%);
+  min-height: 640px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+}
+
+.cover-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(201,148,42,0.06) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(201,148,42,0.06) 0%, transparent 50%),
+    repeating-conic-gradient(from 0deg at 50% 50%, rgba(201,148,42,0.02) 0deg, transparent 10deg, transparent 20deg);
+  pointer-events: none;
+}
+
+.cover-ornament {
+  position: absolute;
+  font-size: 42px;
+  color: var(--gold);
+  opacity: 0.7;
+  line-height: 1;
+}
+.cover-ornament.tl { top: 16px; left: 16px; }
+.cover-ornament.tr { top: 16px; right: 16px; transform: scaleX(-1); }
+.cover-ornament.bl { bottom: 16px; left: 16px; transform: scaleY(-1); }
+.cover-ornament.br { bottom: 16px; right: 16px; transform: scale(-1); }
+
+.cover-border {
+  position: absolute;
+  inset: 18px;
+  border: 2px solid var(--gold);
+  border-radius: 6px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.cover-content {
+  position: relative;
+  text-align: center;
+  z-index: 2;
+  padding: 20px;
+}
+
+.cover-script {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(32px, 6vw, 52px);
+  color: var(--gold-pale);
+  line-height: 1;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 12px rgba(201,148,42,0.4);
+}
+
+.cover-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(38px, 8vw, 72px);
+  font-weight: 900;
+  color: var(--gold-light);
+  line-height: 1.05;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-shadow: 0 4px 20px rgba(201,148,42,0.3);
+  margin-bottom: 20px;
+}
+
+.cover-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(11px, 2vw, 14px);
+  color: var(--gold-pale);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: 20px;
+}
+
+.cover-divider {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  color: var(--gold);
+  font-size: 10px;
+  margin-bottom: 16px;
+}
+
+.cover-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 13px;
+  color: rgba(245, 217, 138, 0.65);
+  letter-spacing: 2px;
+}
+
+/* ================================================
+   MENU PAGES (cream)
+   ================================================ */
+.menu-page {
+  background: linear-gradient(160deg, var(--cream) 0%, var(--cream-dark) 100%);
+  min-height: 640px;
+  position: relative;
+  border-radius: 14px;
+}
+
+.menu-border {
+  position: absolute;
+  inset: 14px;
+  border: 1.5px solid var(--gold);
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: var(--gold);
+  border-style: solid;
+  pointer-events: none;
+  opacity: 0.8;
+}
+.corner.tl { top: 10px;    left: 10px;   border-width: 3px 0 0 3px; }
+.corner.tr { top: 10px;    right: 10px;  border-width: 3px 3px 0 0; }
+.corner.bl { bottom: 10px; left: 10px;   border-width: 0 0 3px 3px; }
+.corner.br { bottom: 10px; right: 10px;  border-width: 0 3px 3px 0; }
+
+.page-content {
+  position: relative;
+  z-index: 2;
+  padding: 36px 40px 40px;
+  overflow-y: auto;
+  max-height: 640px;
+}
+
+/* ================================================
+   SECTION TITLE
+   ================================================ */
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(20px, 4vw, 28px);
+  font-weight: 700;
+  color: var(--purple-deep);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.title-divider {
+  text-align: center;
+  color: var(--gold);
+  font-size: 13px;
+  letter-spacing: 6px;
+  margin-bottom: 18px;
+}
+
+/* ================================================
+   FOOD IMAGE CARDS — real photos
+   ================================================ */
+.food-image-row {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+
+.food-image-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.food-image-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2.5px solid var(--gold);
+  box-shadow: 0 4px 16px rgba(60,10,70,0.2);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.food-image-card img:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 24px rgba(60,10,70,0.35);
+}
+
+.food-image-card p {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 10.5px;
+  color: var(--text-mid);
+  text-align: center;
+  max-width: 80px;
+}
+
+/* ================================================
+   MENU ITEMS
+   ================================================ */
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu-item {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  align-items: baseline;
+  column-gap: 6px;
+}
+
+.item-name {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dark);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.item-dots {
+  border-bottom: 1.5px dotted rgba(90, 62, 0, 0.35);
+  height: 0;
+  margin-bottom: 4px;
+}
+
+.item-price {
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.item-desc {
+  grid-column: 1 / -1;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 11.5px;
+  color: var(--text-light);
+  line-height: 1.4;
+  margin-top: 1px;
+}
+
+/* ================================================
+   SCROLLBAR
+   ================================================ */
+.page-content::-webkit-scrollbar { width: 4px; }
+.page-content::-webkit-scrollbar-track { background: transparent; }
+.page-content::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+/* ================================================
+   RESPONSIVE
+   ================================================ */
+@media (max-width: 600px) {
+  .notebook-wrapper {
+    gap: 10px;
+  }
+  .nav-arrow {
+    width: 38px;
+    height: 38px;
+  }
+  .nav-arrow svg {
+    width: 18px;
+    height: 18px;
+  }
+  .page-content {
+    padding: 24px 20px 32px;
+  }
+  .food-image-row { gap: 10px; }
+  .food-image-card img {
+    width: 60px;
+    height: 60px;
+  }
+  .cover-page, .menu-page {
+    min-height: 520px;
+  }
+  .book { min-height: 520px; }
+  .page-content { max-height: 520px; }
+}

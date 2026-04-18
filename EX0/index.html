@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aroma — Beverage Menu</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Ambient particles -->
+  <div class="particles" id="particles"></div>
+
+  <div class="poster">
+
+    <!-- ======================================
+         LEFT PANEL — Hero Drink
+         ====================================== -->
+    <div class="left-panel" id="leftPanel">
+
+      <!-- Deep radial glow behind the drink -->
+      <div class="ambient-glow"></div>
+
+      <!-- Brand mark at top -->
+      <div class="brand-mark">
+        <div class="brand-line"></div>
+        <span class="brand-name">AROMA</span>
+        <div class="brand-line"></div>
+      </div>
+      <div class="brand-tagline">Fine Coffee &amp; Artisan Drinks</div>
+
+      <!-- Steam wisps (shown only for hot drinks) -->
+      <div class="steam-wrap" id="steamWrap">
+        <div class="steam s1"></div>
+        <div class="steam s2"></div>
+        <div class="steam s3"></div>
+      </div>
+
+      <!-- Hero drink image -->
+      <div class="hero-wrap" id="heroWrap">
+        <div class="drink-ring"></div>
+        <div class="hero-shadow"></div>
+        <img
+          id="featuredImg"
+          src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=800&fit=crop"
+          alt="Choco Boba"
+          class="hero-img"
+        >
+      </div>
+
+      <!-- Bottom fade so info sits cleanly -->
+      <div class="bottom-fade"></div>
+
+      <!-- Drink info block -->
+      <div class="hero-info">
+        <div class="hero-meta">
+          <span class="hero-category" id="featuredCategory">SPECIALTY</span>
+          <span class="meta-sep">·</span>
+          <span class="hero-tag">BEST SELLER</span>
+        </div>
+        <h2 class="hero-name" id="featuredName">CHOCO<br>BOBA</h2>
+        <div class="hero-divider"></div>
+        <div class="hero-price-row">
+          <span class="hero-old-price" id="oldPrice">$7.00</span>
+          <span class="hero-new-price" id="newPrice">$5.00</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ======================================
+         RIGHT PANEL — Menu List
+         ====================================== -->
+    <div class="right-panel">
+
+      <!-- Corner decoration lines -->
+      <div class="corner-deco tl"></div>
+      <div class="corner-deco br"></div>
+
+      <!-- Header -->
+      <div class="menu-header">
+        <div class="menu-eyebrow">Artisan Beverages</div>
+        <h1 class="menu-title">MENU</h1>
+        <div class="title-rule">
+          <span class="rule-line"></span>
+          <span class="rule-diamond">◆</span>
+          <span class="rule-line"></span>
+        </div>
+      </div>
+
+      <!-- Upload trigger -->
+      <button class="upload-trigger" id="uploadTrigger">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <span>Scan a Menu Photo</span>
+      </button>
+
+      <!-- Menu items (rendered by JS) -->
+      <div class="menu-list" id="menuList"></div>
+
+      <!-- Pagination dots -->
+      <div class="pagination" id="dots"></div>
+
+    </div>
+
+  </div>
+
+  <!-- ========== UPLOAD MODAL ========== -->
+  <div class="ulp-overlay hidden" id="ulpOverlay">
+    <div class="ulp-modal">
+      <button class="ulp-close" id="ulpClose" aria-label="Close">&times;</button>
+
+      <div class="ulp-header">
+        <div class="ulp-header-icon">📷</div>
+        <h3>Scan a Menu Photo</h3>
+        <p>Upload any physical menu photo — we'll extract every item and add it to this menu automatically.</p>
+      </div>
+
+      <div class="ulp-body">
+        <!-- Drop Zone -->
+        <div class="ulp-zone" id="ulpZone">
+          <input type="file" id="ulpFileInput" accept="image/*" hidden>
+          <div class="ulp-zone-idle" id="ulpZoneIdle">
+            <div class="ulp-zone-icon">🖼️</div>
+            <p>Drag &amp; drop your menu photo</p>
+            <small>JPG · PNG · WEBP &nbsp;/&nbsp; up to 20 MB</small>
+            <button class="ulp-choose-btn" id="ulpChooseBtn">Browse Files</button>
+          </div>
+          <img class="ulp-preview hidden" id="ulpPreview" alt="Menu preview">
+          <button class="ulp-reselect hidden" id="ulpReselect">&larr; Choose different photo</button>
+        </div>
+
+        <!-- Options -->
+        <div class="ulp-options">
+          <div class="ulp-option-block">
+            <div class="ulp-option-head">
+              <span class="ulp-badge recommended">⭐ RECOMMENDED</span>
+              <strong>AI Extraction (GPT-4 Vision)</strong>
+              <p>Reads handwritten, styled &amp; printed menus with high accuracy.</p>
+            </div>
+            <div class="ulp-api-row">
+              <input type="password" id="ulpApiKey" placeholder="sk-… paste OpenAI API key" autocomplete="off" spellcheck="false">
+              <button class="ulp-eye-btn" id="ulpEyeBtn" title="Show / hide key">👁</button>
+            </div>
+            <p class="ulp-hint">Used only for this extraction, never stored. <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">Get a key &rarr;</a></p>
+          </div>
+          <div class="ulp-divider"><span>or free built-in OCR</span></div>
+          <div class="ulp-option-block">
+            <div class="ulp-option-head">
+              <span class="ulp-badge free">FREE</span>
+              <strong>Built-in OCR (Offline)</strong>
+              <p>No key needed. Best for clean printed menus.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button class="ulp-extract-btn" id="ulpExtractBtn" disabled>✨ Extract Menu Items</button>
+
+      <div class="ulp-progress hidden" id="ulpProgress">
+        <div class="ulp-progress-bar"><div class="ulp-progress-fill" id="ulpProgressFill"></div></div>
+        <p class="ulp-progress-label" id="ulpProgressLabel">Initializing…</p>
+      </div>
+
+      <div class="ulp-result hidden" id="ulpResult">
+        <div class="ulp-result-inner">
+          <span class="ulp-result-icon">✅</span>
+          <div>
+            <strong><span id="ulpResultCount">0</span> items extracted!</strong>
+            <p>Added as "UPLOADED" section in the menu.</p>
+          </div>
+        </div>
+        <button class="ulp-view-btn" id="ulpViewBtn">View Extracted Items &rarr;</button>
+      </div>
+
+      <div class="ulp-error hidden" id="ulpError">
+        <span class="ulp-error-icon">⚠️</span>
+        <div class="ulp-error-body">
+          <p id="ulpErrorMsg">Something went wrong.</p>
+          <button class="ulp-retry-btn" id="ulpRetryBtn">Try Again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

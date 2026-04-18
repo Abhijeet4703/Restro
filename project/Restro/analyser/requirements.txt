@@ -1,0 +1,30 @@
+# -----------------------------------------------------------------------
+# Menu Card Analyzer – Python dependencies
+# -----------------------------------------------------------------------
+# Install with:
+#   pip install -r requirements.txt
+#
+# NOTE: Tesseract engine requires the Tesseract binary:
+#   Windows : https://github.com/UB-Mannheim/tesseract/wiki
+#   Ubuntu  : sudo apt install tesseract-ocr
+#   macOS   : brew install tesseract
+# -----------------------------------------------------------------------
+
+# Core OCR
+easyocr>=1.7.0          # deep-learning OCR, no external binary required
+pytesseract>=0.3.10     # optional: thin wrapper around the Tesseract binary
+
+# Image processing
+opencv-python>=4.8.0
+Pillow>=10.0.0
+numpy>=1.24.0
+
+# Data handling
+pandas>=2.0.0
+
+# Web interface
+gradio>=4.0.0
+
+# Bridge API
+flask>=3.0.0
+flask-cors>=4.0.0

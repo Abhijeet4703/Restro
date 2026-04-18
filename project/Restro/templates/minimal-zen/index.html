@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zen Garden — Beautiful Cuisine</title>
+<meta name="description" content="A tranquil Japanese-inspired digital menu with zen aesthetics and serene animations." />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300;400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════ SAKURA PETAL CANVAS ═══════ -->
+<canvas id="sakuraCanvas"></canvas>
+
+<!-- ═══════ MAIN MENU ═══════ -->
+<div class="menu-wrapper">
+
+  <!-- Zen Header -->
+  <header class="header">
+    <div class="enso-container">
+      <svg viewBox="0 0 120 120" class="enso-svg">
+        <circle cx="60" cy="60" r="50" class="enso-circle" />
+      </svg>
+    </div>
+    <h1 class="name">ZEN GARDEN</h1>
+    <p class="sub">素敵な料理 · Beautiful Cuisine</p>
+    <div class="brush-divider">
+      <svg viewBox="0 0 300 8" preserveAspectRatio="none">
+        <path d="M0,4 C50,0 100,8 150,4 C200,0 250,8 300,4" class="brush-path" />
+      </svg>
+    </div>
+  </header>
+
+  <!-- Categories -->
+  <nav class="tabs">
+    <button class="tab active" data-cat="appetizers">Appetizers</button>
+    <button class="tab" data-cat="bowls">Bowls</button>
+    <button class="tab" data-cat="sushi">Sushi</button>
+    <button class="tab" data-cat="desserts">Desserts</button>
+    <button class="tab" data-cat="tea">Tea</button>
+  </nav>
+
+  <main>
+
+    <section class="section active" id="appetizers">
+      <div class="section-label">
+        <span class="kanji">前菜</span>
+        <span class="section-dash">—</span>
+        <span>Appetizers</span>
+      </div>
+
+      <article class="item" data-reveal>
+        <div class="item-img-wrap">
+          <img src="https://images.unsplash.com/photo-1540648639573-8c848de23f0a?w=400&h=400&fit=crop" alt="Edamame" loading="lazy" />
+          <div class="img-ink-overlay"></div>
+        </div>
+        <div class="item-content">
+          <div class="item-head">
+            <h3>Edamame</h3>
+            <span class="dot veg"></span>
+          </div>
+          <p class="desc">Steamed young soybeans, Himalayan pink salt, sesame oil drizzle</p>
+          <div class="item-foot">
+            <span class="price">₹199</span>
+            <button class="add" onclick="addToCart('Edamame', 199)">
+              <span class="add-ripple"></span>
+              Add
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="item" data-reveal>
+        <div class="item-img-wrap">
+          <img src="https://images.unsplash.com/photo-1534256958597-7fe685cbd745?w=400&h=400&fit=crop" alt="Gyoza" loading="lazy" />
+          <div class="img-ink-overlay"></div>
+        </div>
+        <div class="item-content">
+          <div class="item-head">
+            <h3>Gyoza</h3>
+            <span class="dot nonveg"></span>
+          </div>
+          <p class="desc">Pan-fried chicken dumplings with ponzu dipping sauce</p>
+          <div class="item-foot">
+            <span class="price">₹349</span>
+            <button class="add" onclick="addToCart('Gyoza', 349)">
+              <span class="add-ripple"></span>
+              Add
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="item" data-reveal>
+        <div class="item-img-wrap">
+          <img src="https://images.unsplash.com/photo-1555126634-323283e090fa?w=400&h=400&fit=crop" alt="Miso Soup" loading="lazy" />
+          <div class="img-ink-overlay"></div>
+        </div>
+        <div class="item-content">
+          <div class="item-head">
+            <h3>Miso Soup</h3>
+            <span class="dot veg"></span>
+          </div>
+          <p class="desc">Traditional dashi broth, silken tofu, wakame seaweed, spring onion</p>
+          <div class="item-foot">
+            <span class="price">₹179</span>
+            <button class="add" onclick="addToCart('Miso Soup', 179)">
+              <span class="add-ripple"></span>
+              Add
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section" id="bowls">
+      <div class="section-label">
+        <span class="kanji">丼</span>
+        <span class="section-dash">—</span>
+        <span>Bowls</span>
+      </div>
+
+      <article class="item" data-reveal>
+        <div class="item-img-wrap">
+          <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop" alt="Poke Bowl" loading="lazy" />
+          <div class="img-ink-overlay"></div>
+        </div>
+        <div class="item-content">
+          <div class="item-head">
+            <h3>Poke Bowl</h3>
+            <span class="dot nonveg"></span>
+          </div>
+          <p class="desc">Fresh salmon, avocado, mango, edamame on sushi rice</p>
+          <div class="item-foot">
+            <span class="price">₹599</span>
+            <button class="add" onclick="addToCart('Poke Bowl', 599)">
+              <span class="add-ripple"></span>
+              Add
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="item" data-reveal>
+        <div class="item-img-wrap">
+          <img src="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&h=400&fit=crop" alt="Ramen" loading="lazy" />
+          <div class="img-ink-overlay"></div>
+        </div>
+        <div class="item-content">
+          <div class="item-head">
+            <h3>Tonkotsu Ramen</h3>
+            <span class="dot nonveg"></span>
+          </div>
+          <p class="desc">12-hour pork bone broth, chashu, soft egg, bamboo shoots, nori</p>
+          <div class="item-foot">
+            <span class="price">₹549</span>
+            <button class="add" onclick="addToCart('Tonkotsu Ramen', 549)">
+              <span class="add-ripple"></span>
+              Add
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section" id="sushi">
+      <div class="section-label">
+        <span class="kanji">寿司</span>
+        <span class="section-dash">—</span>
+        <span>Sushi</span>
+      </div>
+
+      <article class="item" data-reveal>
+        <div class="item-img-wrap">
+          <img src="https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=400&fit=crop" alt="Salmon Nigiri" loading="lazy" />
+          <div class="img-ink-overlay"></div>
+        </div>
+        <div class="item-content">
+          <div class="item-head">
+            <h3>Salmon Nigiri Set</h3>
+            <span class="dot nonveg"></span>
+          </div>
+          <p class="desc">6 pieces of hand-pressed salmon nigiri with wasabi & ginger</p>
+          <div class="item-foot">
+            <span class="price">₹699</span>
+            <button class="add" onclick="addToCart('Salmon Nigiri Set', 699)">
+              <span class="add-ripple"></span>
+              Add
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section" id="desserts">
+      <div class="section-label">
+        <span class="kanji">甘味</span>
+        <span class="section-dash">—</span>
+        <span>Desserts</span>
+      </div>
+
+      <article class="item" data-reveal>
+        <div class="item-img-wrap">
+          <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=400&fit=crop" alt="Matcha Cake" loading="lazy" />
+          <div class="img-ink-overlay"></div>
+        </div>
+        <div class="item-content">
+          <div class="item-head">
+            <h3>Matcha Cheesecake</h3>
+            <span class="dot veg"></span>
+          </div>
+          <p class="desc">Light Japanese-style cheesecake with ceremonial grade matcha</p>
+          <div class="item-foot">
+            <span class="price">₹399</span>
+            <button class="add" onclick="addToCart('Matcha Cheesecake', 399)">
+              <span class="add-ripple"></span>
+              Add
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section" id="tea">
+      <div class="section-label">
+        <span class="kanji">お茶</span>
+        <span class="section-dash">—</span>
+        <span>Tea</span>
+      </div>
+
+      <article class="item" data-reveal>
+        <div class="item-img-wrap">
+          <img src="https://images.unsplash.com/photo-1556881286-fc6915169721?w=400&h=400&fit=crop" alt="Matcha" loading="lazy" />
+          <div class="img-ink-overlay"></div>
+        </div>
+        <div class="item-content">
+          <div class="item-head">
+            <h3>Ceremonial Matcha</h3>
+            <span class="dot veg"></span>
+          </div>
+          <p class="desc">Stone-ground Uji matcha, whisked traditionally</p>
+          <div class="item-foot">
+            <span class="price">₹249</span>
+            <button class="add" onclick="addToCart('Ceremonial Matcha', 249)">
+              <span class="add-ripple"></span>
+              Add
+            </button>
+          </div>
+        </div>
+      </article>
+    </section>
+
+  </main>
+
+  <!-- Cart -->
+  <div class="floating-cart" id="floatingCart" onclick="toggleCart()">
+    <span id="cartCount">0</span> items · <span id="cartTotal">₹0</span>
+    <span class="arrow">→</span>
+  </div>
+
+  <div class="cart-bg" id="cartBg" onclick="toggleCart()"></div>
+  <div class="cart-panel" id="cartPanel">
+    <div class="cart-top">
+      <h2>Order Summary</h2>
+      <button onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-total-section">
+      <div class="tr"><span>Subtotal</span><span id="cSub">₹0</span></div>
+      <div class="tr dim"><span>GST (5%)</span><span id="cGst">₹0</span></div>
+      <div class="tr total"><span>Total</span><span id="cTotal">₹0</span></div>
+    </div>
+    <button class="order-btn" onclick="placeOrder()">Place Order</button>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

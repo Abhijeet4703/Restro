@@ -1,0 +1,7 @@
+{
+  "name": "AI Menu Visualizer",
+  "description": "Scan restaurant menus to extract dishes and prices, then generate AI images for each dish and display them in themed templates.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}

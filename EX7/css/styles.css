@@ -1,0 +1,459 @@
+/* ===========================
+   VARIABLES
+   =========================== */
+:root {
+  --noir:        #0a0a0e;
+  --noir-light:  #141418;
+  --gold:        #d4b68a;
+  --gold-pale:   #f5edd9;
+  --gold-dark:   #b8985e;
+  --cream:       #faf7f2;
+  --text:        #f0ece4;
+  --text-muted:  #a8a49c;
+  --font-display:'Playfair Display', 'Cormorant Garamond', serif;
+  --font-heading:'Cormorant Garamond', serif;
+  --font-body:   'Montserrat', sans-serif;
+}
+
+/* ===========================
+   RESET
+   =========================== */
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; }
+body{
+  background:var(--noir);
+  color:var(--text);
+  font-family:var(--font-body);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+button{ cursor:pointer; border:none; background:none; font:inherit; color:inherit; }
+img{ display:block; max-width:100%; }
+
+/* ===========================
+   CANVAS
+   =========================== */
+#ambientCanvas{
+  position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.35;
+}
+
+/* ===========================
+   CORNER BRACKETS
+   =========================== */
+.corner{
+  position:absolute; width:32px; height:32px; z-index:5; pointer-events:none;
+}
+.corner::before,.corner::after{ content:''; position:absolute; background:var(--gold); opacity:.3; }
+.corner::before{ width:100%; height:1px; }
+.corner::after{  width:1px; height:100%; }
+.corner--tl{ top:18px; left:18px; }
+.corner--tl::before{ top:0; left:0; }
+.corner--tl::after{  top:0; left:0; }
+.corner--tr{ top:18px; right:18px; }
+.corner--tr::before{ top:0; right:0; }
+.corner--tr::after{  top:0; right:0; }
+.corner--bl{ bottom:18px; left:18px; }
+.corner--bl::before{ bottom:0; left:0; }
+.corner--bl::after{  bottom:0; left:0; }
+.corner--br{ bottom:18px; right:18px; }
+.corner--br::before{ bottom:0; right:0; }
+.corner--br::after{  bottom:0; right:0; }
+
+/* ===========================
+   ORNAMENT LINES
+   =========================== */
+.ornament-line{
+  display:inline-block; width:60px; height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  vertical-align:middle;
+}
+.ornament-diamond{ color:var(--gold); margin:0 10px; font-size:.65rem; vertical-align:middle; }
+
+/* ===========================
+   INTRO PAGE
+   =========================== */
+.intro{
+  position:fixed; inset:0; z-index:100;
+  display:flex; align-items:center; justify-content:center;
+  transition:opacity .8s ease, transform .8s ease;
+}
+.intro.intro--exit{
+  opacity:0; transform:scale(1.05); pointer-events:none;
+}
+.intro__bg{
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(200,169,126,.08) 0%, transparent 60%),
+    var(--noir);
+}
+.intro__overlay{
+  position:absolute; inset:0;
+  background:repeating-linear-gradient(
+    0deg,
+    transparent, transparent 2px,
+    rgba(200,169,126,.015) 2px, rgba(200,169,126,.015) 4px
+  );
+  pointer-events:none;
+}
+.intro__content{
+  position:relative; z-index:10;
+  text-align:center; max-width:640px; padding:2rem;
+}
+.intro__line-top, .intro__line-bottom{
+  width:1px; height:40px; margin:0 auto 1.2rem;
+  background:linear-gradient(180deg,transparent,var(--gold));
+}
+.intro__line-bottom{ margin:1.2rem auto 0; background:linear-gradient(180deg,var(--gold),transparent); }
+.intro__badge{
+  color:var(--gold); font-size:.75rem; letter-spacing:8px; margin-bottom:.6rem; opacity:.7;
+}
+.intro__est{
+  font-family:var(--font-body); font-size:.65rem; letter-spacing:5px; text-transform:uppercase;
+  color:var(--text-muted); margin-bottom:1rem;
+}
+.intro__title{
+  font-family:var(--font-display); font-size:clamp(3rem,8vw,5.5rem);
+  font-weight:400; color:var(--gold-pale); line-height:1;
+  text-shadow:0 0 60px rgba(200,169,126,.15);
+  margin-bottom:.3rem;
+}
+.intro__subtitle{
+  font-family:var(--font-heading); font-size:clamp(1rem,2.5vw,1.4rem);
+  font-weight:300; font-style:italic; color:var(--gold); letter-spacing:3px;
+  margin-bottom:1.2rem;
+}
+.intro__ornament{
+  display:flex; align-items:center; justify-content:center; gap:12px; margin-bottom:1.2rem;
+}
+.intro__mandala{ width:50px; height:50px; }
+.intro__tagline{
+  font-family:var(--font-heading); font-size:1.05rem; font-style:italic;
+  color:var(--gold); opacity:.8; margin-bottom:1rem;
+}
+.intro__desc{
+  font-size:.82rem; line-height:1.8; color:var(--text-muted); margin-bottom:1.5rem;
+}
+.intro__details{
+  display:flex; flex-direction:column; gap:.5rem; align-items:center; margin-bottom:1.8rem;
+}
+.intro__detail-item{
+  font-size:.72rem; color:var(--text-muted); letter-spacing:1px;
+  display:flex; align-items:center; gap:8px;
+}
+.intro__detail-icon{ color:var(--gold); font-size:.9rem; }
+
+/* CTA button */
+.intro__cta{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:14px 36px; border:1px solid var(--gold);
+  font-family:var(--font-body); font-size:.75rem; font-weight:600;
+  letter-spacing:3px; text-transform:uppercase; color:var(--gold);
+  transition:background .3s, color .3s, transform .15s;
+}
+.intro__cta svg{ width:16px; height:16px; }
+.intro__cta:hover{
+  background:var(--gold); color:var(--noir); transform:translateY(-1px);
+}
+
+/* Scroll hint */
+.intro__scroll-hint{
+  margin-top:1.5rem; font-size:.6rem; letter-spacing:2px; text-transform:uppercase;
+  color:var(--text-muted); opacity:.5;
+}
+.intro__scroll-arrow{
+  font-size:1rem; animation:bounce 2s infinite;
+}
+@keyframes bounce{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(6px); }
+}
+
+/* ===========================
+   SLIDER WRAPPER
+   =========================== */
+.slider-wrapper{
+  position:fixed; inset:0; z-index:10;
+  overflow:hidden;
+  transition:opacity .6s ease;
+}
+.slider-wrapper.hidden{
+  opacity:0; pointer-events:none;
+}
+.slider-wrapper.visible{
+  opacity:1; pointer-events:auto;
+}
+
+/* ===========================
+   SLIDER TRACK
+   =========================== */
+.slider-track{
+  display:flex; height:100vh; transition:transform .7s cubic-bezier(.77,0,.175,1);
+}
+.slide{
+  min-width:100vw; height:100vh;
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+
+/* ===========================
+   SLIDE PAGE FRAME
+   =========================== */
+.slide-page{
+  position:relative; width:90%; max-width:900px;
+  max-height:88vh; overflow-y:auto;
+  padding:3rem 2.5rem;
+  background:linear-gradient(160deg, rgba(20,20,24,.95), rgba(10,10,14,.98));
+  border:1px solid rgba(200,169,126,.12);
+  scrollbar-width:thin; scrollbar-color:var(--gold-dark) transparent;
+}
+.slide-page::-webkit-scrollbar{ width:4px; }
+.slide-page::-webkit-scrollbar-thumb{ background:var(--gold-dark); border-radius:2px; }
+
+/* ===========================
+   SECTION HEADER
+   =========================== */
+.section-header{ text-align:center; margin-bottom:2rem; }
+.section-header__ornament{ margin-bottom:.8rem; }
+.section-header__title{
+  font-family:var(--font-display); font-size:clamp(1.6rem,4vw,2.4rem);
+  font-weight:400; color:var(--gold-pale); letter-spacing:2px;
+}
+.section-header__subtitle{
+  font-family:var(--font-heading); font-size:.85rem; font-style:italic;
+  color:var(--gold); opacity:.7; margin-top:.3rem;
+}
+
+/* ===========================
+   SHOWCASE IMAGE
+   =========================== */
+.menu-showcase{ margin-bottom:1.5rem; }
+.showcase-image{
+  position:relative; margin-bottom:1.5rem;
+  overflow:hidden; border:1px solid rgba(200,169,126,.1);
+}
+.showcase-image img{
+  width:100%; height:200px; object-fit:cover;
+  filter:brightness(.75) saturate(.9);
+  transition:transform .6s ease;
+}
+.showcase-image:hover img{ transform:scale(1.04); }
+.showcase-overlay{
+  position:absolute; bottom:0; left:0; right:0;
+  padding:8px 16px; background:linear-gradient(transparent,rgba(10,10,14,.85));
+  font-size:.6rem; letter-spacing:3px; text-transform:uppercase;
+  color:var(--gold); text-align:right;
+}
+
+/* ===========================
+   MENU GRID
+   =========================== */
+.menu-grid{ display:grid; gap:1rem; }
+.menu-grid--2col{ grid-template-columns:1fr 1fr; }
+
+/* ===========================
+   MENU CARD
+   =========================== */
+.menu-card{
+  padding:1rem 1.2rem;
+  background:rgba(255,255,255,.02);
+  border:1px solid rgba(200,169,126,.08);
+  transition:background .3s, border-color .3s, transform .25s;
+}
+.menu-card:hover{
+  background:rgba(200,169,126,.04);
+  border-color:rgba(200,169,126,.2);
+  transform:translateY(-2px);
+}
+.menu-card__header{
+  display:flex; align-items:baseline; gap:6px; margin-bottom:.35rem;
+}
+.menu-card__name{
+  font-family:var(--font-heading); font-size:.95rem; font-weight:500;
+  color:var(--cream); white-space:nowrap;
+}
+.tag{
+  font-family:var(--font-body); font-size:.5rem; font-weight:600;
+  text-transform:uppercase; letter-spacing:1.5px;
+  color:var(--noir); background:var(--gold); padding:2px 6px;
+  vertical-align:middle; margin-left:4px;
+}
+.menu-card__dots{
+  flex:1; border-bottom:1px dotted rgba(200,169,126,.2); margin-bottom:4px;
+}
+.menu-card__price{
+  font-family:var(--font-heading); font-size:.9rem; color:var(--gold);
+  white-space:nowrap;
+}
+.menu-card__desc{
+  font-size:.68rem; line-height:1.6; color:var(--text-muted);
+}
+
+/* ===========================
+   TASTING / THALI
+   =========================== */
+.tasting-menu{ text-align:center; }
+.tasting-price-badge{
+  display:inline-block; padding:1rem 2rem;
+  border:1px solid rgba(200,169,126,.25);
+  margin-bottom:1.5rem;
+}
+.tasting-price-amount{
+  display:block; font-family:var(--font-display); font-size:2rem;
+  color:var(--gold-pale);
+}
+.tasting-price-label{
+  display:block; font-size:.6rem; letter-spacing:3px; text-transform:uppercase;
+  color:var(--text-muted); margin-top:.2rem;
+}
+.tasting-price-wine{
+  display:block; font-size:.6rem; color:var(--gold); opacity:.6; margin-top:.4rem;
+}
+.tasting-courses{
+  text-align:left; max-width:560px; margin:0 auto;
+}
+.tasting-course{
+  display:flex; align-items:flex-start; gap:1rem;
+  padding:.8rem 0;
+  border-bottom:1px solid rgba(200,169,126,.08);
+}
+.tasting-course:last-child{ border-bottom:none; }
+.course-num{
+  font-family:var(--font-display); font-size:1.1rem;
+  color:var(--gold); min-width:28px; text-align:center; padding-top:2px;
+}
+.course-info h4{
+  font-family:var(--font-heading); font-size:.9rem; color:var(--cream);
+  font-weight:500; margin-bottom:.2rem;
+}
+.course-info p{
+  font-size:.65rem; color:var(--text-muted); line-height:1.5;
+}
+
+/* ===========================
+   DRINKS LAYOUT
+   =========================== */
+.drinks-layout{
+  display:grid; grid-template-columns:1fr 1fr; gap:2rem;
+}
+.drinks-category-title{
+  font-family:var(--font-heading); font-size:.85rem; color:var(--gold);
+  letter-spacing:2px; text-transform:uppercase; border-bottom:1px solid rgba(200,169,126,.15);
+  padding-bottom:.4rem; margin-bottom:.8rem; margin-top:1.2rem;
+}
+.drinks-category-title:first-child{ margin-top:0; }
+.drink-item{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:4px;
+  padding:.4rem 0;
+}
+.drink-name{
+  font-family:var(--font-heading); font-size:.82rem; color:var(--cream);
+}
+.drink-dots{
+  flex:1; border-bottom:1px dotted rgba(200,169,126,.15); margin-bottom:3px;
+}
+.drink-price{
+  font-family:var(--font-heading); font-size:.82rem; color:var(--gold);
+}
+.drink-desc{
+  width:100%; font-size:.6rem; color:var(--text-muted); line-height:1.5; margin-top:.1rem;
+}
+
+/* ===========================
+   NAV
+   =========================== */
+.menu-nav{
+  position:fixed; top:0; left:0; right:0; z-index:60;
+  background:linear-gradient(180deg, rgba(10,10,14,.95) 60%, transparent);
+  padding:1rem 2rem .8rem;
+  transition:opacity .4s, transform .4s;
+}
+.menu-nav--hidden{ opacity:0; transform:translateY(-100%); pointer-events:none; }
+.menu-nav__list{
+  list-style:none; display:flex; justify-content:center; gap:.6rem; flex-wrap:wrap;
+}
+.menu-nav__btn{
+  font-size:.6rem; letter-spacing:2px; text-transform:uppercase;
+  padding:6px 14px; color:var(--text-muted);
+  border:1px solid transparent; transition:all .3s;
+}
+.menu-nav__btn:hover{ color:var(--gold); }
+.menu-nav__btn.active{
+  color:var(--gold); border-color:rgba(200,169,126,.3);
+}
+
+/* ===========================
+   ARROWS
+   =========================== */
+.slider-arrow{
+  position:fixed; top:50%; z-index:50;
+  width:48px; height:48px; display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(200,169,126,.2);
+  transition:all .3s;
+  transform:translateY(-50%);
+}
+.slider-arrow svg{ width:20px; height:20px; color:var(--gold); }
+.slider-arrow:hover{
+  background:rgba(200,169,126,.1); border-color:var(--gold);
+}
+.slider-arrow--prev{ left:1.2rem; }
+.slider-arrow--next{ right:1.2rem; }
+.slider-arrow--hidden{ opacity:0; pointer-events:none; }
+
+/* ===========================
+   DOTS
+   =========================== */
+.slider-dots{
+  position:fixed; bottom:1.2rem; left:50%; transform:translateX(-50%);
+  z-index:50; display:flex; gap:10px;
+}
+.dot{
+  width:8px; height:8px; border-radius:50%;
+  background:rgba(200,169,126,.25); border:1px solid rgba(200,169,126,.35);
+  transition:all .3s;
+}
+.dot--active{
+  background:var(--gold); border-color:var(--gold);
+  box-shadow:0 0 8px rgba(200,169,126,.4);
+}
+
+/* ===========================
+   BACK BUTTON
+   =========================== */
+.btn-back{
+  position:fixed; top:1.2rem; left:1.2rem; z-index:70;
+  font-size:.65rem; letter-spacing:2px; text-transform:uppercase;
+  color:var(--text-muted); padding:6px 14px;
+  border:1px solid rgba(200,169,126,.15);
+  transition:all .3s;
+}
+.btn-back:hover{ color:var(--gold); border-color:var(--gold); }
+
+/* ===========================
+   AOS (animate on slide)
+   =========================== */
+[data-aos]{
+  opacity:0; transform:translateY(16px);
+  transition:opacity .5s ease, transform .5s ease;
+}
+[data-aos].aos-in{
+  opacity:1; transform:translateY(0);
+}
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+@media (max-width:768px){
+  .menu-grid--2col{ grid-template-columns:1fr; }
+  .drinks-layout{ grid-template-columns:1fr; }
+  .slide-page{ padding:2rem 1.5rem; width:95%; }
+  .slider-arrow{ display:none; }
+  .menu-nav__btn{ font-size:.55rem; padding:5px 10px; }
+  .intro__title{ font-size:clamp(2.4rem,10vw,3.5rem); }
+  .intro__desc{ font-size:.75rem; }
+  .intro__details{ font-size:.65rem; }
+}
+@media (max-width:480px){
+  .slide-page{ padding:1.5rem 1rem; }
+  .menu-card{ padding:.8rem; }
+  .tasting-price-badge{ padding:.8rem 1.2rem; }
+}

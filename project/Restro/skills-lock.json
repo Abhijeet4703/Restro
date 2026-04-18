@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "skills": {
+    "discover-frontend": {
+      "source": "rand/cc-polymath",
+      "sourceType": "github",
+      "computedHash": "9865560fe00c459f8772676bb4bf694ff971e10dafc89f3d24d1da636c20b7d1"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
+    },
+    "frontend-developer-skill": {
+      "source": "404kidwiz/claude-supercode-skills",
+      "sourceType": "github",
+      "computedHash": "1994858dd3f51fa6f6618a9f5efbb49603354fd7680de9f960521f63f69177b6"
+    },
+    "moai-platform-auth": {
+      "source": "modu-ai/moai-adk",
+      "sourceType": "github",
+      "computedHash": "1d4275d504dec82079d40480198b583e2d8b98620249353670c529aa77f8564a"
+    },
+    "nextjs": {
+      "source": "jackspace/claudeskillz",
+      "sourceType": "github",
+      "computedHash": "70ecaa929915cc0e82d55a3393e98ce86e334aacac53d3602b7f36d21d2dd8e0"
+    },
+    "nextjs-shadcn-builder": {
+      "source": "ovachiever/droid-tings",
+      "sourceType": "github",
+      "computedHash": "8f1a52b14fef7ca4763a80581f616165af6526597898a0359e5ae3c0a84684c5"
+    },
+    "threejs-fundamentals": {
+      "source": "cloudai-x/threejs-skills",
+      "sourceType": "github",
+      "computedHash": "110044d18d358c235c3f938e7117ea0ccbcf72e0a8703567473e85c84b09ae99"
+    },
+    "threejs-skills": {
+      "source": "sickn33/antigravity-awesome-skills",
+      "sourceType": "github",
+      "computedHash": "307fb8a4fc29adf9ab1abb96908f46cbdb5c5877d196d0511abb3fe98db1ae08"
+    },
+    "webgpu-threejs-tsl": {
+      "source": "dgreenheck/webgpu-claude-skill",
+      "sourceType": "github",
+      "computedHash": "85bac81bcd8522eaeaeda910addddb0b47bab0521e51b2d17906a9ea81fc7e54"
+    }
+  }
+}

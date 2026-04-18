@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dum Pukht — Royal Indian Fine Dining</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <canvas id="ambientCanvas"></canvas>
+
+  <!-- =====================================================
+       INTRO / LANDING PAGE
+       ===================================================== -->
+  <section class="intro" id="introPage">
+    <div class="intro__bg"></div>
+    <div class="intro__overlay"></div>
+    <div class="corner corner--tl"></div>
+    <div class="corner corner--tr"></div>
+    <div class="corner corner--bl"></div>
+    <div class="corner corner--br"></div>
+
+    <div class="intro__content">
+      <div class="intro__line-top"></div>
+      <div class="intro__badge">&#9733; &#9733; &#9733;</div>
+      <p class="intro__est">EST. 1987 &middot; NEW DELHI</p>
+      <h1 class="intro__title">Dum Pukht</h1>
+      <p class="intro__subtitle">Royal Indian Fine Dining</p>
+
+      <div class="intro__ornament">
+        <span class="ornament-line"></span>
+        <svg class="intro__mandala" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="30" cy="30" r="28" fill="none" stroke="#c8a97e" stroke-width="0.8" opacity="0.4"/>
+          <circle cx="30" cy="30" r="20" fill="none" stroke="#c8a97e" stroke-width="0.6" opacity="0.3"/>
+          <circle cx="30" cy="30" r="12" fill="none" stroke="#c8a97e" stroke-width="0.6" opacity="0.3"/>
+          <circle cx="30" cy="30" r="4" fill="#c8a97e" opacity="0.4"/>
+          <line x1="30" y1="2" x2="30" y2="58" stroke="#c8a97e" stroke-width="0.4" opacity="0.2"/>
+          <line x1="2" y1="30" x2="58" y2="30" stroke="#c8a97e" stroke-width="0.4" opacity="0.2"/>
+          <line x1="8" y1="8" x2="52" y2="52" stroke="#c8a97e" stroke-width="0.4" opacity="0.2"/>
+          <line x1="52" y1="8" x2="8" y2="52" stroke="#c8a97e" stroke-width="0.4" opacity="0.2"/>
+        </svg>
+        <span class="ornament-line"></span>
+      </div>
+
+      <p class="intro__tagline">&ldquo;The art of slow cooking, perfected over generations&rdquo;</p>
+      <p class="intro__desc">
+        Nestled in the heart of New Delhi, Dum Pukht brings alive the royal Awadhi tradition of
+        slow-cooked, aromatic cuisine. Our chefs honour centuries-old recipes passed down through
+        Nawabi kitchens, creating dishes that are sealed and cooked on a slow fire &mdash; the
+        ancient art of <em>dum</em>.
+      </p>
+
+      <div class="intro__details">
+        <div class="intro__detail-item">
+          <span class="intro__detail-icon">&#9737;</span>
+          <span>ITC Maurya, Sardar Patel Marg, New Delhi</span>
+        </div>
+        <div class="intro__detail-item">
+          <span class="intro__detail-icon">&#9743;</span>
+          <span>+91 11 2611 2233</span>
+        </div>
+        <div class="intro__detail-item">
+          <span class="intro__detail-icon">&#9200;</span>
+          <span>Dinner: 7 PM &mdash; 11:30 PM &nbsp;|&nbsp; Lunch: 12:30 PM &mdash; 2:45 PM</span>
+        </div>
+      </div>
+
+      <button class="intro__cta" id="btnEnterMenu">
+        <span>Explore Our Menu</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <div class="intro__scroll-hint">
+        <span>Scroll down or click to enter</span>
+        <div class="intro__scroll-arrow">&#8595;</div>
+      </div>
+      <div class="intro__line-bottom"></div>
+    </div>
+  </section>
+
+  <!-- =====================================================
+       MENU SLIDER
+       ===================================================== -->
+  <div class="slider-wrapper hidden" id="menuSlider">
+
+    <nav class="menu-nav menu-nav--hidden" id="menuNav">
+      <ul class="menu-nav__list">
+        <li><button class="menu-nav__btn active" data-slide="0">Kebabs</button></li>
+        <li><button class="menu-nav__btn" data-slide="1">Tandoor</button></li>
+        <li><button class="menu-nav__btn" data-slide="2">Mains</button></li>
+        <li><button class="menu-nav__btn" data-slide="3">Biryani &amp; Breads</button></li>
+        <li><button class="menu-nav__btn" data-slide="4">Royal Thali</button></li>
+        <li><button class="menu-nav__btn" data-slide="5">Desserts</button></li>
+        <li><button class="menu-nav__btn" data-slide="6">Drinks</button></li>
+      </ul>
+    </nav>
+
+    <button class="slider-arrow slider-arrow--prev slider-arrow--hidden" id="btnPrev" aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="slider-arrow slider-arrow--next" id="btnNext" aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+
+    <div class="slider-dots" id="sliderDots">
+      <button class="dot dot--active" data-slide="0"></button>
+      <button class="dot" data-slide="1"></button>
+      <button class="dot" data-slide="2"></button>
+      <button class="dot" data-slide="3"></button>
+      <button class="dot" data-slide="4"></button>
+      <button class="dot" data-slide="5"></button>
+      <button class="dot" data-slide="6"></button>
+    </div>
+
+    <button class="btn-back" id="btnBack" aria-label="Back to introduction">&#8592; Back</button>
+
+    <div class="slider-track" id="sliderTrack">
+
+      <!-- SLIDE 0 — Kebabs & Starters -->
+      <div class="slide slide--menu">
+        <div class="slide-page">
+          <div class="corner corner--tl"></div><div class="corner corner--tr"></div>
+          <div class="corner corner--bl"></div><div class="corner corner--br"></div>
+          <div class="slide-content">
+            <div class="section-header">
+              <div class="section-header__ornament"><span class="ornament-line"></span><span class="ornament-diamond">&#9670;</span><span class="ornament-line"></span></div>
+              <h2 class="section-header__title">Kebabs &amp; Starters</h2>
+              <p class="section-header__subtitle">The Royal Beginning</p>
+            </div>
+            <div class="menu-showcase">
+              <div class="showcase-image">
+                <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=600&h=280&fit=crop" alt="Kebabs" loading="lazy">
+                <div class="showcase-overlay">FROM THE NAWAB'S KITCHEN</div>
+              </div>
+              <div class="menu-grid menu-grid--2col">
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Galouti Kebab <span class="tag">Signature</span></h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,250</span></div>
+                  <p class="menu-card__desc">Legendary melt-in-mouth minced lamb kebab with 160 spices, served on ulta tawa paratha</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Kakori Kebab <span class="tag">Chef's Pick</span></h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,350</span></div>
+                  <p class="menu-card__desc">Silky minced lamb on skewers, slow-grilled with saffron, cardamom &amp; raw papaya</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Paneer Tikka Anardana</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;950</span></div>
+                  <p class="menu-card__desc">Cottage cheese marinated with pomegranate, hung curd &amp; Kashmiri chilli, tandoor-grilled</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Dahi Ke Kebab</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;850</span></div>
+                  <p class="menu-card__desc">Crispy outside, creamy inside — hung yoghurt patties with aromatic herbs &amp; green chutney</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Murgh Malai Tikka</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,150</span></div>
+                  <p class="menu-card__desc">Tender chicken in cream, cheese, cardamom &amp; mace marinade, grilled in clay oven</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Jhinga Nisha</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,650</span></div>
+                  <p class="menu-card__desc">Tiger prawns marinated overnight in star anise &amp; ajwain, chargrilled with lime butter</p>
+                </div></article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 1 — Tandoor -->
+      <div class="slide slide--menu">
+        <div class="slide-page">
+          <div class="corner corner--tl"></div><div class="corner corner--tr"></div>
+          <div class="corner corner--bl"></div><div class="corner corner--br"></div>
+          <div class="slide-content">
+            <div class="section-header">
+              <div class="section-header__ornament"><span class="ornament-line"></span><span class="ornament-diamond">&#9670;</span><span class="ornament-line"></span></div>
+              <h2 class="section-header__title">From the Tandoor</h2>
+              <p class="section-header__subtitle">Clay Oven Mastery</p>
+            </div>
+            <div class="menu-showcase">
+              <div class="showcase-image">
+                <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600&h=280&fit=crop" alt="Tandoor" loading="lazy">
+                <div class="showcase-overlay">CHARCOAL FIRED &middot; 480&deg;C</div>
+              </div>
+              <div class="menu-grid menu-grid--2col">
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Tandoori Raan <span class="tag">Signature</span></h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;2,450</span></div>
+                  <p class="menu-card__desc">Whole leg of lamb marinated 48 hours in royal spices, slow-roasted in tandoor, serves two</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Tandoori Pomfret</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,850</span></div>
+                  <p class="menu-card__desc">Whole pomfret marinated with ajwain, turmeric &amp; mustard, cooked in clay oven</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Murgh Tikka Lazeez <span class="tag">Chef's Pick</span></h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,250</span></div>
+                  <p class="menu-card__desc">Chicken thigh marinated in reduced milk, saffron &amp; kewra water, grilled on charcoal</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Paneer Khurchan</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;950</span></div>
+                  <p class="menu-card__desc">Shredded tandoor-charred cottage cheese with bell peppers, onion &amp; tomato masala</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Seekh Kebab Gilafi</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,350</span></div>
+                  <p class="menu-card__desc">Minced lamb with julienne peppers &amp; onion, grilled on skewers over open flame</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Subz Seekh Kebab <span class="tag">Vegetarian</span></h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;850</span></div>
+                  <p class="menu-card__desc">Mixed vegetable &amp; paneer seekh with mint, coriander &amp; raw banana, tandoor-grilled</p>
+                </div></article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 2 — Dum Pukht Mains -->
+      <div class="slide slide--menu">
+        <div class="slide-page">
+          <div class="corner corner--tl"></div><div class="corner corner--tr"></div>
+          <div class="corner corner--bl"></div><div class="corner corner--br"></div>
+          <div class="slide-content">
+            <div class="section-header">
+              <div class="section-header__ornament"><span class="ornament-line"></span><span class="ornament-diamond">&#9670;</span><span class="ornament-line"></span></div>
+              <h2 class="section-header__title">Dum Pukht Mains</h2>
+              <p class="section-header__subtitle">The Art of Slow Cooking</p>
+            </div>
+            <div class="menu-grid menu-grid--2col">
+              <article class="menu-card" data-aos><div class="menu-card__inner">
+                <div class="menu-card__header"><h3 class="menu-card__name">Dum Pukht Biryani <span class="tag">Signature</span></h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,850</span></div>
+                <p class="menu-card__desc">Sealed pot biryani — aged basmati, lamb, saffron, kewra &amp; whole spices, dum-cooked 4 hours</p>
+              </div></article>
+              <article class="menu-card" data-aos><div class="menu-card__inner">
+                <div class="menu-card__header"><h3 class="menu-card__name">Raan-E-Dum Pukht <span class="tag">Signature</span></h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;2,850</span></div>
+                <p class="menu-card__desc">Whole leg of lamb sealed in dough, slow-cooked overnight with 36 royal spices, serves two</p>
+              </div></article>
+              <article class="menu-card" data-aos><div class="menu-card__inner">
+                <div class="menu-card__header"><h3 class="menu-card__name">Butter Chicken <span class="tag">Chef's Pick</span></h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,450</span></div>
+                <p class="menu-card__desc">Iconic makhani gravy with tandoor chicken, tomato, cream, dried fenugreek &amp; desi ghee</p>
+              </div></article>
+              <article class="menu-card" data-aos><div class="menu-card__inner">
+                <div class="menu-card__header"><h3 class="menu-card__name">Dal Dum Pukht</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;950</span></div>
+                <p class="menu-card__desc">Whole black lentils simmered 18 hours with cream, tomato &amp; desi ghee — the ultimate dal</p>
+              </div></article>
+              <article class="menu-card" data-aos><div class="menu-card__inner">
+                <div class="menu-card__header"><h3 class="menu-card__name">Rogan Josh</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,650</span></div>
+                <p class="menu-card__desc">Aromatic Kashmiri lamb curry with whole dried chillies, fennel, saffron &amp; yoghurt</p>
+              </div></article>
+              <article class="menu-card" data-aos><div class="menu-card__inner">
+                <div class="menu-card__header"><h3 class="menu-card__name">Shahi Paneer</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,050</span></div>
+                <p class="menu-card__desc">Royal cottage cheese in cashew-saffron gravy with rose petal &amp; cardamom cream</p>
+              </div></article>
+              <article class="menu-card" data-aos><div class="menu-card__inner">
+                <div class="menu-card__header"><h3 class="menu-card__name">Nihari Gosht</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,550</span></div>
+                <p class="menu-card__desc">Slow-braised lamb shank in bone marrow gravy with ginger julienne &amp; fried onion</p>
+              </div></article>
+              <article class="menu-card" data-aos><div class="menu-card__inner">
+                <div class="menu-card__header"><h3 class="menu-card__name">Palak Kofta</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,050</span></div>
+                <p class="menu-card__desc">Cottage cheese dumplings stuffed with dried fruits, served in silky spinach gravy</p>
+              </div></article>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 3 — Biryani & Breads -->
+      <div class="slide slide--menu">
+        <div class="slide-page">
+          <div class="corner corner--tl"></div><div class="corner corner--tr"></div>
+          <div class="corner corner--bl"></div><div class="corner corner--br"></div>
+          <div class="slide-content">
+            <div class="section-header">
+              <div class="section-header__ornament"><span class="ornament-line"></span><span class="ornament-diamond">&#9670;</span><span class="ornament-line"></span></div>
+              <h2 class="section-header__title">Biryani &amp; Breads</h2>
+              <p class="section-header__subtitle">Fragrant Rice &amp; Tandoor Breads</p>
+            </div>
+            <div class="menu-showcase">
+              <div class="showcase-image">
+                <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&h=280&fit=crop" alt="Biryani" loading="lazy">
+                <div class="showcase-overlay">SEALED &amp; DUM-COOKED</div>
+              </div>
+              <div class="menu-grid menu-grid--2col">
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Lucknowi Biryani <span class="tag">Signature</span></h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,650</span></div>
+                  <p class="menu-card__desc">Layered aged basmati with saffron, kewra water &amp; slow-cooked lamb, sealed with dough</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Murgh Biryani</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,350</span></div>
+                  <p class="menu-card__desc">Fragrant chicken biryani with whole spices, fried onion, mint &amp; saffron milk</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Subz Biryani <span class="tag">Vegetarian</span></h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;1,050</span></div>
+                  <p class="menu-card__desc">Seasonal vegetables layered with saffron basmati, fried onion &amp; fresh herbs</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Garlic Naan</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;250</span></div>
+                  <p class="menu-card__desc">Soft leavened bread topped with roasted garlic, coriander &amp; desi ghee</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Warqi Paratha</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;220</span></div>
+                  <p class="menu-card__desc">Multi-layered flaky whole wheat bread, brushed with ghee, baked in tandoor</p>
+                </div></article>
+                <article class="menu-card" data-aos><div class="menu-card__inner">
+                  <div class="menu-card__header"><h3 class="menu-card__name">Peshwari Naan</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;280</span></div>
+                  <p class="menu-card__desc">Sweet naan stuffed with coconut, almond, cashew &amp; sultana</p>
+                </div></article>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 4 — Royal Thali -->
+      <div class="slide slide--menu slide--tasting">
+        <div class="slide-page">
+          <div class="corner corner--tl"></div><div class="corner corner--tr"></div>
+          <div class="corner corner--bl"></div><div class="corner corner--br"></div>
+          <div class="slide-content">
+            <div class="section-header">
+              <div class="section-header__ornament"><span class="ornament-line"></span><span class="ornament-diamond">&#9670;</span><span class="ornament-line"></span></div>
+              <h2 class="section-header__title">Royal Nawabi Thali</h2>
+              <p class="section-header__subtitle">A Grand Journey Through Awadh</p>
+            </div>
+            <div class="tasting-menu">
+              <div class="tasting-price-badge">
+                <span class="tasting-price-amount">&#8377;4,500</span>
+                <span class="tasting-price-label">per person</span>
+                <span class="tasting-price-wine">With wine pairing +&#8377;2,500</span>
+              </div>
+              <div class="tasting-courses">
+                <div class="tasting-course" data-aos><span class="course-num">I</span><div class="course-info"><h4>Shorba</h4><p>Yakhni gosht shorba — slow-simmered lamb broth with saffron &amp; cardamom</p></div></div>
+                <div class="tasting-course" data-aos><span class="course-num">II</span><div class="course-info"><h4>Galouti Kebab</h4><p>Legendary 160-spice lamb kebab on warqi paratha with mint chutney</p></div></div>
+                <div class="tasting-course" data-aos><span class="course-num">III</span><div class="course-info"><h4>Tandoori Jhinga</h4><p>Tiger prawns, charcoal-grilled with ajwain &amp; lime butter</p></div></div>
+                <div class="tasting-course" data-aos><span class="course-num">IV</span><div class="course-info"><h4>Dum Biryani</h4><p>Sealed pot Lucknowi biryani with aged basmati &amp; slow-cooked lamb</p></div></div>
+                <div class="tasting-course" data-aos><span class="course-num">V</span><div class="course-info"><h4>Dal Dum Pukht</h4><p>18-hour black lentils with cream &amp; garlic naan</p></div></div>
+                <div class="tasting-course" data-aos><span class="course-num">VI</span><div class="course-info"><h4>Nihari &amp; Sheermal</h4><p>Overnight lamb shank in bone marrow gravy with saffron bread</p></div></div>
+                <div class="tasting-course" data-aos><span class="course-num">VII</span><div class="course-info"><h4>Palate Cleanser</h4><p>Rose &amp; fennel seed sorbet with silver leaf</p></div></div>
+                <div class="tasting-course" data-aos><span class="course-num">VIII</span><div class="course-info"><h4>Shahi Tukda</h4><p>Fried bread soaked in saffron rabri with pistachios &amp; silver vark</p></div></div>
+                <div class="tasting-course" data-aos><span class="course-num">IX</span><div class="course-info"><h4>Paan &amp; Chai</h4><p>Traditional betel leaf digestif with Masala Chai</p></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 5 — Desserts -->
+      <div class="slide slide--menu">
+        <div class="slide-page">
+          <div class="corner corner--tl"></div><div class="corner corner--tr"></div>
+          <div class="corner corner--bl"></div><div class="corner corner--br"></div>
+          <div class="slide-content">
+            <div class="section-header">
+              <div class="section-header__ornament"><span class="ornament-line"></span><span class="ornament-diamond">&#9670;</span><span class="ornament-line"></span></div>
+              <h2 class="section-header__title">Desserts</h2>
+              <p class="section-header__subtitle">Sweet Endings, Royal Style</p>
+            </div>
+            <div class="menu-grid menu-grid--2col">
+              <article class="menu-card" data-aos><div class="menu-card__inner">
+                <div class="menu-card__header"><h3 class="menu-card__name">Shahi Tukda <span class="tag">Signature</span></h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;750</span></div>
+                <p class="menu-card__desc">Fried bread soaked in saffron rabri, garnished with pistachios, almonds &amp; silver vark</p>
+              </div></article>
+              <article class="menu-card" data-aos><div class="menu-card__inner">
+                <div class="menu-card__header"><h3 class="menu-card__name">Gulab Jamun</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;550</span></div>
+                <p class="menu-card__desc">Soft khoya dumplings soaked in rose-cardamom sugar syrup, served warm</p>
+              </div></article>
+              <article class="menu-card" data-aos><div class="menu-card__inner">
+                <div class="menu-card__header"><h3 class="menu-card__name">Kulfi Falooda <span class="tag">Chef's Pick</span></h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;650</span></div>
+                <p class="menu-card__desc">Traditional saffron-pistachio ice cream with rose vermicelli, basil seeds &amp; rose syrup</p>
+              </div></article>
+              <article class="menu-card" data-aos><div class="menu-card__inner">
+                <div class="menu-card__header"><h3 class="menu-card__name">Gajar Ka Halwa</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;550</span></div>
+                <p class="menu-card__desc">Slow-cooked grated carrot in reduced milk, ghee, cardamom &amp; topped with khoya</p>
+              </div></article>
+              <article class="menu-card" data-aos><div class="menu-card__inner">
+                <div class="menu-card__header"><h3 class="menu-card__name">Rasmalai</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;600</span></div>
+                <p class="menu-card__desc">Soft spongy chenna discs in chilled saffron-infused thickened milk with pistachios</p>
+              </div></article>
+              <article class="menu-card" data-aos><div class="menu-card__inner">
+                <div class="menu-card__header"><h3 class="menu-card__name">Phirni</h3><span class="menu-card__dots"></span><span class="menu-card__price">&#8377;500</span></div>
+                <p class="menu-card__desc">Chilled ground rice pudding set in clay pot with saffron, rose &amp; cardamom</p>
+              </div></article>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SLIDE 6 — Drinks -->
+      <div class="slide slide--menu">
+        <div class="slide-page">
+          <div class="corner corner--tl"></div><div class="corner corner--tr"></div>
+          <div class="corner corner--bl"></div><div class="corner corner--br"></div>
+          <div class="slide-content">
+            <div class="section-header">
+              <div class="section-header__ornament"><span class="ornament-line"></span><span class="ornament-diamond">&#9670;</span><span class="ornament-line"></span></div>
+              <h2 class="section-header__title">Drinks</h2>
+              <p class="section-header__subtitle">Traditional &amp; Curated</p>
+            </div>
+            <div class="drinks-layout">
+              <div class="drinks-column">
+                <h3 class="drinks-category-title">Traditional Beverages</h3>
+                <div class="drink-item" data-aos><span class="drink-name">Masala Chai</span><span class="drink-dots"></span><span class="drink-price">&#8377;350</span><p class="drink-desc">Spiced black tea with ginger, cardamom, cloves &amp; cinnamon</p></div>
+                <div class="drink-item" data-aos><span class="drink-name">Mango Lassi</span><span class="drink-dots"></span><span class="drink-price">&#8377;450</span><p class="drink-desc">Thick blended yoghurt with Alphonso mango &amp; cardamom</p></div>
+                <div class="drink-item" data-aos><span class="drink-name">Thandai</span><span class="drink-dots"></span><span class="drink-price">&#8377;500</span><p class="drink-desc">Cold spiced milk with almonds, fennel, pepper, saffron &amp; rose petals</p></div>
+                <div class="drink-item" data-aos><span class="drink-name">Rose Sharbat</span><span class="drink-dots"></span><span class="drink-price">&#8377;350</span><p class="drink-desc">Chilled rose syrup with basil seeds, fresh lime &amp; crushed ice</p></div>
+                <div class="drink-item" data-aos><span class="drink-name">Jaljeera</span><span class="drink-dots"></span><span class="drink-price">&#8377;300</span><p class="drink-desc">Tangy cumin-tamarind cooler with fresh mint &amp; black salt</p></div>
+                <h3 class="drinks-category-title">Indian Wines</h3>
+                <div class="drink-item" data-aos><span class="drink-name">Sula Dindori Reserve Shiraz</span><span class="drink-dots"></span><span class="drink-price">&#8377;3,200</span></div>
+                <div class="drink-item" data-aos><span class="drink-name">Grover La R&eacute;serve</span><span class="drink-dots"></span><span class="drink-price">&#8377;4,500</span></div>
+                <div class="drink-item" data-aos><span class="drink-name">Fratelli SETTE</span><span class="drink-dots"></span><span class="drink-price">&#8377;5,800</span></div>
+              </div>
+              <div class="drinks-column">
+                <h3 class="drinks-category-title">Signature Cocktails</h3>
+                <div class="drink-item" data-aos><span class="drink-name">Nawab's Old Fashioned</span><span class="drink-dots"></span><span class="drink-price">&#8377;950</span><p class="drink-desc">Aged Indian single malt, jaggery syrup, saffron bitters, orange peel</p></div>
+                <div class="drink-item" data-aos><span class="drink-name">Kesar Martini</span><span class="drink-dots"></span><span class="drink-price">&#8377;850</span><p class="drink-desc">Saffron-infused vodka, cardamom honey, rose water, gold leaf</p></div>
+                <div class="drink-item" data-aos><span class="drink-name">Aam Panna Spritz</span><span class="drink-dots"></span><span class="drink-price">&#8377;750</span><p class="drink-desc">Raw mango, cumin, prosecco, black salt, mint sprigs</p></div>
+                <div class="drink-item" data-aos><span class="drink-name">Royal Paan Mojito</span><span class="drink-dots"></span><span class="drink-price">&#8377;800</span><p class="drink-desc">Betel leaf, gulkand, white rum, lime, soda, fennel seeds</p></div>
+                <h3 class="drinks-category-title">After Dinner</h3>
+                <div class="drink-item" data-aos><span class="drink-name">Amrut Fusion Single Malt</span><span class="drink-dots"></span><span class="drink-price">&#8377;1,200</span></div>
+                <div class="drink-item" data-aos><span class="drink-name">Paul John Brilliance</span><span class="drink-dots"></span><span class="drink-price">&#8377;950</span></div>
+                <div class="drink-item" data-aos><span class="drink-name">Espresso Chai Martini</span><span class="drink-dots"></span><span class="drink-price">&#8377;850</span><p class="drink-desc">Masala chai-infused vodka, fresh espresso, cardamom foam</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /slider-track -->
+  </div><!-- /slider-wrapper -->
+
+  <script src="js/script.js"></script>
+</body>
+</html>

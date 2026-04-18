@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brew &amp; Bloom — Artisan Coffee Menu</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@300;400;500;600;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ========== SPLASH SCREEN ========== -->
+  <div class="splash" id="splash">
+    <div class="splash-bg"></div>
+    <div class="splash-steam">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="splash-content">
+      <div class="splash-badge">☕ ARTISAN ROASTERS</div>
+      <div class="splash-cup">
+        <svg viewBox="0 0 100 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30 18 Q34 10 30 2" stroke="#E07B39" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7" class="steam-line sl1"/>
+          <path d="M50 14 Q54 6 50 0" stroke="#E07B39" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7" class="steam-line sl2"/>
+          <path d="M70 18 Q74 10 70 2" stroke="#E07B39" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.7" class="steam-line sl3"/>
+          <path d="M14,32 L86,32 L78,92 Q76,100 50,100 Q24,100 22,92 Z" fill="#3B1A08" stroke="#E07B39" stroke-width="2.5"/>
+          <ellipse cx="50" cy="104" rx="38" ry="8" fill="#2C1205" stroke="#E07B39" stroke-width="2"/>
+          <ellipse cx="50" cy="34" rx="36" ry="7" fill="#6B3A1F"/>
+          <path d="M50 34 Q60 38 50 42 Q40 46 50 50" stroke="#D4A368" stroke-width="1.5" fill="none" stroke-linecap="round" opacity="0.6"/>
+          <path d="M86,45 Q105,49 105,64 Q105,79 86,75" stroke="#E07B39" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h1 class="splash-title">Brew &amp; Bloom</h1>
+      <p class="splash-tagline">Artisan Coffee · Handcrafted Daily</p>
+      <div class="splash-divider"><span></span><span class="leaf">🌿</span><span></span></div>
+      <button class="splash-btn" id="enterBtn">
+        <span>Explore Our Menu</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+      <p class="splash-note">24 handcrafted drinks &amp; pastries</p>
+    </div>
+  </div>
+
+  <!-- ========== MAIN APP ========== -->
+  <div class="app" id="app">
+
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-left">
+        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <a href="#" class="brand">
+        <span class="brand-icon">☕</span>
+        <span class="brand-name">Brew &amp; Bloom</span>
+      </a>
+      <div class="header-right">
+        <button class="icon-btn search-toggle" id="searchToggle" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- SEARCH BAR -->
+    <div class="search-bar" id="searchBar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search lattes, cold brew, pastries…" autocomplete="off">
+      <button class="search-close" id="searchClose" aria-label="Close">✕</button>
+    </div>
+
+    <!-- SIDE NAV DRAWER -->
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <nav class="drawer" id="drawer">
+      <div class="drawer-header">
+        <div>
+          <p class="drawer-brand">☕ Brew &amp; Bloom</p>
+          <p class="drawer-tagline">Artisan Coffee</p>
+        </div>
+        <button class="drawer-close" id="drawerClose">✕</button>
+      </div>
+      <ul class="drawer-links">
+        <li><a href="#" data-cat="all" class="drawer-link active"><span class="dl-icon">🏠</span>All Items</a></li>
+        <li><a href="#" data-cat="espresso" class="drawer-link"><span class="dl-icon">☕</span>Espresso Bar</a></li>
+        <li><a href="#" data-cat="hot" class="drawer-link"><span class="dl-icon">🔥</span>Hot Coffee</a></li>
+        <li><a href="#" data-cat="cold" class="drawer-link"><span class="dl-icon">🧊</span>Iced &amp; Cold Brew</a></li>
+        <li><a href="#" data-cat="specials" class="drawer-link"><span class="dl-icon">✨</span>Chef's Specials</a></li>
+        <li><a href="#" data-cat="bites" class="drawer-link"><span class="dl-icon">🥐</span>Pastries &amp; Bites</a></li>
+      </ul>
+      <div class="drawer-footer">
+        <p>☀️ Mon–Fri · 7AM – 9PM</p>
+        <p>🌙 Sat–Sun · 8AM – 10PM</p>
+        <p>📍 42 Blossom Street, Downtown</p>
+      </div>
+    </nav>
+
+    <!-- HERO BANNER -->
+    <section class="page-hero">
+      <div class="page-hero-bg" id="heroBg" style="background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1400&h=700&fit=crop')"></div>
+      <div class="hero-overlay"></div>
+      <div class="page-hero-content">
+        <p class="hero-eyebrow">☕ Fresh · Handcrafted · Daily</p>
+        <h2 class="hero-heading">Wake up to<br><em>something beautiful</em></h2>
+        <p class="hero-sub">24 artisan drinks and pastries, brewed with love every single morning.</p>
+        <div class="hero-stats">
+          <div class="hero-stat"><strong>24+</strong><span>Menu Items</span></div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat"><strong>5</strong><span>Bean Origins</span></div>
+          <div class="hero-stat-divider"></div>
+          <div class="hero-stat"><strong>100%</strong><span>Freshly Made</span></div>
+        </div>
+      </div>
+      <!-- Featured strip -->
+      <div class="hero-strip-wrapper">
+        <p class="hero-strip-label">🔥 Today's Picks</p>
+        <div class="hero-strip" id="heroStrip"></div>
+      </div>
+    </section>
+
+    <!-- CATEGORY PILLS -->
+    <div class="cat-bar">
+      <div class="cat-bar-inner" id="catBar">
+        <button class="cat-pill active" data-cat="all">All</button>
+        <button class="cat-pill" data-cat="espresso">☕ Espresso</button>
+        <button class="cat-pill" data-cat="hot">🔥 Hot Coffee</button>
+        <button class="cat-pill" data-cat="cold">🧊 Iced &amp; Cold</button>
+        <button class="cat-pill" data-cat="specials">✨ Specials</button>
+        <button class="cat-pill" data-cat="bites">🥐 Pastries</button>
+      </div>
+    </div>
+
+    <!-- MENU GRID -->
+    <main class="menu-grid" id="menuGrid"></main>
+
+    <!-- EMPTY STATE -->
+    <div class="empty-state hidden" id="emptyState">
+      <div class="empty-icon">☕</div>
+      <p>No items found</p>
+      <small>Try "latte", "cold brew", or "croissant"</small>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-logo">☕ Brew &amp; Bloom</div>
+      <p class="footer-tagline">Handcrafted with love, one cup at a time</p>
+      <div class="footer-links">
+        <span>Mon–Fri 7AM–9PM</span>
+        <span>·</span>
+        <span>Sat–Sun 8AM–10PM</span>
+        <span>·</span>
+        <span>📍 42 Blossom Street</span>
+      </div>
+      <p class="footer-copy">&copy; 2026 Brew &amp; Bloom. All rights reserved.</p>
+    </footer>
+
+  </div>
+
+  <!-- DRINK DETAIL MODAL -->
+  <div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      <div class="modal-img-wrap">
+        <img id="modalImg" src="" alt="">
+        <div class="modal-img-gradient"></div>
+      </div>
+      <div class="modal-body">
+        <span class="modal-tag" id="modalTag"></span>
+        <h3 class="modal-name" id="modalName"></h3>
+        <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-meta" id="modalMeta"></div>
+        <div class="modal-price-row">
+          <span class="modal-price" id="modalPrice"></span>
+          <span class="modal-cal" id="modalCal"></span>
+        </div>
+        <button class="modal-order-btn" id="modalOrderBtn">Order Now</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+  <script>
+    // Inject featured strip
+    const popular = menuItems.filter(i => i.popular);
+    const strip = document.getElementById('heroStrip');
+    if (strip) {
+      popular.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'strip-card';
+        el.innerHTML = `
+          <img src="${item.img}" alt="${item.name}" loading="lazy">
+          <div class="strip-info">
+            <span class="strip-name">${item.name}</span>
+            <span class="strip-price">${item.price}</span>
+          </div>
+        `;
+        el.addEventListener('click', () => openModal(item));
+        strip.appendChild(el);
+      });
+    }
+  </script>
+</body>
+</html>

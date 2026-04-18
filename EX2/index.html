@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEXUS — Futuristic Menu</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ========== PARTICLE CANVAS ========== -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- ========== LANDING SCREEN ========== -->
+  <div class="landing active" id="landing">
+    <div class="landing-glow"></div>
+    <div class="landing-rings">
+      <div class="ring ring-1"></div>
+      <div class="ring ring-2"></div>
+      <div class="ring ring-3"></div>
+    </div>
+    <div class="landing-content">
+      <div class="logo-hex">
+        <span>N</span>
+      </div>
+      <h1 class="landing-title">
+        <span class="letter" style="--i:0">N</span><span class="letter" style="--i:1">E</span><span class="letter" style="--i:2">X</span><span class="letter" style="--i:3">U</span><span class="letter" style="--i:4">S</span>
+      </h1>
+      <p class="landing-sub">SMART · INTERACTIVE · MENU</p>
+      <div class="landing-line"></div>
+      <button class="enter-btn" id="enterBtn">
+        <span class="btn-text">EXPLORE MENU</span>
+        <span class="btn-glow"></span>
+        <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========== MAIN APP ========== -->
+  <div class="app" id="app">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="mini-logo">N</div>
+        <span class="brand-text">NEXUS</span>
+      </div>
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Search menu..." autocomplete="off">
+        <div class="search-results" id="searchResults"></div>
+      </div>
+      <button class="cart-btn" id="cartToggle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </header>
+
+    <!-- CATEGORY NAV -->
+    <nav class="category-nav" id="categoryNav">
+      <button class="cat-pill active" data-cat="all">
+        <span class="cat-icon">✦</span> All
+      </button>
+      <button class="cat-pill" data-cat="coffee">
+        <span class="cat-icon">☕</span> Coffee
+      </button>
+      <button class="cat-pill" data-cat="snacks">
+        <span class="cat-icon">🍿</span> Snacks
+      </button>
+      <button class="cat-pill" data-cat="desserts">
+        <span class="cat-icon">🍰</span> Desserts
+      </button>
+      <button class="cat-pill" data-cat="drinks">
+        <span class="cat-icon">🧃</span> Drinks
+      </button>
+    </nav>
+
+    <!-- RECOMMENDATIONS -->
+    <section class="reco-section" id="recoSection">
+      <h3 class="section-label"><span class="label-dot"></span> Recommended For You</h3>
+      <div class="reco-strip" id="recoStrip"></div>
+    </section>
+
+    <!-- MENU GRID -->
+    <section class="menu-section">
+      <div class="menu-grid" id="menuGrid"></div>
+      <p class="no-results" id="noResults">No items found.</p>
+    </section>
+
+    <!-- ITEM DETAIL MODAL -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal" id="modal">
+        <button class="modal-close" id="modalClose">✕</button>
+        <div class="modal-visual" id="modalVisual">
+          <img id="modalImg" src="" alt="">
+          <div class="modal-glow-ring"></div>
+        </div>
+        <div class="modal-info">
+          <span class="modal-cat" id="modalCat"></span>
+          <h2 class="modal-name" id="modalName"></h2>
+          <p class="modal-desc" id="modalDesc"></p>
+          <div class="modal-bottom">
+            <span class="modal-price" id="modalPrice"></span>
+            <button class="modal-add" id="modalAdd">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              ADD TO CART
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CART DRAWER -->
+    <div class="cart-overlay" id="cartOverlay">
+      <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+          <h3>Your Cart</h3>
+          <button class="cart-close" id="cartClose">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+          <div class="cart-total">
+            <span>Total</span>
+            <span id="cartTotal">₹0</span>
+          </div>
+          <button class="checkout-btn" id="checkoutBtn">PLACE ORDER</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end app -->
+
+  <script src="js/script.js"></script>
+</body>
+</html>

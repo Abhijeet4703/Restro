@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Royal Plate — Exquisite Dining</title>
+<meta name="description" content="Experience fine dining with our interactive 3D digital menu. Browse, customize, and order from The Royal Plate." />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════ AMBIENT PARTICLE CANVAS ═══════ -->
+<canvas id="particleCanvas"></canvas>
+
+<!-- ═══════ CINEMATIC INTRO ═══════ -->
+<div class="intro-overlay" id="introOverlay">
+  <div class="intro-particles" id="introParticles"></div>
+  <div class="intro-content">
+    <div class="intro-ornament-ring">
+      <svg viewBox="0 0 200 200" class="ornament-svg">
+        <circle cx="100" cy="100" r="90" class="ornament-circle" />
+        <circle cx="100" cy="100" r="75" class="ornament-circle inner" />
+      </svg>
+    </div>
+    <div class="intro-text">
+      <div class="intro-stars">✦ ✦ ✦</div>
+      <h1 class="intro-title">The Royal<br/>Plate</h1>
+      <p class="intro-subtitle">— Curated Menu —</p>
+      <div class="intro-stars">✦ ✦ ✦</div>
+    </div>
+    <div class="intro-cta">
+      <div class="intro-shimmer-line"></div>
+      <span>Tap anywhere to enter</span>
+      <div class="intro-pulse-ring"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ MAIN MENU ═══════ -->
+<div class="menu-wrapper" id="menuWrapper">
+
+  <!-- Header with animated ornaments -->
+  <header class="menu-header">
+    <div class="header-glow"></div>
+    <div class="header-ornament-line">
+      <span class="orn-dot"></span><span class="orn-line"></span><span class="orn-diamond">❖</span><span class="orn-line"></span><span class="orn-dot"></span>
+    </div>
+    <h1 class="restaurant-name">
+      <span class="name-char" style="--i:0">T</span><span class="name-char" style="--i:1">h</span><span class="name-char" style="--i:2">e</span><span class="name-char" style="--i:3">&nbsp;</span><span class="name-char" style="--i:4">R</span><span class="name-char" style="--i:5">o</span><span class="name-char" style="--i:6">y</span><span class="name-char" style="--i:7">a</span><span class="name-char" style="--i:8">l</span><span class="name-char" style="--i:9">&nbsp;</span><span class="name-char" style="--i:10">P</span><span class="name-char" style="--i:11">l</span><span class="name-char" style="--i:12">a</span><span class="name-char" style="--i:13">t</span><span class="name-char" style="--i:14">e</span>
+    </h1>
+    <p class="restaurant-tagline">An Exquisite Culinary Journey</p>
+    <div class="header-ornament-line">
+      <span class="orn-dot"></span><span class="orn-line"></span><span class="orn-diamond">❖</span><span class="orn-line"></span><span class="orn-dot"></span>
+    </div>
+  </header>
+
+  <!-- Category Tabs -->
+  <nav class="category-nav" id="categoryNav">
+    <button class="cat-tab active" data-cat="starters">
+      <span class="tab-icon">🥗</span>
+      <span class="tab-label">Starters</span>
+      <span class="tab-glow"></span>
+    </button>
+    <button class="cat-tab" data-cat="mains">
+      <span class="tab-icon">🍛</span>
+      <span class="tab-label">Main Course</span>
+      <span class="tab-glow"></span>
+    </button>
+    <button class="cat-tab" data-cat="biryani">
+      <span class="tab-icon">🍚</span>
+      <span class="tab-label">Biryani & Rice</span>
+      <span class="tab-glow"></span>
+    </button>
+    <button class="cat-tab" data-cat="breads">
+      <span class="tab-icon">🫓</span>
+      <span class="tab-label">Breads</span>
+      <span class="tab-glow"></span>
+    </button>
+    <button class="cat-tab" data-cat="desserts">
+      <span class="tab-icon">🍰</span>
+      <span class="tab-label">Desserts</span>
+      <span class="tab-glow"></span>
+    </button>
+    <button class="cat-tab" data-cat="drinks">
+      <span class="tab-icon">🥤</span>
+      <span class="tab-label">Beverages</span>
+      <span class="tab-glow"></span>
+    </button>
+  </nav>
+
+  <!-- Menu Sections -->
+  <main class="menu-content">
+
+    <!-- ═══ STARTERS ═══ -->
+    <section class="menu-section active" id="starters">
+      <h2 class="section-title"><span class="st-line"></span><span class="st-text">Starters</span><span class="st-line"></span></h2>
+      <div class="items-grid">
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge veg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Paneer Tikka</h3>
+              <p class="item-desc">Marinated cottage cheese grilled in tandoor with bell peppers and mint chutney</p>
+              <div class="item-meta">
+                <span class="spice">🌶️🌶️</span>
+                <span class="prep">⏱ 15 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹299</span>
+                <button class="add-btn" onclick="addToCart('Paneer Tikka', 299)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge nonveg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Chicken Seekh Kebab</h3>
+              <p class="item-desc">Minced chicken with aromatic spices, grilled to perfection on iron skewers</p>
+              <div class="item-meta">
+                <span class="spice">🌶️🌶️🌶️</span>
+                <span class="prep">⏱ 20 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹349</span>
+                <button class="add-btn" onclick="addToCart('Chicken Seekh Kebab', 349)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge veg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1606491956689-2ea866880049?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Crispy Corn</h3>
+              <p class="item-desc">Golden fried corn tossed with butter, curry leaves, and a secret spice blend</p>
+              <div class="item-meta">
+                <span class="spice">🌶️</span>
+                <span class="prep">⏱ 10 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹249</span>
+                <button class="add-btn" onclick="addToCart('Crispy Corn', 249)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge nonveg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Mutton Galouti</h3>
+              <p class="item-desc">Melt-in-mouth Lucknowi kebabs with 40+ spices on mini roomali roti</p>
+              <div class="item-meta">
+                <span class="spice">🌶️🌶️</span>
+                <span class="prep">⏱ 25 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹449</span>
+                <button class="add-btn" onclick="addToCart('Mutton Galouti', 449)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ MAINS ═══ -->
+    <section class="menu-section" id="mains">
+      <h2 class="section-title"><span class="st-line"></span><span class="st-text">Main Course</span><span class="st-line"></span></h2>
+      <div class="items-grid">
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge veg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Dal Makhani</h3>
+              <p class="item-desc">Black lentils slow-cooked overnight with butter, cream, and mild spices</p>
+              <div class="item-meta">
+                <span class="spice">🌶️</span>
+                <span class="prep">⏱ 20 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹349</span>
+                <button class="add-btn" onclick="addToCart('Dal Makhani', 349)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge nonveg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Butter Chicken</h3>
+              <p class="item-desc">Tender tandoori chicken in luscious tomato-butter gravy with kasuri methi</p>
+              <div class="item-meta">
+                <span class="spice">🌶️🌶️</span>
+                <span class="prep">⏱ 18 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹449</span>
+                <button class="add-btn" onclick="addToCart('Butter Chicken', 449)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge veg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Paneer Butter Masala</h3>
+              <p class="item-desc">Soft paneer cubes in a rich, creamy tomato gravy with aromatic spices</p>
+              <div class="item-meta">
+                <span class="spice">🌶️🌶️</span>
+                <span class="prep">⏱ 15 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹379</span>
+                <button class="add-btn" onclick="addToCart('Paneer Butter Masala', 379)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge nonveg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1574653853027-5382a3d23a15?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Rogan Josh</h3>
+              <p class="item-desc">Kashmiri-style lamb curry slow-cooked with fragrant whole spices</p>
+              <div class="item-meta">
+                <span class="spice">🌶️🌶️🌶️</span>
+                <span class="prep">⏱ 30 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹549</span>
+                <button class="add-btn" onclick="addToCart('Rogan Josh', 549)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ BIRYANI ═══ -->
+    <section class="menu-section" id="biryani">
+      <h2 class="section-title"><span class="st-line"></span><span class="st-text">Biryani & Rice</span><span class="st-line"></span></h2>
+      <div class="items-grid">
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge nonveg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Hyderabadi Dum Biryani</h3>
+              <p class="item-desc">Aromatic basmati rice layered with tender meat, saffron, and fried onions</p>
+              <div class="item-meta">
+                <span class="spice">🌶️🌶️🌶️</span>
+                <span class="prep">⏱ 35 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹499</span>
+                <button class="add-btn" onclick="addToCart('Hyderabadi Dum Biryani', 499)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge veg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1596797038530-2c107229654b?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Veg Dum Biryani</h3>
+              <p class="item-desc">Fragrant basmati rice with mixed vegetables, saffron, and whole spices</p>
+              <div class="item-meta">
+                <span class="spice">🌶️🌶️</span>
+                <span class="prep">⏱ 30 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹399</span>
+                <button class="add-btn" onclick="addToCart('Veg Dum Biryani', 399)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ BREADS ═══ -->
+    <section class="menu-section" id="breads">
+      <h2 class="section-title"><span class="st-line"></span><span class="st-text">Breads</span><span class="st-line"></span></h2>
+      <div class="items-grid">
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge veg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Garlic Naan</h3>
+              <p class="item-desc">Soft tandoor-baked naan brushed with garlic butter and fresh coriander</p>
+              <div class="item-meta">
+                <span class="prep">⏱ 8 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹79</span>
+                <button class="add-btn" onclick="addToCart('Garlic Naan', 79)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge veg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1626074353765-517a681e40be?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Butter Roti</h3>
+              <p class="item-desc">Whole wheat flatbread cooked in tandoor, brushed with melted butter</p>
+              <div class="item-meta">
+                <span class="prep">⏱ 5 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹49</span>
+                <button class="add-btn" onclick="addToCart('Butter Roti', 49)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ DESSERTS ═══ -->
+    <section class="menu-section" id="desserts">
+      <h2 class="section-title"><span class="st-line"></span><span class="st-text">Desserts</span><span class="st-line"></span></h2>
+      <div class="items-grid">
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge veg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Gulab Jamun</h3>
+              <p class="item-desc">Soft milk dumplings soaked in rose-cardamom sugar syrup, served warm</p>
+              <div class="item-meta">
+                <span class="prep">⏱ 5 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹199</span>
+                <button class="add-btn" onclick="addToCart('Gulab Jamun', 199)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge veg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Rasmalai</h3>
+              <p class="item-desc">Flattened cottage cheese dumplings in sweetened, saffron-flavored milk</p>
+              <div class="item-meta">
+                <span class="prep">⏱ 5 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹249</span>
+                <button class="add-btn" onclick="addToCart('Rasmalai', 249)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══ DRINKS ═══ -->
+    <section class="menu-section" id="drinks">
+      <h2 class="section-title"><span class="st-line"></span><span class="st-text">Beverages</span><span class="st-line"></span></h2>
+      <div class="items-grid">
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge veg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Mango Lassi</h3>
+              <p class="item-desc">Chilled Alphonso mango blended with creamy yogurt and cardamom</p>
+              <div class="item-meta">
+                <span class="prep">⏱ 3 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹179</span>
+                <button class="add-btn" onclick="addToCart('Mango Lassi', 179)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tilt-card" data-tilt>
+          <div class="card-shine"></div>
+          <div class="card-border-glow"></div>
+          <div class="card-inner">
+            <div class="item-badge veg">●</div>
+            <div class="item-img-wrap">
+              <div class="item-img" style="background-image:url('https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=400&h=300&fit=crop')"></div>
+              <div class="img-overlay"></div>
+            </div>
+            <div class="item-info">
+              <h3>Masala Chai</h3>
+              <p class="item-desc">Strong CTC tea brewed with ginger, cardamom, cloves, and milk</p>
+              <div class="item-meta">
+                <span class="prep">⏱ 5 min</span>
+              </div>
+              <div class="item-bottom">
+                <span class="item-price">₹99</span>
+                <button class="add-btn" onclick="addToCart('Masala Chai', 99)">
+                  <span class="btn-text">+ ADD</span>
+                  <span class="btn-shimmer"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Floating Cart Button -->
+  <div class="floating-cart" id="floatingCart" onclick="toggleCart()">
+    <span class="cart-pulse-ring"></span>
+    <span class="cart-icon">🛒</span>
+    <span class="cart-count" id="cartCount">0</span>
+    <span class="cart-total" id="cartTotal">₹0</span>
+  </div>
+
+  <!-- Cart Drawer -->
+  <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-handle"></div>
+    <div class="cart-header">
+      <h2>Your Royal Order</h2>
+      <button class="cart-close" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">
+        <span class="cart-empty-icon">🍽️</span>
+        <p>Your order is empty</p>
+      </div>
+    </div>
+    <div class="cart-footer">
+      <div class="cart-subtotal">
+        <span>Subtotal</span>
+        <span id="cartSubtotal">₹0</span>
+      </div>
+      <div class="cart-gst">
+        <span>GST (5%)</span>
+        <span id="cartGst">₹0</span>
+      </div>
+      <div class="cart-grand">
+        <span>Grand Total</span>
+        <span id="cartGrand">₹0</span>
+      </div>
+      <button class="place-order-btn" onclick="placeOrder()">
+        <span class="btn-shimmer"></span>
+        <span>Place Order →</span>
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast">
+  <span class="toast-icon">✓</span>
+  <span class="toast-text" id="toastText">Added to cart</span>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
