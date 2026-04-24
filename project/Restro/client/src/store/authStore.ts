@@ -100,7 +100,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'restro-auth',
-      partialize: (state) => ({ token: state.token }),
+      partialize: (state) => ({ token: state.token, user: state.user, restaurant: state.restaurant }),
     }
   )
 );

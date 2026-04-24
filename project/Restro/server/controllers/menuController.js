@@ -86,3 +86,37 @@ exports.toggleAvailability = async (req, res) => {
     res.status(500).json({ message: 'Failed to toggle availability.', error: error.message });
   }
 };
+
+// Get single menu item with ingredients (for n8n integration)
+exports.getMenuItemWithIngredients = async (req, res) => {
+  try {
+    const item = await MenuItem.findOne({
+      _id: req.params.id,
+      restaurantId: req.restaurantId
+    }).populate('ingredients.inventoryId', 'name quantity unit lowStockThreshold isLowStock');
+
+    if (!item) {
+      return res.status(404).json({ message: 'Menu item not found.' });
+    }
+
+    res.json({ item });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to get menu item.', error: error.message });
+  }
+};
+
+// Get ingredients for multiple menu items (bulk)
+exports.getBulkIngredients = async (req, res) => {
+  try {
+    const { menuItemIds } = req.body;
+    
+    const items = await MenuItem.find({
+      _id: { $in: menuItemIds },
+      restaurantId: req.restaurantId
+    }).populate('ingredients.inventoryId', 'name quantity unit lowStockThreshold isLowStock');
+
+    res.json({ items });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to get ingredients.', error: error.message });
+  }
+};

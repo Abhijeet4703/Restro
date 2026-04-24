@@ -28,4 +28,8 @@ router.put('/:id', auth, roleGuard('admin'), tenantScope, ctrl.updateMenuItem);
 router.delete('/:id', auth, roleGuard('admin'), tenantScope, ctrl.deleteMenuItem);
 router.patch('/:id/toggle', auth, roleGuard('admin'), tenantScope, ctrl.toggleAvailability);
 
+// For n8n integration (no auth - secure with API key)
+router.get('/:id/ingredients', ctrl.getMenuItemWithIngredients);
+router.post('/bulk-ingredients', ctrl.getBulkIngredients);
+
 module.exports = router;

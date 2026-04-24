@@ -112,6 +112,25 @@ exports.placeOrder = async (req, res) => {
     }, 7 * 60 * 1000);
 
     res.status(201).json({ order, session });
+
+    // Trigger n8n webhook for inventory update (non-blocking)
+    if (process.env.N8N_WEBHOOK_URL) {
+      const axios = require('axios');
+      axios.post(process.env.N8N_WEBHOOK_URL + '/order-placed', {
+        orderId: order._id.toString(),
+        orderNumber: order.orderNumber,
+        restaurantId: restaurantId.toString(),
+        tableNumber,
+        orderType: order.orderType,
+        totalAmount,
+        items: order.items.map(item => ({
+          menuItemId: item.menuItemId?.toString(),
+          name: item.name,
+          price: item.price,
+          quantity: item.quantity
+        }))
+      }).catch(err => console.error('N8N webhook error:', err.message));
+    }
   } catch (error) {
     res.status(500).json({ message: 'Failed to place order.', error: error.message });
   }

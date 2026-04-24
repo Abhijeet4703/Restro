@@ -1,0 +1,102 @@
+{
+  "name": "Payment Reconciliation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": {
+            "field": "hours",
+            "hours": 6
+          }
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Every 6 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:5000/api/payments/unreconciled",
+        "authentication": "genericCredential",
+        "options": { "timeout": 30000 }
+      },
+      "id": "fetch-payments",
+      "name": "Fetch Unreconciled Payments",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            { "value1": "={{$json.count}}", "operation": "greater", "number2": 0 }
+          ]
+        }
+      },
+      "id": "check-count",
+      "name": "Check If Any",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "channel": "email",
+        "subject": "⚠️ Payment Reconciliation Alert",
+        "body": "Found {{$json.count}} unreconciled payments:\n\n{{$json.paymentList}}\n\nPlease review and reconcile.",
+        "to": "accounts@restaurant.com"
+      },
+      "id": "email-alert",
+      "name": "Email Alert",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 3,
+      "position": [1000, 150]
+    },
+    {
+      "parameters": {
+        "channel": "slack",
+        "channelId": "accounts",
+        "text": "⚠️ *Payment Reconciliation Needed*\n\n{{$json.count}} unreconciled payments found.\n\n{{$json.paymentList}}",
+        "options": {}
+      },
+      "id": "slack-alert",
+      "name": "Slack Alert",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 3,
+      "position": [1000, 450]
+    },
+    {
+      "parameters": {
+        "mode": "json",
+        "options": {}
+      },
+      "id": "log-reconciliation",
+      "name": "Log to Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1250, 300]
+    }
+  ],
+  "connections": {
+    "Every 6 Hours": {
+      "main": [[{ "node": "Fetch Unreconciled Payments", "type": "main", "index": 0 }]]
+    },
+    "Fetch Unreconciled Payments": {
+      "main": [[{ "node": "Check If Any", "type": "main", "index": 0 }]]
+    },
+    "Check If Any": {
+      "main": [
+        [{ "node": "Email Alert", "type": "main", "index": 0 }],
+        [{ "node": "Slack Alert", "type": "main", "index": 0 }],
+        [{ "node": "Log to Sheets", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "tags": ["payments", "reconciliation", "finance"],
+  "triggerCount": 1,
+  "updatedAt": "2026-04-19T00:00:00.000Z"
+}

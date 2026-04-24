@@ -1,0 +1,94 @@
+{
+  "name": "Order Notifications",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "new-order",
+        "responseMode": "onReceived"
+      },
+      "id": "webhook-trigger",
+      "name": "Order Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.orderType}}",
+              "operation": "equal",
+              "value2": "delivery"
+            }
+          ]
+        }
+      },
+      "id": "check-order-type",
+      "name": "Check Order Type",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "channel": "slack",
+        "channelId": "orders",
+        "text": "🔔 *New Order #{{$json.orderNumber}}*\n\n*Type:* {{$json.orderType}}\n*Table:* {{$json.tableNumber}}\n*Total:* ₹{{$json.totalAmount}}\n\n*Items:*",
+        "attachments": [],
+        "options": {}
+      },
+      "id": "slack-notify",
+      "name": "Slack Notification",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 3,
+      "position": [750, 150]
+    },
+    {
+      "parameters": {
+        "channel": "email",
+        "subject": "New Order #{{$json.orderNumber}} - {{$json.orderType}}",
+        "body": "New order received!\n\nOrder #: {{$json.orderNumber}}\nType: {{$json.orderType}}\nTable: {{$json.tableNumber}}\nTotal: ₹{{$json.totalAmount}}\n\nItems:\n{{$json.itemsText}}",
+        "to": "kitchen@restaurant.com"
+      },
+      "id": "kitchen-email",
+      "name": "Email to Kitchen",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 3,
+      "position": [750, 450]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"status\": \"notified\"}"
+      },
+      "id": "respond",
+      "name": "Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1000, 300]
+    }
+  ],
+  "connections": {
+    "Order Webhook": {
+      "main": [[{ "node": "Check Order Type", "type": "main", "index": 0 }]]
+    },
+    "Check Order Type": {
+      "main": [
+        [{ "node": "Slack Notification", "type": "main", "index": 0 }],
+        [{ "node": "Email to Kitchen", "type": "main", "index": 0 }]
+      ]
+    },
+    "Slack Notification": {
+      "main": [[{ "node": "Response", "type": "main", "index": 0 }]]
+    },
+    "Email to Kitchen": {
+      "main": [[{ "node": "Response", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "tags": ["orders", "notifications", "slack"],
+  "triggerCount": 1,
+  "updatedAt": "2026-04-19T00:00:00.000Z"
+}

@@ -23,6 +23,8 @@ interface CustomerOrder {
   paymentMode: string;
   paymentStatus: string;
   orderStatus: string;
+  customerName?: string;
+  customerPhone?: string;
   createdAt: string;
 }
 
@@ -701,6 +703,8 @@ export default function BillingPage() {
     setDiscountValue(0);
     setDiscountInput('');
     setPaymentMethod(order.paymentMode === 'pay-now' ? 'card' : 'cash');
+    if (order.customerName) setCustomerName(order.customerName);
+    if (order.customerPhone) setCustomerPhone(order.customerPhone);
     toast.success(`Loaded order ${order.orderNumber} for Table ${order.tableNumber}`);
   }, []);
 

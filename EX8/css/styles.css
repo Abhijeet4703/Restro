@@ -1,0 +1,664 @@
+/* ================================================================
+   LUSCIOUS — Coffee Shop & Restaurant Menu
+   Multi-Screen Slide Navigation
+   ================================================================ */
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --dark-slate: #3a3a3a;
+  --dark-bg: #1a1a1a;
+  --light-bg: #f9f9f9;
+  --accent-gold: #d4a574;
+  --accent-coral: #e17055;
+  --text-dark: #333;
+  --text-light: #fff;
+  --border-color: #e0e0e0;
+  --teal: #2a8080;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  background: var(--dark-bg);
+}
+
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: var(--teal);
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  z-index: 100;
+}
+
+.top-bar-text {
+  color: var(--text-light);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* ================================================================
+   SLIDER CONTAINER
+   ================================================================ */
+
+.screens-container {
+  position: relative;
+  width: 100vw;
+  height: calc(100vh - 50px);
+  margin-top: 50px;
+  overflow: hidden;
+}
+
+/* ================================================================
+   SCREEN BASE STYLES
+   ================================================================ */
+
+.screen {
+  width: 100vw;
+  height: calc(100vh - 50px);
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.screen.active {
+  display: flex;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ================================================================
+   SCREEN 1: WELCOME
+   ================================================================ */
+
+.welcome-screen {
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  overflow: hidden;
+}
+
+.welcome-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.welcome-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.welcome-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: var(--text-light);
+  width: 100%;
+  padding: 40px 20px;
+}
+
+.welcome-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  text-transform: lowercase;
+}
+
+.welcome-title span {
+  display: block;
+  font-size: 4rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-top: 5px;
+}
+
+.welcome-subtitle {
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  margin-bottom: 50px;
+  opacity: 0.9;
+}
+
+.slide-btn {
+  background: linear-gradient(135deg, var(--accent-gold), #c99360);
+  color: var(--text-dark);
+  border: none;
+  padding: 14px 40px;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 30px 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(212, 165, 116, 0.3);
+}
+
+.slide-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(212, 165, 116, 0.4);
+}
+
+.slide-btn .arrow {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.welcome-contact {
+  margin-top: 60px;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.social-icons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.social-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--accent-coral);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: scale(1.1);
+  background: #d85a47;
+}
+
+.social-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ================================================================
+   SCREEN 2: MENU
+   ================================================================ */
+
+.menu-screen {
+  background: var(--light-bg);
+  align-items: stretch;
+  justify-content: flex-start;
+  padding-top: 30px;
+}
+
+.menu-header {
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 5;
+}
+
+.coffee-logo {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coffee-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.menu-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  letter-spacing: 2px;
+}
+
+.menu-wrapper {
+  display: flex;
+  flex: 1;
+  gap: 0;
+  overflow: hidden;
+}
+
+/* ================================================================
+   MENU SIDEBAR
+   ================================================================ */
+
+.menu-sidebar {
+  width: 120px;
+  background: var(--dark-slate);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.category-item {
+  padding: 20px 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.category-item.active {
+  background: rgba(255, 255, 255, 0.1);
+  border-left-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.category-icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.category-name {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.category-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ================================================================
+   MENU ITEMS
+   ================================================================ */
+
+.menu-items {
+  flex: 1;
+  padding: 30px 40px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 30px;
+}
+
+.menu-item-group {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 30px;
+  animation: fadeIn 0.3s ease;
+}
+
+.menu-item-group.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-item {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.menu-item img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
+.menu-item h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  padding: 15px 15px 5px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.menu-item .price {
+  color: var(--accent-coral);
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 0 15px 15px;
+  margin: 0;
+}
+
+/* ================================================================
+   LOCK BUTTON
+   ================================================================ */
+
+.lock-btn {
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--accent-gold);
+  border: none;
+  color: var(--text-dark);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.lock-btn:hover {
+  transform: scale(1.1);
+  background: #c99360;
+}
+
+.lock-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ================================================================
+   SCREEN 3: SIDEBAR MENU
+   ================================================================ */
+
+.sidebar-screen {
+  background: linear-gradient(135deg, var(--dark-slate) 0%, var(--dark-bg) 100%);
+  padding: 30px;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text-light);
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 30px;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: var(--text-light);
+  padding: 10px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.close-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.nav-link {
+  color: var(--text-light);
+  text-decoration: none;
+  padding: 15px 20px;
+  font-size: 1.3rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.nav-link:hover {
+  border-left-color: var(--accent-gold);
+  padding-left: 30px;
+  color: var(--accent-gold);
+}
+
+.sidebar-drink {
+  width: 100%;
+  margin: 30px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  max-height: 300px;
+}
+
+.sidebar-drink img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.sidebar-contact {
+  text-align: center;
+  width: 100%;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-contact > p {
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  opacity: 0.8;
+}
+
+.contact-icons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.contact-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: var(--accent-coral);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.contact-icon:hover {
+  transform: scale(1.1);
+  background: #d85a47;
+}
+
+.contact-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.address {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  line-height: 1.6;
+}
+
+/* ================================================================
+   SCROLLBAR STYLING
+   ================================================================ */
+
+.menu-sidebar::-webkit-scrollbar,
+.menu-items::-webkit-scrollbar,
+.sidebar-screen::-webkit-scrollbar {
+  width: 6px;
+}
+
+.menu-sidebar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.menu-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.menu-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.menu-items::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.menu-items::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.menu-items::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* ================================================================
+   RESPONSIVE DESIGN
+   ================================================================ */
+
+@media (max-width: 1024px) {
+  .menu-items {
+    padding: 20px;
+  }
+
+  .menu-item-group {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .menu-sidebar {
+    width: 100px;
+  }
+
+  .welcome-title {
+    font-size: 2.5rem;
+  }
+
+  .welcome-title span {
+    font-size: 3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .welcome-title {
+    font-size: 2rem;
+  }
+
+  .welcome-title span {
+    font-size: 2.5rem;
+  }
+
+  .menu-sidebar {
+    width: 80px;
+  }
+
+  .category-icon {
+    font-size: 1.5rem;
+  }
+
+  .category-name {
+    font-size: 0.65rem;
+  }
+
+  .menu-items {
+    padding: 15px;
+  }
+
+  .menu-item-group {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .menu-title {
+    font-size: 1.5rem;
+  }
+}

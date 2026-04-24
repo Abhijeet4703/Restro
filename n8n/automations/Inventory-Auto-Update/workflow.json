@@ -1,0 +1,451 @@
+{
+  "name": "Inventory Auto-Update",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "order-placed",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Order Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "order-placed"
+    },
+    {
+      "parameters": {
+        "mode": "json",
+        "assignments": {
+          "assignments": [
+            { "name": "orderId", "value": "={{$json.orderId}}" },
+            { "name": "orderNumber", "value": "={{$json.orderNumber}}" },
+            { "name": "restaurantId", "value": "={{$json.restaurantId}}" },
+            { "name": "items", "value": "={{$json.items}}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "parse-order",
+      "name": "Parse Order Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{$env.RESTRO_API_URL}}/api/menu/bulk-ingredients",
+        "authentication": "genericCredential",
+        "genericAuthType": "httpHeaderAuth",
+        "method": "POST",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "menuItemIds",
+              "value": "={{$json.items.*.menuItemId}}"
+            }
+          ]
+        },
+        "options": { "timeout": 15000 }
+      },
+      "id": "get-ingredients",
+      "name": "Get All Ingredients",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "mode": "json",
+        "assignments": {
+          "assignments": [
+            { "name": "reductions", "value": "={{$json.ingredients}}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "calculate-reductions",
+      "name": "Calculate Stock Reductions",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [1000, 300]
+    },
+    {
+      "parameters": {
+        "url": "={{$env.RESTRO_API_URL}}/api/inventory/bulk-reduce",
+        "authentication": "genericCredential",
+        "genericAuthType": "httpHeaderAuth",
+        "method": "POST",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "items",
+              "value": "={{$json.reductions}}"
+            }
+          ]
+        },
+        "options": { "timeout": 15000 }
+      },
+      "id": "reduce-stock",
+      "name": "Reduce Inventory Stock",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "mode": "json",
+        "assignments": {
+          "assignments": [
+            { "name": "lowStockItems", "value": "={{$json.results.*.wasLowStock}}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "filter-low-stock",
+      "name": "Filter Low Stock Items",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [1500, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            { "value1": "={{$json.lowStockItems.length}}", "operation": "greater", "number2": 0 }
+          ]
+        }
+      },
+      "id": "check-low-stock",
+      "name": "Check Low Stock",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1750, 300]
+    },
+    {
+      "parameters": {
+        "mode": "json",
+        "assignments": {
+          "assignments": [
+            { "name": "alertMessage", "value": "={{$json.lowStockItems}}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-alert",
+      "name": "Format Alert Message",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [2000, 150]
+    },
+    {
+      "parameters": {
+        "channel": "email",
+        "subject": "⚠️ Low Stock Alert - Order #{{$json.orderNumber}}",
+        "body": "Low stock items detected after order #{{$json.orderNumber}}:\n\n{{$json.alertMessage}}\n\nPlease reorder soon.",
+        "to": "={{$env.OWNER_EMAIL}}"
+      },
+      "id": "email-alert",
+      "name": "Email Alert to Owner",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 3,
+      "position": [2250, 150]
+    },
+    {
+      "parameters": {
+        "channel": "slack",
+        "channelId": "inventory",
+        "text": "⚠️ *Low Stock Alert*\n\nOrder #{{$json.orderNumber}} triggered low stock:\n\n{{$json.alertMessage}}",
+        "options": {}
+      },
+      "id": "slack-alert",
+      "name": "Slack Alert",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 3,
+      "position": [2250, 400]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"status\": \"success\", \"message\": \"Inventory updated\"}"
+      },
+      "id": "respond-success",
+      "name": "Success Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [2500, 300]
+    }
+  ],
+  "connections": {
+    "Order Webhook": {
+      "main": [[{ "node": "Parse Order Data", "type": "main", "index": 0 }]]
+    },
+    "Parse Order Data": {
+      "main": [[{ "node": "Get All Ingredients", "type": "main", "index": 0 }]]
+    },
+    "Get All Ingredients": {
+      "main": [[{ "node": "Calculate Stock Reductions", "type": "main", "index": 0 }]]
+    },
+    "Calculate Stock Reductions": {
+      "main": [[{ "node": "Reduce Inventory Stock", "type": "main", "index": 0 }]]
+    },
+    "Reduce Inventory Stock": {
+      "main": [[{ "node": "Filter Low Stock Items", "type": "main", "index": 0 }]]
+    },
+    "Filter Low Stock Items": {
+      "main": [[{ "node": "Check Low Stock", "type": "main", "index": 0 }]]
+    },
+    "Check Low Stock": {
+      "main": [
+        [{ "node": "Format Alert Message", "type": "main", "index": 0 }],
+        [{ "node": "Success Response", "type": "main", "index": 0 }]
+      ]
+    },
+    "Format Alert Message": {
+      "main": [
+        [{ "node": "Email Alert to Owner", "type": "main", "index": 0 }],
+        [{ "node": "Slack Alert", "type": "main", "index": 0 }]
+      ]
+    },
+    "Email Alert to Owner": {
+      "main": [[{ "node": "Success Response", "type": "main", "index": 0 }]]
+    },
+    "Slack Alert": {
+      "main": [[{ "node": "Success Response", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "staticData": null,
+  "tags": ["inventory", "orders", "automation"],
+  "triggerCount": 1,
+  "updatedAt": "2026-04-19T12:00:00.000Z",
+  "versionId": "2"
+}{
+  "name": "Inventory Auto-Update",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "order-placed",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "Order Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300],
+      "webhookId": "order-placed"
+    },
+    {
+      "parameters": {
+        "mode": "json",
+        "previousNode": "webhook-trigger",
+        "options": {}
+      },
+      "id": "parse-order",
+      "name": "Parse Order Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "id": "loop-items",
+      "name": "Loop Over Items",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:5000/api/menu-items/{{$json.itemId}}",
+        "authentication": "genericCredential",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "get-recipe",
+      "name": "Get Recipe/Ingredients",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1000, 300]
+    },
+    {
+      "parameters": {
+        "mode": "json",
+        "options": {}
+      },
+      "id": "calculate-usage",
+      "name": "Calculate Ingredient Usage",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:5000/api/inventory/{{$json.ingredientId}}/reduce",
+        "authentication": "genericCredential",
+        "genericAuthType": "httpHeaderAuth",
+        "method": "PUT",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "quantity",
+              "value": "={{$json.reduceBy}}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 10000
+        }
+      },
+      "id": "reduce-stock",
+      "name": "Reduce Inventory Stock",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1500, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            {
+              "value": "={{$json.remainingQuantity}}"
+            }
+          ],
+          "operation": "less",
+          "number2": "={{$json.lowStockThreshold}}"
+        ]
+      }
+      },
+      "id": "check-low-stock",
+      "name": "Check Low Stock",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1750, 300]
+    },
+    {
+      "parameters": {
+        "channel": "email",
+        "subject": "Low Stock Alert: {{$json.ingredientName}}",
+        "body": "Alert: {{$json.ingredientName}} is running low!\n\nCurrent Stock: {{$json.remainingQuantity}} {{$json.unit}}\nThreshold: {{$json.lowStockThreshold}} {{$json.unit}}\n\nPlease reorder soon.",
+        "options": {}
+      },
+      "id": "send-alert",
+      "name": "Alert Owner",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 3,
+      "position": [2000, 200]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{$json.message}}"
+      },
+      "id": "respond-success",
+      "name": "Success Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [2250, 300]
+    }
+  ],
+  "connections": {
+    "Order Webhook": {
+      "main": [
+        [
+          {
+            "node": "Parse Order Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Order Data": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Get Recipe/Ingredients",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Recipe/Ingredients": {
+      "main": [
+        [
+          {
+            "node": "Calculate Ingredient Usage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Ingredient Usage": {
+      "main": [
+        [
+          {
+            "node": "Reduce Inventory Stock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reduce Inventory Stock": {
+      "main": [
+        [
+          {
+            "node": "Check Low Stock",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Low Stock": {
+      "main": [
+        [
+          {
+            "node": "Alert Owner",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": ["inventory", "orders", "automation"],
+  "triggerCount": 1,
+  "updatedAt": "2026-04-19T00:00:00.000Z",
+  "versionId": "1"
+}

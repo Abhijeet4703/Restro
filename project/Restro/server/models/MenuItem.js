@@ -16,6 +16,14 @@ const menuItemSchema = new mongoose.Schema({
   isAvailable: { type: Boolean, default: true },
   tags: [{ type: String }], // e.g., "spicy", "bestseller", "new"
   sortOrder: { type: Number, default: 0 },
+  
+  // Ingredients for inventory tracking
+  ingredients: [{
+    inventoryId: { type: mongoose.Schema.Types.ObjectId, ref: 'Inventory' },
+    name: { type: String, required: true },
+    quantityPerUnit: { type: Number, required: true }, // quantity needed per 1 serving
+    unit: { type: String, required: true }
+  }],
 }, { timestamps: true });
 
 menuItemSchema.index({ restaurantId: 1, category: 1 });

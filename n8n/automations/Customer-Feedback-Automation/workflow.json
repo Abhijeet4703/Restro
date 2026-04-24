@@ -1,0 +1,104 @@
+{
+  "name": "Customer Feedback Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "feedback-received",
+        "responseMode": "onReceived"
+      },
+      "id": "webhook-trigger",
+      "name": "Feedback Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "number": [
+            { "value1": "={{$json.rating}}", "operation": "less", "number2": 3 }
+          ]
+        }
+      },
+      "id": "check-rating",
+      "name": "Check Rating",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "channel": "slack",
+        "channelId": "alerts",
+        "text": "⚠️ *Negative Feedback Alert*\n\nOrder #: {{$json.orderNumber}}\nRating: {{$json.rating}}/5\nComment: {{$json.comment}}\n\nCustomer: {{$json.customerName}}",
+        "options": {}
+      },
+      "id": "slack-alert",
+      "name": "Slack Alert",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 3,
+      "position": [750, 150]
+    },
+    {
+      "parameters": {
+        "channel": "email",
+        "subject": "Negative Feedback from {{$json.customerName}}",
+        "body": "Customer feedback received:\n\nOrder: {{$json.orderNumber}}\nRating: {{$json.rating}}/5\nComment: {{$json.comment}}\nCustomer: {{$json.customerName}}\nPhone: {{$json.customerPhone}}\n\nPlease follow up immediately.",
+        "to": "manager@restaurant.com"
+      },
+      "id": "email-alert",
+      "name": "Email Manager",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 3,
+      "position": [750, 450]
+    },
+    {
+      "parameters": {
+        "mode": "json",
+        "options": {}
+      },
+      "id": "log-feedback",
+      "name": "Log to Spreadsheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1000, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"status\": \"received\"}"
+      },
+      "id": "respond",
+      "name": "Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1250, 300]
+    }
+  ],
+  "connections": {
+    "Feedback Webhook": {
+      "main": [[{ "node": "Check Rating", "type": "main", "index": 0 }]]
+    },
+    "Check Rating": {
+      "main": [
+        [{ "node": "Slack Alert", "type": "main", "index": 0 }],
+        [{ "node": "Email Manager", "type": "main", "index": 0 }],
+        [{ "node": "Log to Spreadsheet", "type": "main", "index": 0 }]
+      ]
+    },
+    "Slack Alert": {
+      "main": [[{ "node": "Response", "type": "main", "index": 0 }]]
+    },
+    "Email Manager": {
+      "main": [[{ "node": "Response", "type": "main", "index": 0 }]]
+    },
+    "Log to Spreadsheet": {
+      "main": [[{ "node": "Response", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "tags": ["feedback", "customer", "alerts"],
+  "triggerCount": 1,
+  "updatedAt": "2026-04-19T00:00:00.000Z"
+}

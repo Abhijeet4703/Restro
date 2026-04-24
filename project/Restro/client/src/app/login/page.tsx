@@ -33,8 +33,9 @@ export default function LoginPage() {
       else if (user?.role === 'kitchen') router.push('/kitchen');
       else if (user?.role === 'admin' && (user?.onboardingStep ?? 0) < 6) router.push('/onboarding');
       else router.push('/admin');
-    } catch {
-      toast.error('Invalid email or password');
+    } catch (err: unknown) {
+      const msg = (err as { response?: { data?: { message?: string } } })?.response?.data?.message;
+      toast.error(msg || 'Login failed — check your credentials or network');
     }
   };
 

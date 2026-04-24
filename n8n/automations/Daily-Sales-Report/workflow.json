@@ -1,0 +1,94 @@
+{
+  "name": "Daily Sales Report",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": {
+            "field": "hours",
+            "hours": 24
+          }
+        }
+      },
+      "id": "daily-trigger",
+      "name": "Daily Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:5000/api/orders/daily-summary",
+        "authentication": "genericCredential",
+        "options": { "timeout": 30000 }
+      },
+      "id": "fetch-sales",
+      "name": "Fetch Daily Sales",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [500, 300]
+    },
+    {
+      "parameters": {
+        "mode": "json",
+        "assignments": {
+          "assignments": [
+            { "name": "totalRevenue", "value": "={{$json.totalRevenue}}" },
+            { "name": "orderCount", "value": "={{$json.orderCount}}" },
+            { "name": "avgOrderValue", "value": "={{$json.totalRevenue / $json.orderCount}}" },
+            { "name": "topItems", "value": "={{$json.topItems}}" },
+            { "name": "paymentBreakdown", "value": "={{$json.paymentBreakdown}}" }
+          ]
+        },
+        "options": {}
+      },
+      "id": "format-report",
+      "name": "Format Report",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3,
+      "position": [750, 300]
+    },
+    {
+      "parameters": {
+        "channel": "email",
+        "subject": "📊 Daily Sales Report - {{$json.date}}",
+        "body": "Daily Sales Report\n\n💰 Total Revenue: ₹{{$json.totalRevenue}}\n📦 Total Orders: {{$json.orderCount}}\n📈 Avg Order Value: ₹{{$json.avgOrderValue}}\n\n🏆 Top Selling Items:\n{{$json.topItemsText}}\n\n💳 Payment Breakdown:\n{{$json.paymentBreakdownText}}",
+        "to": "owner@restaurant.com"
+      },
+      "id": "email-report",
+      "name": "Email Report",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 3,
+      "position": [1000, 300]
+    },
+    {
+      "parameters": {
+        "mode": "json",
+        "options": {}
+      },
+      "id": "save-to-sheet",
+      "name": "Save to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1000, 500]
+    }
+  ],
+  "connections": {
+    "Daily Trigger": {
+      "main": [[{ "node": "Fetch Daily Sales", "type": "main", "index": 0 }]]
+    },
+    "Fetch Daily Sales": {
+      "main": [[{ "node": "Format Report", "type": "main", "index": 0 }]]
+    },
+    "Format Report": {
+      "main": [
+        [{ "node": "Email Report", "type": "main", "index": 0 }],
+        [{ "node": "Save to Google Sheets", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" },
+  "tags": ["reports", "sales", "daily"],
+  "triggerCount": 1,
+  "updatedAt": "2026-04-19T00:00:00.000Z"
+}

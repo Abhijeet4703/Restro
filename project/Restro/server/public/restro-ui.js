@@ -474,25 +474,18 @@
 
   function renderUniversalMenu() {
     var grouped = d.grouped || {};
-    /* Re-group all DB categories into the 8 canonical buckets */
-    var canonical = {};
-    Object.keys(grouped).forEach(function (dbCat) {
-      var items = grouped[dbCat];
-      if (!items || !items.length) return;
-      var key = toCanonical(dbCat);
-      if (!canonical[key]) canonical[key] = [];
-      canonical[key] = canonical[key].concat(items);
-    });
-    /* Show only buckets that actually have items, in defined order */
-    var cats = CANONICAL_ORDER.filter(function (k) { return canonical[k] && canonical[k].length > 0; });
-    var grouped2 = canonical; /* alias for rest of code */
+    /* Use DB categories directly — they already match CAT_DISPLAY keys */
+    var cats = Object.keys(grouped).filter(function (k) { return grouped[k] && grouped[k].length > 0; });
+    var grouped2 = grouped;
 
     /* ── Menu CSS ── */
     var mStyle = document.createElement('style');
     mStyle.textContent = [
-      /* Don't nuke template CSS — just layer menu on top */
-      'main,#main,.main,[role="main"]{position:relative!important;z-index:1!important}',
-      'body{margin:0!important;padding-bottom:150px!important}',
+      /* Nuke all hardcoded template chrome — only #ri-wrap should show */
+      '.menu-wrapper,#menuWrapper,.newspaper,#reelContainer,.intro-overlay,#introOverlay,#loader,.loader,.scanlines,.paper-grain{display:none!important}',
+      'body{margin:0!important;padding:0!important;background:#f5f5f5!important}',
+      '#ri-wrap{display:block!important}','canvas#particleCanvas{display:none!important}',
+      'body{padding-bottom:150px!important}',
       /* Wrapper */
       '#ri-wrap{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;max-width:600px;margin:0 auto;background:rgba(245,245,245,0.97);min-height:100vh;padding-bottom:20px}',
       /* Restaurant header */
@@ -550,13 +543,7 @@
     ].join('');
     document.head.appendChild(mStyle);
 
-    /* ── Find container ── */
-    var main = document.querySelector('main') ||
-      document.querySelector('#app') ||
-      document.querySelector('.menu-container') ||
-      document.querySelector('.content') ||
-      document.body;
-
+    /* ── Always insert ri-wrap directly into body (bypasses all template CSS) ── */
     if (cats.length === 0) {
       /* No items — show empty state */
       var wrap = document.createElement('div');
@@ -565,12 +552,7 @@
         (r.description ? '<p class="ri-tagline">' + r.description + '</p>' : '') +
         '</div>' +
         '<div id="ri-empty"><div class="ri-empty-icon">\uD83C\uDF7D\uFE0F</div><h3>Menu Coming Soon</h3><p>The restaurant is still setting up their menu. Please check back later.</p></div>';
-      if (main === document.body) {
-        main.insertBefore(wrap, main.firstChild);
-      } else {
-        main.innerHTML = '';
-        main.appendChild(wrap);
-      }
+      document.body.insertBefore(wrap, document.body.firstChild);
     } else {
       /* Build full menu */
       var tabsHtml = '<div id="ri-tabs-wrap"><div id="ri-tabs">' +
@@ -615,13 +597,10 @@
         sectionsHtml +
         '</div>';
 
-      if (main === document.body) {
-        var wrap2 = document.createElement('div');
-        wrap2.innerHTML = fullHtml;
-        main.insertBefore(wrap2.firstChild, main.firstChild);
-      } else {
-        main.innerHTML = fullHtml;
-      }
+      /* Insert ri-wrap directly into body — template wrappers are hidden by CSS */
+      var wrap2 = document.createElement('div');
+      wrap2.innerHTML = fullHtml;
+      document.body.insertBefore(wrap2.firstChild, document.body.firstChild);
 
       /* Scroll-spy using IntersectionObserver */
       if (window.IntersectionObserver) {
@@ -646,6 +625,9 @@
       }
     }
 
+    /* Update browser tab title */
+    document.title = r.name;
+
   }
 
   window.scrollToSection = function (cat) {
@@ -669,9 +651,11 @@
     if (cd) cd.style.display = 'none';
     var co = document.getElementById('cartOverlay');
     if (co) co.style.display = 'none';
-    /* Hide template's own category nav — restro-ui renders its own */
-    var cn = document.getElementById('categoryNav');
-    if (cn) cn.style.display = 'none';
+    /* Hide template's own category navs — restro-ui renders its own (belt-and-suspenders) */
+    ['categoryNav', 'catNav', 'sectionsNav', 'storyBar'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
   });
   /* Redirect any template toggleCart calls to our cart panel */
   window.toggleCart = function () { if (tableNum) window.showPanel('cart'); };
